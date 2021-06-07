@@ -75,12 +75,12 @@ public class Main {
         try {
             System.out.println(authenticationService.login("a_lice@gmail.com", "1234"));
         } catch (AuthenticationException e) {
-            logger.error("Authentication was unsuccessful", e);
+            logger.error("Authentication was unsuccessful: incorrect email", e);
         }
         try {
             System.out.println(authenticationService.login("alice@gmail.com", "11111"));
         } catch (AuthenticationException e) {
-            logger.error("Authentication was unsuccessful", e);
+            logger.error("Authentication was unsuccessful: incorrect password", e);
         }
         try {
             System.out.println(authenticationService.register("alice@gmail.com", "11111"));

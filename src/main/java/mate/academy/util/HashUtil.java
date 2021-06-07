@@ -6,12 +6,13 @@ import java.security.SecureRandom;
 
 public class HashUtil {
     private static final String ENCRYPTING_ALGORITHM = "SHA-256";
+    private static final int SALT_ARRAY_SIZE = 16;
 
     private HashUtil() {
     }
 
     public static byte[] getSalt() {
-        byte[] salt = new byte[16];
+        byte[] salt = new byte[SALT_ARRAY_SIZE];
         new SecureRandom().nextBytes(salt);
         return salt;
     }
