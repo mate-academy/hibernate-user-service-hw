@@ -2,7 +2,7 @@ package mate.academy;
 
 import mate.academy.exception.AuthenticationException;
 import mate.academy.lib.Injector;
-import mate.academy.service.AuthenticationService;
+import mate.academy.security.AuthenticationService;
 
 public class Main {
     private static Injector injector = Injector.getInstance("mate.academy");
