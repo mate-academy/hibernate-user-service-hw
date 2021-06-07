@@ -67,7 +67,6 @@ public class User {
     public String toString() {
         return "User{" + "id=" + id + ", login='" + login + '\''
                 + ", email='" + email + '\''
-                + ", password='" + password + '\''
-                + ", salt=" + Arrays.toString(salt) + '}';
+                + ", password='" + password + '\'';
     }
 }
