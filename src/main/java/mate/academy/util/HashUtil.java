@@ -25,10 +25,10 @@ public class HashUtil {
             for (byte value : messageDigest.digest(password.getBytes())) {
                 hashedPassword.append(String.format("%02x", value));
             }
+            return hashedPassword.toString();
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Can't create hash using "
                     + ENCRYPTING_ALGORITHM + " algorithm", e);
         }
-        return hashedPassword.toString();
     }
 }
