@@ -28,7 +28,6 @@ public class Main {
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
     
     public static void main(String[] args) throws AuthenticationException {
-        
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -79,6 +78,5 @@ public class Main {
         
         authenticationService.login("antonio@gmail.com", "7asdas894");
         authenticationService.login("maria@gmail.com", "sdfsd");
-        
     }
 }
