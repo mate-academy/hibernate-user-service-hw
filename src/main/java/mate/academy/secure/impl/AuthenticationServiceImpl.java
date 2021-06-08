@@ -22,9 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
             throw new AuthenticationException("Can't authenticate user");
         }
-        User user = userFromDbOptional.get();
-        HashUtil.hashPassword(password, user.getSalt());
-        return user;
+        return userFromDbOptional.get();
     }
 
     @Override
