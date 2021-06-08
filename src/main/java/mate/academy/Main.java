@@ -3,7 +3,6 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
-import mate.academy.exception.RegisterException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -67,7 +66,7 @@ public class Main {
         try {
             authentication.register(bob.getLogin(), bob.getPassword());
         } catch (AuthenticationException e) {
-            throw new RegisterException("Can't register user");
+            throw new AuthenticationException("Can't register user");
         }
         authentication.login(bob.getLogin(), bob.getPassword());
     }
