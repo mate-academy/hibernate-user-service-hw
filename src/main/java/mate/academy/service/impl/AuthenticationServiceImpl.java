@@ -27,7 +27,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) {
-
         if (userService.findByEmail(email).isEmpty()) {
             User newUser = new User();
             newUser.setEmail(email);
@@ -35,6 +34,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return userService.add(newUser);
         }
         throw new DataProcessingException("User with email: " + email + " already registered");
-
     }
 }
