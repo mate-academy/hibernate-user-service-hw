@@ -62,10 +62,18 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             authenticationService.register("user1", "qwerty");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't register new user", e);
+        }
+        try {
             authenticationService.login("user1", "qwerty");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't authenticate user", e);
+        }
+        try {
             authenticationService.register("user2", "qwerty");
         } catch (AuthenticationException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Can't register new user", e);
         }
     }
 }
