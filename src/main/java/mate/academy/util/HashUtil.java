@@ -15,18 +15,18 @@ public class HashUtil {
     }
 
     public static String hashPassword(String password, byte[] salt) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder hashPassword = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPT0_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
             for (byte b : digest) {
-                stringBuilder.append(String.format("%02x", b));
+                hashPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Can't create hash using "
                     + CRYPT0_ALGORITHM + " algorithm", e);
         }
-        return stringBuilder.toString();
+        return hashPassword.toString();
     }
 }

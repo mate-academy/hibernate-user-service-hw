@@ -1,6 +1,7 @@
 package mate.academy;
 
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.security.AuthenticationService;
 
@@ -12,17 +13,17 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             System.out.println(authenticationService.register("bob@res.com", "123"));
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println(e.getMessage());
         }
         try {
             System.out.println(authenticationService.register("alice@res.com", "234"));
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println(e.getMessage());
         }
         try {
             System.out.println(authenticationService.register("alice@res.com", "4"));
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println(e.getMessage());
         }
         try {
