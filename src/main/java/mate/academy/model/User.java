@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,11 +13,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String login;
     private String password;
     private byte[] salt;
     
     public User() {
+    }
+    
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
     }
     
     public Long getId() {

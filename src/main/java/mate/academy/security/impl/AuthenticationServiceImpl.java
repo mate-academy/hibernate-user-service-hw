@@ -2,6 +2,7 @@ package mate.academy.security.impl;
 
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -27,9 +28,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     
     @Override
     public User register(String email, String password) {
-        User user = new User();
-        user.setLogin(email);
-        user.setPassword(password);
-        return userService.add(user);
+        if (userService.findByEmail(email).isEmpty()) {
+            User newUser = new User();
+            newUser.setLogin(email);
+            newUser.setPassword(password);
+            return userService.add(newUser);
+        }
+        throw new DataProcessingException("User with login: " + email + " already registered");
     }
 }
