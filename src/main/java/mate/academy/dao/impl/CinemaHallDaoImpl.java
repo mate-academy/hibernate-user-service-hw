@@ -17,7 +17,7 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
     private final SessionFactory sessionFactory;
 
     public CinemaHallDaoImpl() {
-        this.sessionFactory = HibernateUtil.getSessionFactory();
+        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     @Override

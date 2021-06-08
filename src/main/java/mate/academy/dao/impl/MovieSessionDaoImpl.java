@@ -23,7 +23,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     private final SessionFactory sessionFactory;
 
     public MovieSessionDaoImpl() {
-        this.sessionFactory = HibernateUtil.getSessionFactory();
+        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     @Override

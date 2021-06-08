@@ -15,7 +15,7 @@ public class UserDaoImpl implements UserDao {
     private final SessionFactory sessionFactory;
 
     public UserDaoImpl() {
-        this.sessionFactory = HibernateUtil.getSessionFactory();
+        sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     @Override

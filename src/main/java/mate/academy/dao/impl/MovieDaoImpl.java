@@ -16,9 +16,7 @@ import org.hibernate.Transaction;
 public class MovieDaoImpl implements MovieDao {
     private final SessionFactory sessionFactory;
 
-    public MovieDaoImpl() {
-        this.sessionFactory = HibernateUtil.getSessionFactory();
-    }
+    public MovieDaoImpl() { sessionFactory = HibernateUtil.getSessionFactory(); }
 
     @Override
     public Movie add(Movie movie) {
