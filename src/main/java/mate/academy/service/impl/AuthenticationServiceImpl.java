@@ -18,8 +18,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isPresent() && userFromDbOptional.get().getPassword()
-                .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
+        if (userFromDbOptional.isPresent() && isValidPassword(userFromDbOptional.get(), password)) {
             return userFromDbOptional.get();
         }
         throw new AuthenticationException("Email or password is incorrect");
@@ -32,5 +31,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         throw new UserAlreadyExistsException("User with this email: " + email
                 + " is already present in the DB");
+    }
+
+    private boolean isValidPassword(User user, String password) {
+        return user.getPassword()
+                .equals(HashUtil.hashPassword(password, user.getSalt()));
     }
 }
