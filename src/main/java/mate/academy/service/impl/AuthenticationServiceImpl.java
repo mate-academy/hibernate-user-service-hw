@@ -2,6 +2,7 @@ package mate.academy.service.impl;
 
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -17,26 +18,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> optionalUser = userService.findByEmail(email);
-        User user = optionalUser.orElseThrow(
-                () -> new AuthenticationException("Cant find user with email" + email));
-        if (user.getPassword()
-                .equals(HashUtil.hashPassword(password, user.getSalt()))) {
-            return optionalUser.get();
+        if (optionalUser.isEmpty() || !optionalUser.get().getPassword()
+                .equals(HashUtil.hashPassword(password, optionalUser.get().getSalt()))) {
+            throw new AuthenticationException("Cant authenticate user");
         }
-        throw new AuthenticationException("Cant authenticate user");
+        return optionalUser.get();
     }
 
     @Override
-    public User register(String email, String password, String login)
-            throws AuthenticationException {
+    public User register(String email, String password)
+            throws RegistrationException {
         if (userService.findByEmail(email).isEmpty()) {
             User user = new User();
             user.setEmail(email);
-            user.setLogin(login);
-            user.setSalt(HashUtil.getSalt());
-            user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
+            user.setPassword(password);
             return userService.add(user);
         }
-        throw new AuthenticationException("User with email " + email + " already exists");
+        throw new RegistrationException("User with email " + email + " already exists");
     }
 }
