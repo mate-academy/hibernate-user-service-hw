@@ -2,7 +2,6 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import mate.academy.dao.UserDao;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -63,7 +62,8 @@ public class Main {
         UserDao userDao = (UserDao) injector.getInstance(UserDao.class);
         User bob = new User();
         bob.setEmail("uncle_bob@gmail.com");
-        bob.setPassword(HashUtil.hashPassword("qwerty"));
+        bob.setSalt(HashUtil.getSalt());
+        bob.setPassword(HashUtil.hashPassword("qwerty", bob.getSalt()));
         userDao.add(bob);
         System.out.println(userDao.findByEmail("uncle_bob@gmail.com").get());
     }
