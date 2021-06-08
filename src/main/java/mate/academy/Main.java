@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import mate.academy.dao.UserDao;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -58,10 +60,11 @@ public class Main {
 //        System.out.println(movieSessionService.findAvailableSessions(
 //                        fastAndFurious.getId(), LocalDate.now()));
 
+        UserDao userDao = (UserDao) injector.getInstance(UserDao.class);
         User bob = new User();
-        bob.setLogin("uncle_bob");
+        bob.setEmail("uncle_bob@gmail.com");
         bob.setPassword(HashUtil.hashPassword("qwerty"));
-
-
+        userDao.add(bob);
+        System.out.println(userDao.findByEmail("uncle_bob@gmail.com").get());
     }
 }
