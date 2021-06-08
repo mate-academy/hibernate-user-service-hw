@@ -19,8 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isPresent()) {
             User user = userFromDbOptional.get();
-            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-            if (user.getPassword().equals(hashedPassword)) {
+            if (user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()))) {
                 return user;
             }
         }
@@ -31,9 +30,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         Optional<User> userFromDb = userService.findByEmail(email);
         if (userFromDb.isEmpty()) {
-            User user = new User(email, password);
-            return userService.add(user);
+            return userService.add(new User(email, password));
         }
-        throw new RegistrationException("email " + email + " was registered");
+        throw new RegistrationException("User with email " + email + " is already exists");
     }
 }
