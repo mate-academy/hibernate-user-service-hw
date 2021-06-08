@@ -63,9 +63,19 @@ public class Main {
                         fastAndFurious.getId(), LocalDate.now()));
 
         User userBob = new User("bob.bobovich@gmail.com", "bobik");
-        authenticationService.register(userBob.getLogin(), userBob.getPassword());
+        try {
+            authenticationService.register(userBob.getLogin(), userBob.getPassword());
+        } catch (AuthenticationException e) {
+            System.out.println("Can't register Bob");
+        }
+
         User userAlice = new User("alice.alicenko@gmail.com", "aliska");
-        authenticationService.register(userAlice.getLogin(), userAlice.getPassword());
+        try {
+            authenticationService.register(userAlice.getLogin(), userAlice.getPassword());
+            authenticationService.register(userAlice.getLogin(), userAlice.getPassword());
+        } catch (AuthenticationException e) {
+            System.out.println("Can't register Alice twice");
+        }
 
         try {
             authenticationService.login(userBob.getLogin(), userBob.getPassword());
