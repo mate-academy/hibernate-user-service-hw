@@ -15,5 +15,17 @@ public class Main {
         } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
         }
+
+        try {
+            authenticationService.login("danylo@gmail.com", "qwerty");
+        } catch (AuthenticationException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            authenticationService.register("danylo@gmail.com", "qw13erty");
+        } catch (AuthenticationException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
