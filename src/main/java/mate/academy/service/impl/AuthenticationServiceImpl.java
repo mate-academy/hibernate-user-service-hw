@@ -22,7 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .equals(HashUtil.hashPassword(password, userFoundByEmail.get().getSalt()))) {
             return userFoundByEmail.get();
         }
-        throw new AuthenticationException("Can not authenticate user with email = " + email);
+        throw new AuthenticationException("Can not authenticate user with email: " + email);
     }
 
     @Override
