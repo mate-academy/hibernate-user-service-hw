@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -65,21 +66,21 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        User user1 = new User();
-        user1.setEmail("email1@gmail.com");
-        user1.setPassword("123qwe");
+        User bob = new User();
+        bob.setEmail("bob@gmail.com");
+        bob.setPassword("123qwe");
 
-        User user2 = new User();
-        user2.setEmail("email2@gmail.com");
-        user2.setPassword("qwe123");
+        User alice = new User();
+        alice.setEmail("alice@gmail.com");
+        alice.setPassword("qwe123");
 
-        userService.add(user1);
-        userService.add(user2);
+        userService.add(bob);
+        userService.add(alice);
 
         try {
             authenticationService.register("some@gmail.com", "qwerr");
             System.out.println("Registration success");
-        } catch (AuthenticationException e) {
+        } catch (DataProcessingException e) {
             System.out.println("Can't register new user");
         }
         try {
