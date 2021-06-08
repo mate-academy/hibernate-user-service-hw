@@ -18,7 +18,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
         Optional<User> userFromDb = userService.findByEmail(email);
         if (userFromDb.isEmpty() || !userFromDb.get().getPassword()
                 .equals(HashUtil.hashPassword(password, userFromDb.get().getSalt()))) {
-            throw new AuthenticationException("Can't authentication user by email" + email);
+            throw new AuthenticationException("Email or password is incorrect");
         }
         return userFromDb.get();
     }
@@ -28,6 +28,6 @@ public class AuthenticationServiceImp implements AuthenticationService {
         if (userService.findByEmail(email).isEmpty()) {
             return userService.add(new User(email, password));
         }
-        throw new AuthenticationException("User was yet");
+        throw new AuthenticationException("User already present in the DB");
     }
 }
