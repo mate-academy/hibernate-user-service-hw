@@ -77,6 +77,6 @@ public class Main {
         authenticationService.register("maria@gmail.com", "klhgds");
         
         authenticationService.login("antonio@gmail.com", "7asdas894");
-        authenticationService.login("maria@gmail.com", "sdfsd");
+        authenticationService.login("sadaria@gmail.com", "sdfsd");
     }
 }
