@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -85,10 +86,10 @@ public class Main {
         userService.add(alice);
         System.out.println(userService.findByEmail("alice@gmail.com"));
 
-        authenticationService.register("frederik@gmail.com", "frederik");
         try {
+            authenticationService.register("frederik@gmail.com", "frederik");
             authenticationService.register("frederik@gmail.com", "fred");
-        } catch (RuntimeException e) {
+        } catch (RegistrationException e) {
             System.out.println("Can`t save user. Email is already exist.");
         }
 
