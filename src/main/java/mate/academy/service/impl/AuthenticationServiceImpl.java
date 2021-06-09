@@ -30,7 +30,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new AuthenticationException("User with this email can't ne register: " + email);
         }
         User user = new User(email, password);
-        userService.add(user);
-        return null;
+        return userService.add(user);
     }
 }
