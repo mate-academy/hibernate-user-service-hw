@@ -2,15 +2,32 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.UserService;
 
 public class Main {
-    public static void main(String[] args) {
+    private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final MovieService movieService = (MovieService) injector
+            .getInstance(MovieService.class);
+    private static final MovieSessionService movieSessionService = (MovieSessionService) injector
+            .getInstance(MovieSessionService.class);
+    private static final CinemaHallService cinemaHallService = (CinemaHallService) injector
+            .getInstance(CinemaHallService.class);
+    private static final UserService userService = (UserService) injector
+            .getInstance(UserService.class);
+    private static final AuthenticationService authenticationService =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
+    public static void main(String[] args) throws AuthenticationException {
         MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -38,6 +55,7 @@ public class Main {
         tomorrowMovieSession.setCinemaHall(firstCinemaHall);
         tomorrowMovieSession.setMovie(fastAndFurious);
         tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
+        tomorrowMovieSession.setShowTime(LocalDateTime.now());
 
         MovieSession yesterdayMovieSession = new MovieSession();
         yesterdayMovieSession.setCinemaHall(firstCinemaHall);
@@ -51,5 +69,22 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        System.out.println(movieSessionService
+                .findAvailableSessions(fastAndFurious.getId(), LocalDate.now()));
+
+        User taras = new User("taras@gmail.com", "12233");
+        User volodya = new User("volodya@gmail.com", "12345");
+        User oleg = new User("oleg@gmail.com", "4321");
+
+        userService.add(taras);
+        userService.add(volodya);
+        userService.add(oleg);
+
+        authenticationService.register("andriana@gmail.com", "andriana");
+        authenticationService.register("masha@gmail.com", "dsfdf");
+
+        authenticationService.login("andriana@gmail.com", "andriana");
+        authenticationService.login("masha@gmail.com", "dsfdf");
     }
 }
