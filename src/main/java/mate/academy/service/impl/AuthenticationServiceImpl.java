@@ -15,15 +15,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User register(String email, String password) throws AuthenticationException {
-        Optional<User> user = userService.findByEmail(email);
-        if (user.isEmpty()) {
-            User newUser = user.get();
-            newUser.setPassword(password);
-            newUser.setEmail(email);
-            return userService.add(newUser);
+    public User register(String email, String password) {
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RuntimeException("User with such email already exist");
         }
-        throw new AuthenticationException("User with such email already exist");
+        User user = new User();
+        user.setPassword(password);
+        user.setEmail(email);
+        return userService.add(user);
     }
 
     @Override
