@@ -13,7 +13,6 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.UserService;
-import mate.academy.util.HashUtil;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -69,5 +68,8 @@ public class Main {
         User user = new User("123123414@gmail.com", "qwerty");
         authenticationService.register(user.getEmail(), user.getPassword());
         System.out.println(userService.findByEmail(user.getEmail()));
+        System.out.println("_______________");
+        User newUser = new User("123123414@gmail.com", "34234234");
+        authenticationService.register(newUser.getEmail(), newUser.getPassword());
     }
 }

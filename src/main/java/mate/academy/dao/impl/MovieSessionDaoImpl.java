@@ -15,7 +15,6 @@ import mate.academy.model.MovieSession;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 @Dao
 public class MovieSessionDaoImpl implements MovieSessionDao {
@@ -67,11 +66,10 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     @Override
     public Optional<MovieSession> get(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<MovieSession> query = session.createQuery("FROM MovieSession ms "
+            return Optional.ofNullable(session.createQuery("FROM MovieSession ms "
                     + "LEFT JOIN FETCH ms.cinemaHall "
-                    + "LEFT JOIN FETCH ms.movie WHERE ms.id = :id", MovieSession.class);
-            query.setParameter("id", id);
-            return Optional.ofNullable(query.getSingleResult());
+                    + "LEFT JOIN FETCH ms.movie WHERE ms.id = :id", MovieSession.class)
+                    .setParameter("id", id).getSingleResult());
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a movie session by id: " + id, e);
         }
