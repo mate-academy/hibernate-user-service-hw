@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -61,19 +62,24 @@ public class Main {
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
-            authenticationService.register("user1", "qwerty");
-        } catch (AuthenticationException e) {
-            throw new RuntimeException("Can't register new user", e);
+            authenticationService.register("Bob", "qwerty");
+        } catch (RegistrationException e) {
+            System.out.println(e.getMessage());
         }
         try {
-            authenticationService.login("user1", "qwerty");
-        } catch (AuthenticationException e) {
-            throw new RuntimeException("Can't authenticate user", e);
+            authenticationService.register("Alice", "1234");
+        } catch (RegistrationException e) {
+            System.out.println(e.getMessage());
         }
         try {
-            authenticationService.register("user2", "qwerty");
+            authenticationService.login("Bob", "qwerty");
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Can't register new user", e);
+            System.out.println(e.getMessage());
+        }
+        try {
+            authenticationService.register("Bob", "1234");
+        } catch (RegistrationException e) {
+            System.out.println(e.getMessage());
         }
     }
 }
