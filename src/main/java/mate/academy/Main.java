@@ -1,6 +1,7 @@
 package mate.academy;
 
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.service.AuthenticationService;
 
@@ -16,7 +17,7 @@ public class Main {
         System.out.println(authenticationService.register("alice@test.com", "23124"));
         try {
             System.out.println(authenticationService.register("alice@test.com", "4"));
-        } catch (RuntimeException e) {
+        } catch (RegistrationException e) {
             System.out.println("User exist");
         }
 
