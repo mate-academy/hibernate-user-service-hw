@@ -67,17 +67,17 @@ public class Main {
                         fastAndFurious.getId(), LocalDate.now()));
 
         User bob = new User();
-        bob.setLogin("Bob");
+        bob.setEmail("Bob@gmail.com");
         bob.setSalt(HashUtil.getSalt());
         bob.setPassword(HashUtil.hashPassword("asdfgh", bob.getSalt()));
         try {
-            authenticationService.register(bob.getLogin(), bob.getPassword());
+            authenticationService.register(bob.getEmail(), bob.getPassword());
         } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
         }
 
         try {
-            authenticationService.login(bob.getLogin(), bob.getPassword());
+            authenticationService.login(bob.getEmail(), bob.getPassword());
         } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
         }
