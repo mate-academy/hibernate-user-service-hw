@@ -19,7 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userOptional = userService.findByEmail(email);
         if (userOptional.isEmpty() || !userOptional.get().getPassword()
                 .equals(HashUtil.hashPassword(password, userOptional.get().getSalt()))) {
-            throw new AuthenticationException("Can't authentication user by email" + email);
+            throw new AuthenticationException("Can't authenticate user by email " + email);
         }
         return userOptional.get();
     }
@@ -29,6 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setPassword(password);
         user.setEmail(email);
+        userService.add(user);
         return user;
     }
 }

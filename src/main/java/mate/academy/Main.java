@@ -67,8 +67,7 @@ public class Main {
         User bob = new User();
         bob.setEmail("bob@gmail.com");
         bob.setPassword("qwerty");
-        User registerBob = authenticationService.register(bob.getEmail(), bob.getPassword());
-        userService.add(registerBob);
+        authenticationService.register(bob.getEmail(), bob.getPassword());
         authenticationService.login(bob.getEmail(), bob.getPassword());
 
     }
