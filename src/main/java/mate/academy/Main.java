@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -83,7 +84,7 @@ public class Main {
                     .login(bob.getEmail(), bob.getPassword()));
             System.out.println(authenticationService
                     .login(alice.getEmail(), alice.getPassword()));
-        } catch (AuthenticationException e) {
+        } catch (AuthenticationException | RegistrationException e) {
             throw new RuntimeException("Can't login or register user.", e);
         }
     }
