@@ -13,7 +13,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, length = 32)
+    @Column(unique = true)
     private String email;
     private String password;
     private byte[] salt;
@@ -55,7 +55,6 @@ public class User {
         return "User{"
                 + " id=" + id
                 + ", email='" + email + '\''
-                + ", password='" + password + '\''
                 + '}';
     }
 }
