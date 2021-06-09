@@ -16,7 +16,8 @@ import mate.academy.service.MovieSessionService;
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) throws AuthenticationException {
+    public static void main(String[] args) throws AuthenticationException,
+            ReflectiveOperationException {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -60,14 +61,10 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        User bob = new User("bob12333gmail.com","122123");
+        User bob = new User("bob12333gmail.com", "122123");
         AuthenticationService authentication = (AuthenticationService)
                 injector.getInstance(AuthenticationService.class);
-        try {
-            authentication.register(bob.getLogin(), bob.getPassword());
-        } catch (AuthenticationException e) {
-            throw new AuthenticationException("Can't register user");
-        }
-        authentication.login(bob.getLogin(), bob.getPassword());
+        authentication.register(bob.getEmail(), bob.getPassword());
+        authentication.login(bob.getEmail(), bob.getPassword());
     }
 }

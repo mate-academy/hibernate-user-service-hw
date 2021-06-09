@@ -24,10 +24,10 @@ public class AuthenticationServiceImp implements AuthenticationService {
     }
 
     @Override
-    public User register(String email, String password) throws AuthenticationException {
+    public User register(String email, String password) throws ReflectiveOperationException {
         if (userService.findByEmail(email).isEmpty()) {
             return userService.add(new User(email, password));
         }
-        throw new AuthenticationException("User already present in the DB");
+        throw new ReflectiveOperationException("User already present in the DB");
     }
 }
