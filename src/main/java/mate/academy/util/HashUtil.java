@@ -12,7 +12,6 @@ public class HashUtil {
     }
 
     public static byte[] getSalt() {
-        Math
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[SALT_ARRAY_SIZE];
         secureRandom.nextBytes(salt);
