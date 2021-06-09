@@ -23,12 +23,13 @@ public class UserDaoImpl implements UserDao {
             transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();
+            System.out.println(user.toString());
             return user;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can not save user to DB. User - " + user, e);
+            throw new DataProcessingException("Can not save user to DB. User - " + user.toString(), e);
         } finally {
             if (session != null) {
                 session.close();
