@@ -25,5 +25,16 @@ public class Main {
         } catch (AuthenticationException e) {
             logger.error(e.getMessage());
         }
+        try {
+            authenticationService.register("uncle_bob@gmail.com", "qwerty");
+        } catch (RegistrationException e) {
+            logger.error(e.getMessage());
+        }
+
+        try {
+            authenticationService.login("unknown_email@gmail.com", "1234");
+        } catch (AuthenticationException e) {
+            logger.error(e.getMessage());
+        }
     }
 }
