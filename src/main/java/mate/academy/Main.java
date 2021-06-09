@@ -65,9 +65,19 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        User anna = authenticationService.register("anna1@gmail.com", "12345");
-        User julia = authenticationService.register("julia_PRQuestions@gmail.com",
-                    "moreSecurePass1987");
+        User anna = null;
+        try {
+            anna = authenticationService.register("anna1@gmail.com", "12345");
+        } catch (AuthenticationException e) {
+            logger.error("Registration was unsuccessful." + e.getMessage());
+        }
+        User julia = null;
+        try {
+            julia = authenticationService.register("julia_PRQuestions@gmail.com",
+                        "moreSecurePass1987");
+        } catch (AuthenticationException e) {
+            logger.error("Registration was unsuccessful." + e.getMessage());
+        }
 
         try {
             authenticationService.login(julia.getEmail(), "moreSecurePass1987");
