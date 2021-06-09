@@ -73,6 +73,7 @@ public class Main {
 
         User bobLogin = authenticationService.login("bob@gmail.com", "qwerty");
         System.out.println(bobLogin);
+        authenticationService.login("kdsafsd", "dsaklf");
         authenticationService.register("alice@gmail.com", "qwerty");
         User alice = authenticationService.login("alice@gmail.com", "qwerty");
         System.out.println(alice);
