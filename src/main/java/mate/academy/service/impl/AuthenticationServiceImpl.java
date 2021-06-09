@@ -17,19 +17,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> currentUser = userService.findByEmail(email);
-        if (currentUser.isPresent() && currentUser.get().getPassword()
+        if (currentUser.isEmpty() || !currentUser.get().getPassword()
                 .equals(HashUtil.hashPassword(password, currentUser.get().getSalt()))) {
-            return currentUser.get();
+            throw new AuthenticationException("User is not found.");
         }
-        throw new AuthenticationException("User is not found.");
+        return currentUser.get();
     }
 
     @Override
     public User register(String email, String password) {
-        if (userService.findByEmail(email).isEmpty()) {
-            return userService.add(new User(email, password));
+        if (!userService.findByEmail(email).isEmpty()) {
+            throw new AuthenticationException("User with email: " + email
+                    + " is already exists in DB");
         }
-        throw new AuthenticationException("User with email: " + email
-                + " is already exists in DB");
+        return userService.add(new User(email, password));
     }
 }
