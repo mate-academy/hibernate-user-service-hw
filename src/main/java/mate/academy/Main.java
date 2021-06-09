@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -82,12 +83,17 @@ public class Main {
                     .register(jack.getEmail(), jack.getPassword()));
             System.out.println(authenticationService
                     .register(marta.getEmail(), marta.getPassword()));
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register user, try again please", e);
+        }
+
+        try {
             System.out.println(authenticationService
                     .login(jack.getEmail(), jack.getPassword()));
             System.out.println(authenticationService
                     .login(marta.getEmail(), marta.getPassword()));
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Can't login or register user, try again please", e);
+            throw new RuntimeException("Can't login user, try again please", e);
         }
     }
 }
