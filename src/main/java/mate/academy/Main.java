@@ -1,6 +1,7 @@
 package mate.academy;
 
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
@@ -8,7 +9,7 @@ import mate.academy.security.AuthenticationService;
 public class Main {
     private static Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) throws AuthenticationException {
+    public static void main(String[] args) {
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         User ben = new User("BenyHill@gmail.com", "991");
@@ -17,19 +18,19 @@ public class Main {
         try {
             authenticationService.register(ben.getEmail(), ben.getPassword());
             System.out.println("Registration successfully completed");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println("Registration error");
         }
         try {
             authenticationService.register(melinda.getEmail(), melinda.getPassword());
             System.out.println("Registration successfully completed");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println("Registration error");
         }
         try {
             authenticationService.register(melinda2.getEmail(), melinda2.getPassword());
             System.out.println("Registration successfully completed");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println("Registration error. Email already exist");
         }
         try {
