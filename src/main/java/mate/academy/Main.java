@@ -79,12 +79,8 @@ public class Main {
         System.out.println(userService.findByEmail(bobUser.getEmail()));
         System.out.println(userService.findByEmail(bohdanUser.getEmail()));
 
-        try {
-            System.out.println(authenticationService
-                    .register(bobUser.getEmail(), bobUser.getPassword()));
-        } catch (AuthenticationException e) {
-            System.out.println("Can't register");
-        }
+        System.out.println(authenticationService
+                .register(bobUser.getEmail(), bobUser.getPassword()));
         try {
             System.out.println(authenticationService
                     .login(bobUser.getEmail(), bobUser.getPassword()));
@@ -109,11 +105,7 @@ public class Main {
         } catch (AuthenticationException e) {
             System.out.println("Such user doesn't exist");
         }
-        try {
-            System.out.println(authenticationService
-                    .register(bobUser.getEmail(), bohdanUser.getPassword()));
-        } catch (AuthenticationException e) {
-            System.out.println("Such email already used");
-        }
+        System.out.println(authenticationService
+                .register(bobUser.getEmail(), bohdanUser.getPassword()));
     }
 }
