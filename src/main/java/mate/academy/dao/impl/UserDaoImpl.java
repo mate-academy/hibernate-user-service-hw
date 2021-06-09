@@ -52,7 +52,7 @@ public class UserDaoImpl implements UserDao {
             Query<User> findByEmailUserQuery = session.createQuery("FROM User "
                     + "WHERE email = :email", User.class);
             findByEmailUserQuery.setParameter("email", email);
-            return Optional.ofNullable(findByEmailUserQuery.getSingleResult());
+            return findByEmailUserQuery.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find user by email " + email + " in Db", e);
         }
