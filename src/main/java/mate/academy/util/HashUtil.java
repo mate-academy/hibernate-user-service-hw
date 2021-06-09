@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashUtil {
+    private static final int ARRAY_SIZE = 16;
     private static final String CRYPTO_ALGORITHM = "SHA-256";
 
     public HashUtil() {
@@ -12,7 +13,7 @@ public class HashUtil {
 
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
-        byte[] salt = new byte[16];
+        byte[] salt = new byte[ARRAY_SIZE];
         secureRandom.nextBytes(salt);
         return salt;
     }
