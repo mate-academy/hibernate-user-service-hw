@@ -63,7 +63,5 @@ public class UserDaoImpl implements UserDao {
                     .setParameter("email", email)
                     .uniqueResultOptional();
         }
-
     }
-
 }
