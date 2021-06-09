@@ -12,7 +12,7 @@ public class Main {
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
-            System.out.println(authenticationService.register("alicecooper@gmail.com", "blablapass007"));
+            System.out.println(authenticationService.register("alicecooper@gmail.com", "blabla"));
         } catch (AlreadyExistingEmailException e) {
             System.out.println(e.getMessage());
         }
@@ -22,7 +22,7 @@ public class Main {
             System.out.println(e.getMessage());
         }
         try {
-            System.out.println(authenticationService.login("alicecooper@gmail.com", "blablapass007"));
+            System.out.println(authenticationService.login("alicecooper@gmail.com", "blabla"));
         } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
         }
