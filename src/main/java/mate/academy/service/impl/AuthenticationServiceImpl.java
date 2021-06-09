@@ -22,8 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         .equals(userFromDbOptional.get().getPassword())) {
             return userFromDbOptional.get();
         }
-        throw new AuthenticationException("There is not such login " + email
-                + "in DB, you should register first.");
+        throw new AuthenticationException("Email " + email + "or password are invalid.");
     }
 
     @Override

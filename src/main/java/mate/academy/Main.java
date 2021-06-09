@@ -64,27 +64,27 @@ public class Main {
 
         User userBob = new User("bob.bobovich@gmail.com", "bobik");
         try {
-            authenticationService.register(userBob.getLogin(), userBob.getPassword());
+            authenticationService.register(userBob.getEmail(), userBob.getPassword());
         } catch (AuthenticationException e) {
             System.out.println("Can't register Bob");
         }
 
         User userAlice = new User("alice.alicenko@gmail.com", "aliska");
         try {
-            authenticationService.register(userAlice.getLogin(), userAlice.getPassword());
-            authenticationService.register(userAlice.getLogin(), userAlice.getPassword());
+            authenticationService.register(userAlice.getEmail(), userAlice.getPassword());
+            authenticationService.register(userAlice.getEmail(), userAlice.getPassword());
         } catch (AuthenticationException e) {
             System.out.println("Can't register Alice twice");
         }
 
         try {
-            authenticationService.login(userBob.getLogin(), userBob.getPassword());
+            authenticationService.login(userBob.getEmail(), userBob.getPassword());
         } catch (AuthenticationException e) {
             System.out.println("Can't login user Bob");
         }
 
         try {
-            authenticationService.login(userAlice.getLogin(), "wrongPassword");
+            authenticationService.login(userAlice.getEmail(), "wrongPassword");
         } catch (AuthenticationException e) {
             System.out.println("Can't login user Alice");
         }
