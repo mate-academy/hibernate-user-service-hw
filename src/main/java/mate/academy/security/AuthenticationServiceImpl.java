@@ -19,7 +19,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userOptional.isPresent() && userOptional.get().getPassword()
                 .equals(HashUtil.hashPassword(password, userOptional.get().getSalt()))) {
             return userOptional.get();
-
         }
         throw new AuthenticationException("Login or password is incorrect");
     }
