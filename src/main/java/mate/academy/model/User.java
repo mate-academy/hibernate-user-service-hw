@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "movies")
+@Table(name = "names")
 public class User {
     private Long id;
     private String email;
