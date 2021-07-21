@@ -26,7 +26,7 @@ public class Main {
     private static final AuthenticationService authenticationService
             = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-    public static void main(String[] args) throws AuthenticationException {
+    public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -68,6 +68,10 @@ public class Main {
         String password = "qwerty";
         authenticationService.register(email, password);
         System.out.println(userService.findByEmail(email).get());
-        System.out.println(authenticationService.login(email, password));
+        try {
+            System.out.println(authenticationService.login(email, password));
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
+        }
     }
 }

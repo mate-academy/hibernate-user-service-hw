@@ -17,7 +17,8 @@ public class HashUtil {
                 hashedPass.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Could not create hash using SHA-512 algorithm");
+            throw new IllegalStateException(
+                    "Could not create hash using" + CRYPTO_ALGORITHM + " algorithm");
         }
         return hashedPass.toString();
     }
