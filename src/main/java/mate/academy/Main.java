@@ -72,7 +72,7 @@ public class Main {
             System.out.println(authenticationService.login("alice@gmail.com", "123654"));
             System.out.println(authenticationService.login("111!@gmail.com", "qwerty"));
         } catch (AuthenticationException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
     }
 }
