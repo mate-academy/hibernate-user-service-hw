@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -27,10 +28,23 @@ public class Main {
             injector.getInstance(UserService.class);
 
     public static void main(String[] args) {
-        User user = authenticationService.register("zara.benito17@gmail.com", "qwerty");
+        User user = null;
+        try {
+            user = authenticationService.register("zara.benito17@gmail.com", "qwerty");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't register new user!", e);
+        }
         System.out.println(userService.findByEmail(user.getLogin()));
-        System.out.println(authenticationService.login(user.getLogin(), user.getPassword()));
-        System.out.println(authenticationService.login("qwerty", "ytrewq"));
+        try {
+            System.out.println(authenticationService.login(user.getLogin(), user.getPassword()));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't login!", e);
+        }
+        try {
+            System.out.println(authenticationService.login("qwerty", "ytrewq"));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't login", e);
+        }
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
