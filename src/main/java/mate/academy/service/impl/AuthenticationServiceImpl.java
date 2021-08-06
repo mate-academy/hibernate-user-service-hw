@@ -25,14 +25,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User register(String email, String password) throws UserAuthenticationException {
+    public User register(String email, String password) {
         if (email == null || password == null
                 || password.length() == 0 || email.length() == 0) {
-            throw new UserAuthenticationException("Incorrect email or password");
+            throw new RuntimeException("Incorrect email or password");
         }
         Optional<User> optionalUser = userService.findByEmail(email);
         if (optionalUser.isPresent()) {
-            throw new UserAuthenticationException("There is already an email in DB:");
+            throw new RuntimeException("There is already an email in DB:");
         }
         User user = new User();
         user.setEmail(email);

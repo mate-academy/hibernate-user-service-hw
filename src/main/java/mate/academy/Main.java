@@ -16,6 +16,5 @@ public class Main {
         authenticationService.register("abc", "qwerty");
         User userbyLogin = authenticationService.login("abc", "qwerty");
         System.out.println(userbyLogin.toString());
-
     }
 }
