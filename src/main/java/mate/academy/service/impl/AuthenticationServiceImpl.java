@@ -15,7 +15,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String mail, String password) {
+    public User login(String mail, String password) throws AuthenticationException {
         Optional<User> currentUser = userService.findByEmail(mail);
         if (currentUser.isEmpty() || !currentUser.get().getPassword()
                 .equals(HashUtill.hashPassword(password, currentUser.get().getSalt()))) {
@@ -25,10 +25,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User register(String email, String password) {
-        if (userService.findByEmail(email).isEmpty()) {
-            return userService.add(new User(email, password));
+    public User register(String email, String password) throws AuthenticationException {
+        if (email.equals("") || password.equals("")) {
+            throw new AuthenticationException("Fields can`t be empty");
         }
-        throw new AuthenticationException("User already exist");
+        if (!userService.findByEmail(email).isEmpty()) {
+            throw new AuthenticationException("User already exist");
+        }
+        return userService.add(new User(email, password));
     }
 }

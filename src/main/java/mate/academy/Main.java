@@ -10,10 +10,27 @@ public class Main {
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
     public static void main(String[] args) {
-        authenticationService.register("user1@gmail.com", "1111");
-        authenticationService.register("user2@gmail.com", "2222");
+        try {
+            authenticationService.register("user1@gmail.com", ""); // bad pass
+        } catch (AuthenticationException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            authenticationService.register("user1@gmail.com", "1111");
+        } catch (AuthenticationException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            authenticationService.register("user2@gmail.com", "2222");
+        } catch (AuthenticationException e) {
+            System.out.println(e.getMessage());
+        }
 
-        authenticationService.login("user2@gmail.com", "2222"); // all good
+        try {
+            authenticationService.login("user2@gmail.com", "2222"); // all good
+        } catch (AuthenticationException e) {
+            System.out.println(e.getMessage());
+        }
 
         try {
             authenticationService.login("user1@gmail.com", "1234"); // bad pass
