@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-256";
     private static final String HEX_FORMAT = "%02x";
-    private static final int SALT_LENGTH = 8;
+    private static final int SALT_LENGTH = 16;
 
     private HashUtil() {
     }
@@ -29,7 +29,8 @@ public class HashUtil {
                 hashedPassword.append(String.format(HEX_FORMAT, currentByte));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Could not create hash using SHA-256 algorithm", e);
+            throw new IllegalStateException("Can't create hash using "
+                    + CRYPTO_ALGORITHM + " algorithm", e);
         }
         return hashedPassword.toString();
     }
