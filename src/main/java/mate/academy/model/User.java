@@ -23,9 +23,13 @@ public class User {
     public User() {
     }
 
-    public User(String login, String password, byte[] salt) {
+    public User(String login, String password) {
         this.login = login;
         this.password = password;
+    }
+
+    public User(String login, String password, byte[] salt) {
+        this(login, password);
         this.salt = salt;
     }
 
