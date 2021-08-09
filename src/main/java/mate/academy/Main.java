@@ -1,6 +1,7 @@
 package mate.academy;
 
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
@@ -22,7 +23,7 @@ public class Main {
         try {
             eugenesinica = "eugenesinica@gmail.com";
             authenticationService.register(eugenesinica, "bigboy2012");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             logger.error("AuthenticationService error while registering with email "
                     + eugenesinica);
             logger.error(e.getMessage());
@@ -32,7 +33,7 @@ public class Main {
         try {
             dashakhmara = "dashakhmara@gmail.com";
             authenticationService.register(dashakhmara, "littlegirl2012");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             logger.error("AuthenticationService error while registering with email "
                     + dashakhmara);
             logger.error(e.getMessage());
@@ -42,7 +43,7 @@ public class Main {
         try {
             teabag = "teabag@gmail.com";
             authenticationService.register(teabag, "teabag1213");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             logger.error("AuthenticationService error while registering with email "
                     + teabag);
             logger.error(e.getMessage());
