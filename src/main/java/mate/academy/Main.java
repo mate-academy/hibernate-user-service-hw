@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -71,7 +72,7 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             authenticationService.register("vasya@mail.ru", "vasyan777");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println("Error while registering a user");
         }
 
@@ -83,7 +84,7 @@ public class Main {
 
         try {
             authenticationService.register("zheka@mail.ru", "zheka2001");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println("Error while registering a user");
         }
 
@@ -98,7 +99,7 @@ public class Main {
 
         try {
             authenticationService.register("zheka@mail.ru", "zheka2001again");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println("Error while registering a user");
         }
 
