@@ -1,6 +1,8 @@
 package mate.academy;
 
 import mate.academy.dao.UserDao;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
@@ -14,12 +16,13 @@ public class Main {
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
     public static void main(String[] args) {
-
         try {
             authenticationService.register("loo@gmail.com", "123");
             System.out.println(authenticationService.login("loo@gmail.com", "123"));
-        } catch (Exception e) {
+        } catch (AuthenticationException e) {
             throw new RuntimeException("Error login", e);
+        } catch (RegistrationException e) {
+            throw new RuntimeException("this is email used, please use other email", e);
         }
     }
 }
