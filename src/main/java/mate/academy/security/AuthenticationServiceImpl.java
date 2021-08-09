@@ -1,11 +1,10 @@
-package mate.academy.service.impl;
+package mate.academy.security;
 
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
-import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
@@ -19,7 +18,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> currentUser = userService.findByEmail(email);
         if (currentUser.isEmpty() || !currentUser.get().getPassword()
                 .equals(HashUtil.hashPassword(password, currentUser.get().getSalt()))) {
-            throw new AuthenticationException("User is not found.");
+            throw new AuthenticationException("User with email: " + email
+                    + "is not found or password is invalid.");
         }
         return currentUser.get();
     }
