@@ -6,7 +6,7 @@ import mate.academy.model.User;
 
 public interface AuthenticationService {
     User register(String email, String password)
-            throws AuthenticationException, RegistrationException;
+            throws RegistrationException;
 
     User login(String login, String password) throws AuthenticationException;
 }

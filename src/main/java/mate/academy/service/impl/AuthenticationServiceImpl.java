@@ -21,7 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isPresent() || password.isEmpty()) {
             throw new RegistrationException("User with email " + email + " exist");
         }
-        return userService.add(new User(email, password, HashUtilSha512.getSalt()));
+        return userService.add(new User(email, password));
     }
 
     @Override
