@@ -26,14 +26,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws AuthenticationException {
         Optional<User> optionalUser = userService.findByEmail(email);
-        try {
-            optionalUser.get();
+        if (optionalUser.isEmpty()) {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
             return userService.add(user);
-        } catch (Exception e) {
-            throw new AuthenticationException("This email - " + email + " exists in the database");
         }
+        throw new AuthenticationException("This email - " + email + " exists in the database");
     }
 }
