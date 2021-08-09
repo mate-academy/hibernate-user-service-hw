@@ -78,7 +78,7 @@ public class Main {
         try {
             authenticationService.login("marleybob@gmail.com", "123321");
             logger.debug("Method login was called. Params: email = {}, password = {}",
-                    "bobmarley@gmail.com", "123321");
+                    "marleybob@gmail.com", "123321");
         } catch (AuthenticationException e) {
             logger.error("This email or password is uncorrected");
         }
@@ -86,7 +86,7 @@ public class Main {
         try {
             authenticationService.login("bobmarley@gmail.com", "489651");
             logger.debug("Method login was called. Params: email = {}, password = {}",
-                    "bobmarley@gmail.com", "123321");
+                    "bobmarley@gmail.com", "489651");
         } catch (AuthenticationException e) {
             logger.error("This email or password is uncorrected");
         }
