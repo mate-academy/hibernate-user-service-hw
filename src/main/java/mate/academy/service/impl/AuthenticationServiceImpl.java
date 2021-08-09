@@ -28,10 +28,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) {
-        if (email == null || userService.findByEmail(email).isPresent()
-                || password == null || password.length() == 0) {
-            throw new RuntimeException("Incorrect email or password");
-        }
         return userService.add(new User(email, password));
     }
 }
