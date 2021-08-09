@@ -40,10 +40,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
-            return Optional.ofNullable(session
+            return session
                     .createQuery("FROM User WHERE email = :value", User.class)
                     .setParameter("value", email)
-                    .uniqueResult());
+                    .uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get user by email : " + email, e);
         }
