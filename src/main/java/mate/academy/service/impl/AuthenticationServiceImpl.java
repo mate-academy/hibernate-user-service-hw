@@ -2,6 +2,7 @@ package mate.academy.service.impl;
 
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -17,20 +18,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> optionalUser = userService.findByEmail(email);
-        if (!userService.findByEmail(email).isEmpty()) {
-            if (email.equals(userService.findByEmail(email).get().getEmail())) {
-                User user = userService.findByEmail(email).get();
-                if (HashUtil.hashPassword(password, user.getSalt())
-                        .equals(userService.findByEmail(email).get().getPassword())) {
-                    return userService.findByEmail(email).get();
-                }
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (HashUtil.hashPassword(password, user.getSalt())
+                    .equals(user.getPassword())) {
+                return user;
             }
         }
         throw new AuthenticationException("This email or password is uncorrected");
     }
 
     @Override
-    public User register(String email, String password) throws AuthenticationException {
+    public User register(String email, String password) throws RegistrationException {
         Optional<User> optionalUser = userService.findByEmail(email);
         if (optionalUser.isEmpty()) {
             User user = new User();
@@ -38,6 +37,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setPassword(password);
             return userService.add(user);
         }
-        throw new AuthenticationException("This email - " + email + " exists in the database");
+        throw new RegistrationException("This email - " + email + " exists in the database");
     }
 }

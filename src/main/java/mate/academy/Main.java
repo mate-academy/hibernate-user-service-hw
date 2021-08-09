@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -63,7 +64,7 @@ public class Main {
             authenticationService.register("bobmarley@gmail.com", "123321");
             logger.debug("Method register was called. Params: email = {}, password = {}",
                     "bobmarley@gmail.com", "123321");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             logger.error("This email exists in the database");
         }
 
@@ -93,7 +94,7 @@ public class Main {
 
         try {
             authenticationService.register("bobmarley@gmail.com", "sdghfsdg");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             logger.error("This email exists in the database");
         }
     }
