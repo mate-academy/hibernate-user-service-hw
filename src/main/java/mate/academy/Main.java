@@ -13,7 +13,8 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
     private static final AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
-    private static final UserService userService = (UserService) injector.getInstance(UserService.class);
+    private static final UserService userService = (UserService) injector
+            .getInstance(UserService.class);
 
     public static void main(String[] args) {
         userService.add(new User("eugenesinica@gmail.com", "bigboy2012"));
@@ -22,7 +23,8 @@ public class Main {
             eugenesinica = "eugenesinica@gmail.com";
             authenticationService.register(eugenesinica, "bigboy2012");
         } catch (AuthenticationException e) {
-            logger.error("AuthenticationService error while registering with email " + eugenesinica);
+            logger.error("AuthenticationService error while registering with email "
+                    + eugenesinica);
             logger.error(e.getMessage());
         }
 
@@ -31,7 +33,8 @@ public class Main {
             dashakhmara = "dashakhmara@gmail.com";
             authenticationService.register(dashakhmara, "littlegirl2012");
         } catch (AuthenticationException e) {
-            logger.error("AuthenticationService error while registering with email " + dashakhmara);
+            logger.error("AuthenticationService error while registering with email "
+                    + dashakhmara);
             logger.error(e.getMessage());
         }
 
@@ -40,29 +43,32 @@ public class Main {
             teabag = "teabag@gmail.com";
             authenticationService.register(teabag, "teabag1213");
         } catch (AuthenticationException e) {
-            logger.error("AuthenticationService error while registering with email " + teabag);
+            logger.error("AuthenticationService error while registering with email "
+                    + teabag);
             logger.error(e.getMessage());
         }
-
 
         try {
             authenticationService.login(eugenesinica, "bigboy2012");
         } catch (AuthenticationException e) {
-            logger.error("AuthenticationService error while logging in with email " + eugenesinica);
+            logger.error("AuthenticationService error while logging in with email "
+                    + eugenesinica);
             logger.error(e.getMessage());
         }
 
         try {
             authenticationService.login(dashakhmara, "littlegirl2012");
         } catch (AuthenticationException e) {
-            logger.error("AuthenticationService error while logging in with email " + dashakhmara);
+            logger.error("AuthenticationService error while logging in with email "
+                    + dashakhmara);
             logger.error(e.getMessage());
         }
 
         try {
             authenticationService.login(teabag, "WRONG TEABAG PASSWORD");
         } catch (AuthenticationException e) {
-            logger.error("AuthenticationService error while logging in with email " + teabag);
+            logger.error("AuthenticationService error while logging in with email "
+                    + teabag);
             logger.error(e.getMessage());
         }
     }

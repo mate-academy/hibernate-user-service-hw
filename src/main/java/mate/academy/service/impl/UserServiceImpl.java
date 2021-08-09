@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.HashMap;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.lib.Inject;
@@ -12,7 +11,7 @@ import mate.academy.util.HashUtil;
 @Service
 public class UserServiceImpl implements UserService {
     @Inject
-    UserDao userDao;
+    private UserDao userDao;
 
     @Override
     public User add(User user) {
