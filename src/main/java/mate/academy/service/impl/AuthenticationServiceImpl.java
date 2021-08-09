@@ -7,6 +7,7 @@ import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
+import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -15,9 +16,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        if (email.equals(userService.findByEmail(email).get().getEmail())) {
-            if (password.equals(userService.findByEmail(email).get().getPassword())) {
-                return userService.findByEmail(email).get();
+        Optional<User> optionalUser = userService.findByEmail(email);
+        if (!userService.findByEmail(email).isEmpty()) {
+            if (email.equals(userService.findByEmail(email).get().getEmail())) {
+                User user = userService.findByEmail(email).get();
+                if (HashUtil.hashPassword(password, user.getSalt())
+                        .equals(userService.findByEmail(email).get().getPassword())) {
+                    return userService.findByEmail(email).get();
+                }
             }
         }
         throw new AuthenticationException("This email or password is uncorrected");

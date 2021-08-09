@@ -9,7 +9,7 @@ public class HashUtil {
     private HashUtil() {
     }
 
-    public static String hashPassword (String password, byte[] salt) {
+    public static String hashPassword(String password, byte[] salt) {
         StringBuilder heshedPassword = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);

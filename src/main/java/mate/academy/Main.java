@@ -10,8 +10,11 @@ import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
+    private static final Logger logger = LogManager.getLogger(Main.class);
     private static final Injector injector = Injector.getInstance("mate.academy");
     private static MovieService movieService =
             (MovieService) injector.getInstance(MovieService.class);
@@ -57,23 +60,41 @@ public class Main {
         movieSessionService.add(yesterdayMovieSession);
 
         try {
-            authenticationService.register("test email", "123321");
-            System.out.println("User registered");
+            authenticationService.register("bobmarley@gmail.com", "123321");
+            logger.debug("Method register was called. Params: email = {}, password = {}",
+                    "bobmarley@gmail.com", "123321");
         } catch (AuthenticationException e) {
-            System.out.println(("This email exists in the database"));
+            logger.error("This email exists in the database");
         }
 
         try {
-            authenticationService.login("test email", "123321");
-            System.out.println("User logged in");
+            authenticationService.login("bobmarley@gmail.com", "123321");
+            logger.debug("Method login was called. Params: email = {}, password = {}",
+                    "bobmarley@gmail.com", "123321");
         } catch (AuthenticationException e) {
-            System.out.println(("This email or password is uncorrected"));
+            logger.error("This email or password is uncorrected");
         }
 
         try {
-            authenticationService.register("test email", "sdghfsdg");
+            authenticationService.login("marleybob@gmail.com", "123321");
+            logger.debug("Method login was called. Params: email = {}, password = {}",
+                    "bobmarley@gmail.com", "123321");
         } catch (AuthenticationException e) {
-            System.out.println(("This email exists in the database"));
+            logger.error("This email or password is uncorrected");
+        }
+
+        try {
+            authenticationService.login("bobmarley@gmail.com", "489651");
+            logger.debug("Method login was called. Params: email = {}, password = {}",
+                    "bobmarley@gmail.com", "123321");
+        } catch (AuthenticationException e) {
+            logger.error("This email or password is uncorrected");
+        }
+
+        try {
+            authenticationService.register("bobmarley@gmail.com", "sdghfsdg");
+        } catch (AuthenticationException e) {
+            logger.error("This email exists in the database");
         }
     }
 }
