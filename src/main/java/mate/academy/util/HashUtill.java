@@ -5,21 +5,22 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashUtill {
+    private static final String CRYPTO_KEY = "SHA-512";
 
-    public HashUtill() {
+    private HashUtill() {
     }
 
     public static String hashPassword(String password, byte[] salt) {
         StringBuilder hashedPass = new StringBuilder();
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            MessageDigest md = MessageDigest.getInstance(CRYPTO_KEY);
             md.update(salt);
             byte[] digest = md.digest(password.getBytes());
-            for (byte b : digest) {
-                hashedPass.append(String.format("%02x", b));
+            for (byte element : digest) {
+                hashedPass.append(String.format("%02x", element));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Could`t create hash algorithm.");
+            throw new RuntimeException("Could`t create hash algorithm.", e);
         }
         return hashedPass.toString();
     }

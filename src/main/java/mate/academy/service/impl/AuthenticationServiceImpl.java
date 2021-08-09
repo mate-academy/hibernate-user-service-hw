@@ -26,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws AuthenticationException {
-        if (email.equals("") || password.equals("")) {
+        if (email.isEmpty() || password.isEmpty()) {
             throw new AuthenticationException("Fields can`t be empty");
         }
         if (!userService.findByEmail(email).isEmpty()) {
