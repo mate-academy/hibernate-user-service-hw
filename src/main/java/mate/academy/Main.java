@@ -1,6 +1,7 @@
 package mate.academy;
 
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.security.AuthenticationService;
 
@@ -12,13 +13,13 @@ public class Main {
     public static void main(String[] args) {
         try {
             authenticationService.register("test1@gmail.com", "1234");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println(e.getMessage());
         }
 
         try {
             authenticationService.register("test2@gmail.com", "1234");
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException e) {
             System.out.println(e.getMessage());
         }
 
