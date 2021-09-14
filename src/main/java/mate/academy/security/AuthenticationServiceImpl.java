@@ -16,9 +16,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email.isEmpty() || password.isEmpty()) {
-            throw new RegistrationException("Can't register a new user due to uncompleted data!");
-        }
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isPresent()) {
             throw new RegistrationException("Can't register a new user.");
