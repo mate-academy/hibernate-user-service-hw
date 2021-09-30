@@ -21,7 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .equals(HashUtil.hashPassword(password, userFromDB.get().getSalt()))) {
             return userFromDB.get();
         }
-        throw new AuthenticationException("Login or password was not correct");
+        throw new AuthenticationException("Login or password was not correct for email " + email);
     }
 
     @Override
