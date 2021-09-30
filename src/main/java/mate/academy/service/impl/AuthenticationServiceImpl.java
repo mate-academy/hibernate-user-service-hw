@@ -1,6 +1,7 @@
 package mate.academy.service.impl;
 
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -18,12 +19,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isPresent()) {
-            String hashedInputPassword = HashUtil.hashPassword(password,
-                    userFromDb.get().getSalt());
-            if (userFromDb.get().getPassword().equals(hashedInputPassword)) {
-                userFromDb.get();
-            }
+        BiPredicate<User, String> validatePass = (user, pass) -> user.getPassword().equals(
+                HashUtil.hashPassword(pass, user.getSalt()));
+        if (userFromDb.isPresent() && validatePass.test(userFromDb.get(), password)) {
+            return userFromDb.get();
         }
         throw new AuthenticationException("User or password is incorrect");
     }
