@@ -67,13 +67,13 @@ public class Main {
             authenticationService.register("qwerty", "martin2010@gmail.com");
             System.out.println("User is registered!");
         } catch (RegistrationException e) {
-            throw new RuntimeException("Can't register user", e);
+            throw new RuntimeException(e.getMessage(), e);
         }
         try {
             authenticationService.login("qwerty", "martin2010@gmail.com");
             System.out.println("You're logged in!");
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Email or password is incorrect", e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 }
