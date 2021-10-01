@@ -19,12 +19,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
-        BiPredicate<User, String> validatePass = (user, pass) -> user.getPassword().equals(
+        BiPredicate<User, String> passValidator = (user, pass) -> user.getPassword().equals(
                 HashUtil.hashPassword(pass, user.getSalt()));
-        if (userFromDb.isPresent() && validatePass.test(userFromDb.get(), password)) {
+        if (userFromDb.isPresent() && passValidator.test(userFromDb.get(), password)) {
             return userFromDb.get();
         }
-        throw new AuthenticationException("User or password is incorrect");
+        throw new AuthenticationException("Can’t login user with email " + email);
     }
 
     @Override
