@@ -31,7 +31,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userFromDbOptional = userService.findByLogin(login);
         if (userFromDbOptional.isEmpty() || !(userFromDbOptional.get().getPassword()
                 .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt())))) {
-            throw new AuthenticationException("Invalid password");
+            throw new AuthenticationException("Invalid login or password");
         }
         return userFromDbOptional.get();
     }
