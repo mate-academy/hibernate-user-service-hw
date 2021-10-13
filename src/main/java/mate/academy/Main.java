@@ -26,22 +26,22 @@ public class Main {
             System.out.println("Caught exception: " + e.getMessage());
         }
 
-        User user1 = null;
+        User firstUser = null;
         try {
-            user1 = authenticationService.login("DanaDiadius@gmail.com", "2417451");
+            firstUser = authenticationService.login("DanaDiadius@gmail.com", "2417451");
         } catch (AuthenticationException e) {
             System.out.println("Caught exception: " + e.getMessage());
         }
 
-        User user2 = null;
+        User secondUser = null;
         try {
-            user2 = authenticationService.login("DanaDiadius@gmail.com", "4570810");
+            secondUser = authenticationService.login("DanaDiadius@gmail.com", "4570810");
         } catch (AuthenticationException e) {
             System.out.println("Caught exception: " + e.getMessage());
         }
 
-        System.out.println("user1 = " + user1);
-        System.out.println("user2 = " + user2);
+        System.out.println("firstUser = " + firstUser);
+        System.out.println("secondUser = " + secondUser);
 
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
