@@ -11,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
-    @Id()
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
@@ -56,7 +56,6 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", login='" + email + '\''
-                + ", password='" + password + '\''
                 + ", salt=" + Arrays.toString(salt)
                 + '}';
     }
