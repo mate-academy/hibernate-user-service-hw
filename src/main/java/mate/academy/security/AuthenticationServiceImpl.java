@@ -22,11 +22,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> optionalUserByEmail = userService.findByEmail(email);
-        User userDB = optionalUserByEmail.orElseThrow(() ->
-                new AuthenticationException("A user with an email: " + email + " doesn't exist."));
-        String currentPassword = HashUtil.hashPassword(password, userDB.getSalt());
-        if (!optionalUserByEmail.isEmpty() && currentPassword.equals(userDB.getPassword())) {
-            return userDB;
+        if (!optionalUserByEmail.isEmpty()) {
+            User userDB = optionalUserByEmail.get();
+            String currentPassword = HashUtil.hashPassword(password, userDB.getSalt());
+            if (currentPassword.equals(userDB.getPassword())) {
+                return userDB;
+            }
         }
         throw new AuthenticationException("A user with an email: " + email + " doesn't exist.");
     }
