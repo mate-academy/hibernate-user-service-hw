@@ -25,13 +25,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!optionalUserByEmail.isEmpty()) {
             User userDB = optionalUserByEmail.get();
             String currentPassword = HashUtil.hashPassword(password, userDB.getSalt());
-            if (!currentPassword.equals(userDB.getPassword())) {
-                throw new AuthenticationException("Combination of password and email: " + email
-                        + "doesn`t match");
+            if (currentPassword.equals(userDB.getPassword())) {
+                return userDB;
             }
-            return userDB;
         }
-        throw new AuthenticationException("A user with an email: " + email + " doesn't exist.");
+        throw new AuthenticationException("A combination of user and password with an email: "
+                + email + " doesn't exists.");
     }
 
     @Override
