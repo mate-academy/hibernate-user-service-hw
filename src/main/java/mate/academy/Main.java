@@ -67,14 +67,14 @@ public class Main {
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
         String email = "1@1.1";
         String password = "123456";
+        User user;
         try {
-            authenticationService.register(email, password);
+            user = authenticationService.register(email, password);
         } catch (RegistrationException e) {
             throw new RuntimeException("Can't create user with email: " + email, e);
         }
-        User user;
         try {
-            user = authenticationService.login(email, password);
+            authenticationService.login(user.getEmail(), password);
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't login user with email: " + email, e);
         }

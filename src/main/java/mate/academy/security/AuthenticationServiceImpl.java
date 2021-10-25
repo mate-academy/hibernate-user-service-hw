@@ -21,7 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 && isPasswordCorrect(userFromDbOptional.get(), password)) {
             return userFromDbOptional.get();
         }
-        throw new AuthenticationException("email or password are incorrect!");
+        throw new AuthenticationException("Email or password are incorrect!");
     }
 
     @Override
@@ -30,7 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return userService.add(new User(email, password));
         } catch (Exception e) {
             throw new RegistrationException("Can't create a new user, "
-                    + "maybe the email - registered yet!" + email, e);
+                    + "maybe the email - registered yet! " + email, e);
         }
     }
 
