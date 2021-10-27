@@ -41,6 +41,8 @@ public class UserDaoImpl implements UserDao {
             Query<User> userQuery = session.createQuery(findByEmailQuery, User.class);
             userQuery.setParameter("email", email);
             return userQuery.uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get user with email " + email, e);
         }
     }
 }
