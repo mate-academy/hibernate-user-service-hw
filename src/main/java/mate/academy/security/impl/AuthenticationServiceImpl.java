@@ -18,14 +18,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        String hashedPassword = HashUtil.hashPassword(password,
-                userFromDbOptional.get().getSalt());
-        if (userFromDbOptional.isPresent()
-                && userFromDbOptional.get().getPassword().equals(hashedPassword)) {
-            return userFromDbOptional.get();
+        if (userFromDbOptional.isPresent()) {
+            User user = userFromDbOptional.get();
+            String hashedPassword = HashUtil.hashPassword(password,
+                    user.getSalt());
+            if (user.getPassword().equals(hashedPassword)) {
+                return user;
+            }
         }
         throw new AuthenticationException("Cant authenticate the user by email: "
-                + email);
+                + email + " User or password are incorrect. ");
     }
 
     @Override
