@@ -27,7 +27,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
         }
         throw new AuthenticationException("Cant authenticate the user by email: "
-                + email + " User or password are incorrect. ");
+                + email);
     }
 
     @Override
