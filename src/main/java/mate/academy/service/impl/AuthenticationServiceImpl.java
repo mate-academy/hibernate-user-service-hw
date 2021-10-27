@@ -22,7 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .equals(user.get().getPassword())) {
             return user.get();
         }
-        throw new AuthenticationException("Login or password was incorrect");
+        throw new AuthenticationException("Login or password was incorrect for email: " + email);
     }
 
     @Override
