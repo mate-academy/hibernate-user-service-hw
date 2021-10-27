@@ -33,7 +33,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("User with email " + email + " already exists");
         }
         User newUser = new User(email, password);
-        newUser.setSalt(HashUtil.getSalt());
         return userService.add(newUser);
     }
 }
