@@ -24,7 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return userOptional.get();
         }
         throw new AuthenticationException("Email: " + email
-                + " aren't correct!");
+                + "or password aren't correct!");
     }
 
     @Override
