@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao {
             getUserByIdQuery.setParameter("email", email);
             return getUserByIdQuery.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get a user", e);
+            throw new DataProcessingException("Can't get a user by email " + email, e);
         }
     }
 }

@@ -17,7 +17,7 @@ public class HashUtil {
                 stringBuilder.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Could not crate hash.");
+            throw new IllegalStateException("Could not crate hash with algorithm" + CRYPTO_ALGORITHM);
         }
         return stringBuilder.toString();
     }

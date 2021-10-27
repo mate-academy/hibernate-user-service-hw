@@ -30,7 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Email is incorrect!");
+            throw new RegistrationException("User with such email already exists!");
         }
         return userService.add(new User(email, password));
     }
