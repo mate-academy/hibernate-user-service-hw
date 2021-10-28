@@ -25,7 +25,7 @@ public class Main {
                     + authenticationService.login("alis@gmail.com", "alis1234")
                     + " passed login");
             System.out.println("User "
-                    + authenticationService.login("alis@gmail.com", "1111111")
+                    + authenticationService.login("gosha@gmail.com", "")
                     + " passed login");
         } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
