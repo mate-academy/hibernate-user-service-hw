@@ -66,7 +66,7 @@ public class Main {
         User registeredUser = null;
         try {
             registeredUser = authenticationService.register("kriss@email.com",
-                    "verySecurePassword");
+                    "password");
         } catch (RegistrationException e) {
             System.out.println(e.getMessage());
         }
@@ -75,7 +75,7 @@ public class Main {
         try {
             if (registeredUser != null) {
                 logedInUser = authenticationService.login(
-                        registeredUser.getEmail(), "verySecurePassword");
+                        registeredUser.getEmail(), "password");
             }
         } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
