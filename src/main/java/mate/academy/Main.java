@@ -62,9 +62,7 @@ public class Main {
                 injector.getInstance(AuthenticationService.class);
         authenticationService.register("josh@test.mail", "12345");
         authenticationService.register("bob@test.mail", "54321");
-        authenticationService.register("bob@test.mail", "54321");
-        System.out.println(authenticationService.login("josh@test.mail", "12345"));
-        authenticationService.login("bob@test.mail", "54321");
+        System.out.println(authenticationService.login("josh@test.mail", ""));
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(

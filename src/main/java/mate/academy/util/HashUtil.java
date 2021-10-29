@@ -27,7 +27,8 @@ public class HashUtil {
             }
             return builder.toString();
         } catch (Exception e) {
-            throw new RuntimeException("Can't create hash function using a SHA-512 algorithm");
+            throw new RuntimeException("Can't create hash function using a "
+                    + CRYPTO_ALGORITHM + " algorithm");
         }
     }
 }
