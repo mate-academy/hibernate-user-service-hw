@@ -17,22 +17,22 @@ Your task is to implement the following steps:
         public interface UserService {
             User add(User user);
 
-            Optional<User> findByEmail(String email); // we will use this `Optional` later
+            Optional<User> findByEmail(String login); // we will use this `Optional` later
         }
         ````
     
     - AuthenticationService
         ````java
         public interface AuthenticationService {
-            User login(String email, String password) throws AuthenticationException;
+            User login(String login, String password) throws AuthenticationException;
 
             /**
-            * We should register a new user. New user entity will contains the email and password
-            * @param email - user email. should be unique for each user
+            * We should register a new user. New user entity will contains the login and password
+            * @param login - user login. should be unique for each user
             * @param password - user password
             * @return new user instance
             */
-            User register(String email, String password) throws RegistrationException;
+            User register(String login, String password) throws RegistrationException;
         }
         ````
     - Create your own checked `RegistrationException` and `AuthenticationException` to use it in `register()` and `login()` methods respectively
