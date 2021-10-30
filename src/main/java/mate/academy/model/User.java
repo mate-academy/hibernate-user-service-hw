@@ -19,7 +19,6 @@ public class User {
     private byte[] salt;
 
     public User() {
-
     }
 
     public User(String login, String password) {
