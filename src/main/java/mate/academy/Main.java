@@ -67,6 +67,8 @@ public class Main {
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't authenticate user");
         }
+        userService.add(new User("testik@ukr.net","qwerty"));
+        userService.add(new User("testik@ukr.net","qwerty"));
         try {
             authenticationService.register("test1@ukr.net", "qwerty1");
             authenticationService.register("test1@ukr.net", "qwerty1");
