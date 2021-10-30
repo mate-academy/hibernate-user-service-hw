@@ -69,6 +69,7 @@ public class Main {
         }
         try {
             authenticationService.register("test1@ukr.net", "qwerty1");
+            authenticationService.register("test1@ukr.net", "qwerty1");
         } catch (RegistrationException e) {
             throw new RuntimeException("Can't registered user.");
         }
