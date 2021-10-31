@@ -16,8 +16,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        userService.findByEmail(email);
-        return null;
+       return userService.findByEmail(email).orElseThrow(() ->
+                new AuthenticationException("There are no User with email: " + email + " in DB"));
     }
 
     @Override
