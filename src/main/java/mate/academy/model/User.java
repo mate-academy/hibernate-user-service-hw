@@ -14,15 +14,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
-    private String email;
+    private String login;
     private String password;
     private byte[] salt;
 
     public User() {
     }
 
-    public User(String email, String password) {
-        this.email = email;
+    public User(String login, String password) {
+        this.login = login;
         this.password = password;
     }
 
@@ -34,12 +34,12 @@ public class User {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {
@@ -62,7 +62,7 @@ public class User {
     public String toString() {
         return "User{"
                 + "id=" + id
-                + ", email='" + email + '\''
+                + ", login='" + login + '\''
                 + '}';
     }
 }

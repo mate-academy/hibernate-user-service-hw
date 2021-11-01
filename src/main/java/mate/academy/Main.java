@@ -65,8 +65,8 @@ public class Main {
         User alice = new User("alice", "87654321");
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        authenticationService.register(bob.getEmail(), bob.getPassword());
-        authenticationService.register(alice.getEmail(), alice.getPassword());
+        authenticationService.register(bob.getLogin(), bob.getPassword());
+        authenticationService.register(alice.getLogin(), alice.getPassword());
 
         UserService userService = (UserService) injector.getInstance(UserService.class);
         System.out.println(userService.findByLogin("bob"));
