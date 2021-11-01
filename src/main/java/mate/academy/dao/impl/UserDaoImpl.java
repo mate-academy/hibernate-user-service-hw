@@ -2,16 +2,52 @@ package mate.academy.dao.impl;
 
 import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.exception.DataProcessingException;
+import mate.academy.lib.Dao;
 import mate.academy.model.User;
+import mate.academy.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
+@Dao
 public class UserDaoImpl implements UserDao {
+    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     @Override
     public User add(User user) {
-        return null;
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.save(user);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new DataProcessingException("Can't add new user into DB!", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return user;
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.empty();
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> findByEmailQuery = session
+                    .createQuery("FROM User "
+                            + "WHERE login = :login", User.class);
+            findByEmailQuery.setParameter("login", email);
+            return findByEmailQuery.uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't find user by email: "
+                    + email, e);
+        }
     }
 }
