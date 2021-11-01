@@ -10,6 +10,8 @@ import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+
+
     public static void main(String[] args) {
         MovieService movieService = null;
 
