@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         user.setSalt(HashUtil.getSalt());
         user.setPassword(HashUtil.hashPassword(user.getPassword(), user.getSalt()));
-        return userDao.save(user);
+        return userDao.add(user);
     }
 
     @Override
