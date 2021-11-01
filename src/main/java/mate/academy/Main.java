@@ -69,7 +69,7 @@ public class Main {
         authenticationService.register(alice.getEmail(), alice.getPassword());
 
         UserService userService = (UserService) injector.getInstance(UserService.class);
-        System.out.println(userService.findByEmail("bob"));
-        System.out.println(userService.findByEmail("alice"));
+        System.out.println(userService.findByLogin("bob"));
+        System.out.println(userService.findByLogin("alice"));
     }
 }
