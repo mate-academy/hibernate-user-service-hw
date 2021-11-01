@@ -17,7 +17,7 @@ public class UserDaoImpl implements UserDao {
     private static final SessionFactory factory = HibernateUtil.getSessionFactory();
 
     @Override
-    public User add(User user) {
+    public User add(User user) throws RegistrationException {
         Session session = null;
         Transaction transaction = null;
         try {

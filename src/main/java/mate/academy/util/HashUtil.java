@@ -3,7 +3,6 @@ package mate.academy.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import mate.academy.exception.RegistrationException;
 
 public class HashUtil {
     private static final String HASHING_ALGORITHM = "SHA-512";
@@ -26,7 +25,7 @@ public class HashUtil {
             }
             return stringBuilder.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new RegistrationException("Can't registration, problem with Hashing. ", e);
+            throw new RuntimeException("Can't registration, problem with Hashing. ", e);
         }
     }
 }

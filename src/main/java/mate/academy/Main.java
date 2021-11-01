@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -15,7 +17,7 @@ import mate.academy.service.MovieSessionService;
 public class Main {
     private static final Injector injector = Injector.getInstance("mate");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AuthenticationException, RegistrationException {
         MovieService movieService = (MovieService) injector
                 .getInstance(MovieService.class);
         Movie fastAndFurious = new Movie("Fast and Furious");
