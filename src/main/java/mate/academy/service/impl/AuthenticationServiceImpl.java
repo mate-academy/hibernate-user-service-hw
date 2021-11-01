@@ -27,11 +27,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email.isEmpty()) {
-            throw new RegistrationException("Please fill in the 'email' field.");
-        } else if (password.isEmpty()) {
-            throw new RegistrationException("Please fill in the 'password' field.");
-        } else if (userService.findByEmail(email).isPresent()) {
+        if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("A user with this email is already registered. "
                     + "Please choose another email: " + email);
         }
