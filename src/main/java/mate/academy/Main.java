@@ -65,8 +65,8 @@ public class Main {
         User alice = new User("alice1234", "qwerty");
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        authenticationService.register(alice.getLogin(), alice.getPassword());
-        User userAfterLogin = authenticationService.login(alice.getLogin(), alice.getPassword());
+        authenticationService.register(alice.getEmail(), alice.getPassword());
+        User userAfterLogin = authenticationService.login(alice.getEmail(), alice.getPassword());
         System.out.println(userAfterLogin);
     }
 }
