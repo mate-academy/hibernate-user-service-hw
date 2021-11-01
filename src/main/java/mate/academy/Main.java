@@ -65,11 +65,11 @@ public class Main {
         User alice = new User("alice", "87654321");
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        authenticationService.register(bob.getLogin(), bob.getPassword());
-        authenticationService.register(alice.getLogin(), alice.getPassword());
+        authenticationService.register(bob.getEmail(), bob.getPassword());
+        authenticationService.register(alice.getEmail(), alice.getPassword());
 
         UserService userService = (UserService) injector.getInstance(UserService.class);
-        System.out.println(userService.findByLogin("bob"));
-        System.out.println(userService.findByLogin("alice"));
+        System.out.println(userService.findByEmail("bob@gmail.com"));
+        System.out.println(userService.findByEmail("alice@gmail.com"));
     }
 }

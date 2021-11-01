@@ -6,6 +6,6 @@ import mate.academy.model.User;
 public interface UserService {
     User add(User user);
 
-    Optional<User> findByLogin(String email);
+    Optional<User> findByEmail(String email);
 }
 
