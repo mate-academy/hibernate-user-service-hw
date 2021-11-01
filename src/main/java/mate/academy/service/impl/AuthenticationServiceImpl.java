@@ -25,15 +25,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String login, String password) {
-        Optional<User> userFromDbOptional = userService.findByLogin(login);
-        if (userFromDbOptional.isEmpty()) {
+        Optional<User> user = userService.findByLogin(login);
+        if (user.isEmpty() || !user.get().getPassword()
+                .equals(HashUtil.hashPassword(password, user.get().getSalt()))) {
             throw new AuthenticationException("Can`t authenticate user with login: " + login);
         }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("Can`t authenticate user with login: " + login);
+        return user.get();
     }
 }
