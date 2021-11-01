@@ -7,18 +7,17 @@ import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.UserService;
-import mate.academy.service.impl.UserServiceImpl;
 import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
-    private UserService userService = new UserServiceImpl();
+    private UserService userService;
 
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("This email: " + email + " is incorrect");
+            throw new RegistrationException("This email: " + email + " already exists");
         }
         User user = new User();
         user.setEmail(email);
