@@ -22,7 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userFromDb = userService.findByEmail(email);
         if (userFromDb.isPresent() && userFromDb.get().getPassword()
                 .equals(HashUtil.hashPassword(password, userFromDb.get().getSalt()))) {
-            System.out.println("Login successful");
+            System.out.println("Login successful.");
             return userFromDb.get();
         }
         throw new AuthenticationException("Incorrect login or password.");
@@ -48,7 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userToRegister.setLogin(email);
         userToRegister.setPassword(password);
         userService.add(userToRegister);
-        System.out.println("Registration successful");
+        System.out.println("Registration successful.");
         return userToRegister;
     }
 }
