@@ -16,11 +16,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
+        if (userService.findByEmail(email).isEmpty()) {
+            throw new AuthenticationException("User does not exist");
+        }
+
         User user = userService.findByEmail(email).get();
+
         if (user.getPassword().equals(HashUtil.hashPassword(password,user.getSalt()))) {
             return user;
         } else {
-            throw new AuthenticationException("Incorrect data for login");
+            throw new AuthenticationException("Incorrect data for login to DB");
         }
     }
 
