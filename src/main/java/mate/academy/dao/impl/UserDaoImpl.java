@@ -8,6 +8,7 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
@@ -37,8 +38,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return Optional.ofNullable(session.get(User.class, email));
-        }catch (Exception e) {
+            Query<User> userQuery = session.createQuery("from User u "
+                    + "where u.email = : value", User.class);
+            userQuery.setParameter("value", email);
+            return Optional.ofNullable(userQuery.uniqueResult());
+        } catch (Exception e) {
             throw new DataProcessingException("Can't find a user by email "
                     + email + " in a DB!", e);
         }
@@ -46,8 +50,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findByLogin(String login) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()){
-            return Optional.ofNullable(session.get(User.class, login));
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<User> sessionQueryLogin = session.createQuery("from User u "
+                    + "where u.login = :value", User.class);
+            sessionQueryLogin.setParameter("value", login);
+            return Optional.ofNullable(sessionQueryLogin.uniqueResult());
         } catch (Exception e) {
             throw new DataProcessingException("Can't find a user by login "
                     + login + " in a DB!", e);

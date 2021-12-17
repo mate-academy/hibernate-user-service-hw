@@ -2,7 +2,6 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -11,7 +10,6 @@ import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
-import mate.academy.security.AuthenticationServiceImpl;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -22,9 +20,6 @@ public class Main {
         Injector injector = Injector.getInstance("mate.academy");
 
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
-        System.out.println(movieService.get(3L));
-        /*
-
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -62,25 +57,27 @@ public class Main {
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
- */
-
         UserService userService = (UserService) injector.getInstance(UserService.class);
         AuthenticationService authenticationService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
-/*
         User bob = new User();
         bob.setLogin("bob");
         bob.setName("bob");
         bob.setEmail("bob@gmail.com");
         bob.setPassword("1234");
+
         try {
-            authenticationService.registerUser(bob.getEmail(), bob.getPassword());
+            System.out.println(authenticationService.registerUser("bob@gmail.com", "1234"));
         } catch (RegistrationException e) {
-            System.out.println("This email has already registered! Try new one!");
+            System.out.println("This email has already registered!");
         }
-        userService.add(bob);
         try {
-            authenticationService.login(bob.getLogin(), "1234");
+            System.out.println(authenticationService.registerUser("alice@gmail.com", "1234"));
+        } catch (RegistrationException e) {
+            System.out.println("This email has already registered!");
+        }
+        try {
+            System.out.println(authenticationService.login("bob", "1234"));
         } catch (AuthenticationException e) {
             System.out.println("The login or the password are wrong!");
         }
@@ -88,7 +85,5 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
-
- */
     }
 }

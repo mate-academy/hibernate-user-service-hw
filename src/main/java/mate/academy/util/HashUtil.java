@@ -1,15 +1,13 @@
 package mate.academy.util;
 
-import org.hibernate.service.internal.SessionFactoryServiceRegistryFactoryInitiator;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class hashUtil {
+public class HashUtil {
     public static final String CRYPTO_ALGORITHM = "SHA-512";
 
-    public hashUtil() {
+    public HashUtil() {
     }
 
     public static byte[] getSalt() {
@@ -19,8 +17,8 @@ public class hashUtil {
         return salt;
     }
 
-    public  static String hashPassword(String password, byte[] salt) {
-        StringBuilder hashedPassword = new  StringBuilder();
+    public static String hashPassword(String password, byte[] salt) {
+        StringBuilder hashedPassword = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);

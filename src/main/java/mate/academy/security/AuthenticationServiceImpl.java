@@ -7,21 +7,21 @@ import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.UserService;
-import mate.academy.util.hashUtil;
+import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
-    UserService userService;
+    private UserService userService;
 
     @Override
     public User registerUser(String email, String password) throws RegistrationException {
         Optional<User> user = userService.findByEmail(email);
-        if (user.isEmpty()){
+        if (user.isEmpty()) {
             User newUser = new User();
             newUser.setEmail(email);
-            newUser.setSalt(hashUtil.getSalt());
-            newUser.setPassword(hashUtil.hashPassword(password, newUser.getSalt()));
+            newUser.setSalt(HashUtil.getSalt());
+            newUser.setPassword(HashUtil.hashPassword(password, newUser.getSalt()));
             return newUser;
         }
         throw new RegistrationException("This email "
@@ -33,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> optionalUser = userService.findByLogin(login);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            if (user.getPassword().equals(hashUtil.hashPassword(password, user.getSalt()))) {
+            if (user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()))) {
                 return user;
             }
         }
