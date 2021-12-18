@@ -22,6 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             newUser.setEmail(email);
             newUser.setSalt(HashUtil.getSalt());
             newUser.setPassword(HashUtil.hashPassword(password, newUser.getSalt()));
+            userService.add(newUser);
             return newUser;
         }
         throw new RegistrationException("This email "
