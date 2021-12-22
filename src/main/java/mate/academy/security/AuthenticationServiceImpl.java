@@ -20,8 +20,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (user.isEmpty()) {
             User newUser = new User();
             newUser.setEmail(email);
-            newUser.setSalt(HashUtil.getSalt());
-            newUser.setPassword(HashUtil.hashPassword(password, newUser.getSalt()));
+            newUser.setPassword(password);
             userService.add(newUser);
             return newUser;
         }

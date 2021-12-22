@@ -75,8 +75,6 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", name='" + name + '\''
-                + ", login='" + login + '\''
-                + ", password='" + password + '\''
                 + ", email='" + email + '\''
                 + ", salt='" + Arrays.toString(salt) + '\''
                 + '}';
