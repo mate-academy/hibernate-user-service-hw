@@ -18,9 +18,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isPresent()
-                && userOptional.get().getPassword()
-                .equals(HashUtil.hashPassword(password, userOptional.get().getSalt()))) {
+        if (userOptional.isPresent() && passwordIsValid(userOptional.get(), password)) {
             return userOptional.get();
         }
         throw new AuthenticationException("Can't authenticate user with e-mail " + email);
@@ -33,5 +31,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return userService.add(new User(email, password));
         }
         throw new RegistrationException("Can't register user with e-mail " + email);
+    }
+
+    private boolean passwordIsValid(User user, String password) {
+        return user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()));
     }
 }
