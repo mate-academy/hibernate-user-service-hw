@@ -16,8 +16,7 @@ import mate.academy.service.MovieSessionService;
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args)
-            throws RegistrationException, AuthenticationException {
+    public static void main(String[] args) {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -63,7 +62,11 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        authenticationService.register("valera@gmail.com", "123123");
-        System.out.println(authenticationService.login("valera@gmail.com", "123123"));
+        try {
+            authenticationService.register("valera@gmail.com", "123123");
+            authenticationService.login("valera@gmail.com", "123123");
+        } catch (RegistrationException | AuthenticationException e) {
+            System.out.println(e);
+        }
     }
 }
