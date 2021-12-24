@@ -26,8 +26,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (userService.findByEmail(email).isEmpty()
-                && email.matches("^(\\w+\\.?)+\\w+@([\\w]+\\.?)+\\w+$")
+        if (email.matches("^(\\w+\\.?)+\\w+@([\\w]+\\.?)+\\w+$")
+                && userService.findByEmail(email).isEmpty()
                 && password.matches("^\\w{7,30}$")) {
             return userService.add(new User(email, password));
         }
