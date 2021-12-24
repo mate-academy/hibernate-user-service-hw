@@ -22,7 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isPresent() && passwordCheck(userOptional.get(), password)) {
+        if (userOptional.isPresent() && checkPassword(userOptional.get(), password)) {
             return userOptional.get();
         }
         throw new AuthenticationException("Can't authenticate user with e-mail " + email);
@@ -38,7 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         throw new RegistrationException("Can't register user with e-mail " + email);
     }
 
-    private boolean passwordCheck(User user, String password) {
+    private boolean checkPassword(User user, String password) {
         return user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()));
     }
 }
