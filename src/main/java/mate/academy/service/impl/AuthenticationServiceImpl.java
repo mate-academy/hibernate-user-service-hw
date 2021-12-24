@@ -29,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Can't register user with email: " + email
-                    + "User with such email is already existed.");
+                    + ". User with such email is already existed.");
         }
         User user = new User(email, password);
         return userService.add(user);
