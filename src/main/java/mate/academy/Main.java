@@ -71,7 +71,7 @@ public class Main {
             User user = authenticationService.register("www.kosta.kon@gmail.com", "qwerty");
             System.out.println(userService.findUserByEmail(user.getEmail()));
         } catch (RegistrationException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
         try {
             User user = authenticationService.login("www.kosta.kon@gmail.com", "qwerty");
