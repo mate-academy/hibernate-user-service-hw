@@ -18,18 +18,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isEmpty()
-                || !password.equals(hashPassword(password, userOptional.get().getSalt()))) {
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isEmpty()
+                || !password.equals(hashPassword(password, user.get().getSalt()))) {
             throw new AuthenticationException("Can't login user with email " + email);
         }
-        return userOptional.get();
+        return user.get();
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isPresent() || password.isEmpty()) {
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isPresent() || password.isEmpty()) {
             throw new RegistrationException("Can't register user with email " + email);
         }
         return userService.add(new User(email, password));
