@@ -65,9 +65,14 @@ public class Main {
         try {
             authenticationService.register("bobMail", "password");
             authenticationService.register("aliceMail", "password");
-            System.out.println(authenticationService.login("bobMail", "password"));
             authenticationService.register("bobMail", "password");
-        } catch (RegistrationException | AuthenticationException exception) {
+        } catch (RegistrationException exception) {
+            System.out.println(exception.getMessage());
+        }
+        try {
+            System.out.println(authenticationService.login("bobMail", "password"));
+            System.out.println(authenticationService.login("wrongMail", "wrongPassword"));
+        } catch (AuthenticationException exception) {
             System.out.println(exception.getMessage());
         }
     }
