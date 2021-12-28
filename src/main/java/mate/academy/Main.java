@@ -74,6 +74,5 @@ public class Main {
         } catch (AuthenticationException e) {
             throw new RuntimeException(e.getMessage());
         }
-
     }
 }
