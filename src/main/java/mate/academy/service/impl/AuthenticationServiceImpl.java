@@ -17,18 +17,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userOptional = userService.findUserByEmail(email);
-        if (userOptional.isEmpty() || !userOptional.get().getPassword()
-                        .equals(HashUtil.hashPassword(password, userOptional.get().getSalt()))) {
+        Optional<User> user = userService.findUserByEmail(email);
+        if (user.isEmpty() || !user.get().getPassword()
+                        .equals(HashUtil.hashPassword(password, user.get().getSalt()))) {
             throw new AuthenticationException("Can't authenticate user with email: " + email);
         }
-        return userOptional.get();
+        return user.get();
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userOptional = userService.findUserByEmail(email);
-        if (userOptional.isPresent()) {
+        if (userService.findUserByEmail(email).isPresent()) {
             throw new RegistrationException("User with this email already exist.");
         }
         User user = new User();
