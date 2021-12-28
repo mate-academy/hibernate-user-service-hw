@@ -17,11 +17,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userByEmailOptional = userService.findByEmail(email);
-        if (userByEmailOptional.isPresent()
-                && userByEmailOptional.get().getPassword()
-                .equals(HashUtil.hashPassword(password, userByEmailOptional.get().getSalt()))) {
-            return userByEmailOptional.get();
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isPresent()
+                && user.get().getPassword()
+                .equals(HashUtil.hashPassword(password, user.get().getSalt()))) {
+            return user.get();
         }
         throw new AuthenticationException("Can't authenticate user");
     }
@@ -29,10 +29,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (!password.isEmpty() && userService.findByEmail(email).isEmpty()) {
-            User userToRegister = new User();
-            userToRegister.setEmail(email);
-            userToRegister.setPassword(password);
-            return userService.add(userToRegister);
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
+            return userService.add(user);
         }
         throw new RegistrationException("Can't register user by e-mail " + email);
     }
