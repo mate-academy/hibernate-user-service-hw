@@ -68,6 +68,5 @@ public class Main {
         } catch (RegistrationException | AuthenticationException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
