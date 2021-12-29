@@ -67,10 +67,14 @@ public class Main {
             User jeka = authenticationService.register("Jeka", "12345");
             User dania = authenticationService.register("Dania", "54321");
             User iliuha = authenticationService.register("Iliuha", "13524");
+        } catch (RegistrationException e) {
+            System.out.println(e);
+        }
+        try {
             User jekaFromDB = authenticationService.login("Jeka", "12345");
             System.out.println(jekaFromDB);
             User iliuhaFromDB = authenticationService.login("Iliuha", "1354");
-        } catch (RegistrationException | AuthenticationException e) {
+        } catch (AuthenticationException e) {
             System.out.println(e);
         }
     }
