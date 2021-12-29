@@ -20,7 +20,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        User user = userFromDbOptional.get();
+        User user = userFromDbOptional.orElseThrow(() ->
+                new AuthenticationException("Can't find user"));
         String hashPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashPassword)) {
             return user;
@@ -30,8 +31,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isPresent()) {
+        Optional<User> userOptional = userService.findByEmail(email);
+        if (userOptional.isPresent()) {
             throw new RegistrationException("This email is already in use " + email);
         }
         if (email.length() < MIN_SIZE_EMAIL || password.length() < MIN_SIZE_PASSWORD) {
