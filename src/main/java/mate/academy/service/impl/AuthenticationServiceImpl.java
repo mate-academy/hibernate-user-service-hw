@@ -17,12 +17,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDBoptional = userService.findByEmail(email);
-        if (userFromDBoptional.isPresent()) {
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isPresent()) {
             String hashedPassword =
-                    HashUtil.hashPassword(password, userFromDBoptional.get().getSalt());
-            if (userFromDBoptional.get().getPassword().equals(hashedPassword)) {
-                return userFromDBoptional.get();
+                    HashUtil.hashPassword(password, user.get().getSalt());
+            if (user.get().getPassword().equals(hashedPassword)) {
+                return user.get();
             }
         }
         throw new AuthenticationException("Can't authenticate user with such email: " + email);
@@ -30,14 +30,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userFromDBoptional = userService.findByEmail(email);
-        if (!userFromDBoptional.isEmpty()) {
-            throw new RegistrationException("User with this email: " + email + " is already exist");
+        Optional<User> user = userService.findByEmail(email);
+        if (!user.isEmpty() || password.isEmpty()) {
+            throw new RegistrationException("Can't register user with email: " + email);
         }
-        if (password.isEmpty()) {
-            throw new RegistrationException("Can't register user with empty password");
-        }
-        User user = new User(email, password);
-        return userService.add(user);
+        return userService.add(new User(email, password));
     }
 }

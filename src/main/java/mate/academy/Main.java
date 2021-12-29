@@ -64,8 +64,12 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             authenticationService.register("katedeshch@gmail.com", "29081996");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
+        try {
             System.out.println(authenticationService.login("katedeshch@gmail.com", "29081996"));
-        } catch (RegistrationException | AuthenticationException e) {
+        } catch (AuthenticationException e) {
             throw new RuntimeException(e);
         }
     }
