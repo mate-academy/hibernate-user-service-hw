@@ -21,7 +21,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!user.isPresent() || !user.get().getPassword()
                 .equals(HashUtil.hashPassword(password, user.get().getSalt()))) {
             throw new AuthenticationException("The email address or password is incorrect.");
-
         }
         return user.get();
     }
