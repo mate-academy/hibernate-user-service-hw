@@ -25,7 +25,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return userFromDBoptional.get();
             }
         }
-        throw new AuthenticationException("Can't authenticate user with such email or password");
+        throw new AuthenticationException("Can't authenticate user with such email: " + email);
     }
 
     @Override
