@@ -25,7 +25,7 @@ public class Main {
     private static final AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+    public static void main(String[] args) {
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -67,7 +67,15 @@ public class Main {
         User newUser = new User();
         newUser.setEmail("SomeText222@gmail.com");
         newUser.setPassword("1234567");
-        authenticationService.register(newUser.getEmail(), newUser.getPassword());
-        authenticationService.login(newUser.getEmail(), newUser.getPassword());
+        try {
+            authenticationService.register(newUser.getEmail(), newUser.getPassword());
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        try {
+            authenticationService.login(newUser.getEmail(), newUser.getPassword());
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }
