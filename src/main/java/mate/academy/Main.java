@@ -61,7 +61,7 @@ public class Main {
             authenticationService.register("mateacademy@gmail.com", "qwertyu");
             authenticationService.login("mateacademy@gmail.com", "qwertyu");
         } catch (RegistrationException | AuthenticationException e) {
-            throw new RuntimeException("Can't register or login user");
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
