@@ -26,10 +26,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userByEmailFromDB = userService.findByEmail(email);
-        if (userByEmailFromDB.isPresent()) {
+        Optional<User> userByEmailFromDb = userService.findByEmail(email);
+        if (userByEmailFromDb.isPresent()) {
             throw new RegistrationException("Can't register user in DB. User with email: "
-                    + email + " is already exist");
+                    + email + " already exists");
         }
         return userService.add(new User(email, password));
     }
