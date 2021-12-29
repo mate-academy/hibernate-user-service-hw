@@ -71,7 +71,7 @@ public class Main {
             System.out.println(jekaFromDB);
             User iliuhaFromDB = authenticationService.login("Iliuha", "1354");
         } catch (RegistrationException | AuthenticationException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
 }
