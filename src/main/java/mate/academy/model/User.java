@@ -16,7 +16,6 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
-
     private byte[] salt;
 
     public Long getId() {
@@ -27,11 +26,11 @@ public class User {
         this.id = id;
     }
 
-    public String getEMail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEMail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -55,7 +54,7 @@ public class User {
     public String toString() {
         return "User{"
                 + "id=" + id
-                + ", eMail='" + email + '\''
+                + ", email='" + email + '\''
                 + '}';
     }
 }
