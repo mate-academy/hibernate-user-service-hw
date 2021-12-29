@@ -20,7 +20,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> user = userService.findByEmail(email);
         if (user.isEmpty() || !user.get().getPassword()
                 .equals(HashUtil.hashPassword(password, user.get().getSalt()))) {
-            throw new AuthenticationException("Wrong email or password");
+            throw new AuthenticationException("Can't authenticate user with email: " + email);
         }
         return user.get();
     }

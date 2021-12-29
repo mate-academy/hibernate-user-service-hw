@@ -64,17 +64,18 @@ public class Main {
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             authenticationService.register("bob@gmail.com", "123456");
+            authenticationService.register("bob@gmail.com", "123456");
             authenticationService.register("alice@gmail.com", "741258");
-            authenticationService.register("tom@gmail.com", "147852");
-            authenticationService.register("jerry@gmail.com", "20102010");
+            authenticationService.register("tom@gmail.com", "");
+            authenticationService.register("jerry@gmail.com", null);
         } catch (RegistrationException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
         try {
             System.out.println(authenticationService.login("bob@gmail.com", "123456"));
             System.out.println(authenticationService.login("bob@gmail.com", "654321"));
         } catch (AuthenticationException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 }
