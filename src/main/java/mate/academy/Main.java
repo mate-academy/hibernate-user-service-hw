@@ -17,7 +17,7 @@ import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
-    private static Injector injector = Injector.getInstance("mate.academy");
+    private static final Injector injector = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
@@ -65,7 +65,8 @@ public class Main {
                 put("user1@gmail.com", "12345");
                 put("user2@gmail.com", "3");
                 put("user3@gmail.com", "password");
-        }};
+            }
+        };
         users.forEach((log, pass) -> {
             try {
                 User user = authenticationService.register(log, pass);
