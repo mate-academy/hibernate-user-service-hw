@@ -70,9 +70,13 @@ public class Main {
         danya.setPassword("1111111");
         try {
             authenticationService.register(danya.getEmail(), danya.getPassword());
+        } catch (RegistrationException e) {
+            System.out.println(e);
+        }
+        try {
             User loggedUser = authenticationService.login(danya.getEmail(), danya.getPassword());
             System.out.println(loggedUser);
-        } catch (RegistrationException | AuthenticationException e) {
+        } catch (AuthenticationException e) {
             System.out.println(e);
         }
     }

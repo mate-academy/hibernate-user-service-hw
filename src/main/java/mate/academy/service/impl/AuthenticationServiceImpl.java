@@ -17,15 +17,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("User with such credentials has not been found,"
-                    + " please check email or password and try again");
-        }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hasPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isPresent()) {
+            String hashedPassword = HashUtil.hasPassword(password, user.get().getSalt());
+            if (user.get().getPassword().equals(hashedPassword)) {
+                return user.get();
+            }
         }
         throw new AuthenticationException("User with such credentials has not been found,"
                 + " please check email or password and try again");
