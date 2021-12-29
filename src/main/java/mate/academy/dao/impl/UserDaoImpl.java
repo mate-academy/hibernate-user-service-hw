@@ -42,6 +42,9 @@ public class UserDaoImpl implements UserDao {
                     User.class);
             query.setParameter("email", email);
             return query.uniqueResultOptional();
+        } catch (HibernateException exception) {
+            throw new DataProcessingException("Couldn't find by email"
+                    + email, exception);
         }
     }
 }
