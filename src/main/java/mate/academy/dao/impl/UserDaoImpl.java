@@ -13,7 +13,6 @@ import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-
     @Override
     public User save(User user) {
         Session session = null;
@@ -39,7 +38,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<User> query = session.createQuery("from User where eMail = :email",
+            Query<User> query = session.createQuery("from User where email = :email",
                     User.class);
             query.setParameter("email", email);
             return query.uniqueResultOptional();

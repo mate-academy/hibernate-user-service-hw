@@ -66,24 +66,22 @@ public class Main {
         try {
             User bob = authenticationService.register("bobovskiy@gmail.com", "02111970");
             User alice = authenticationService.register("alice@gmail.com", "3");
-            //User bill = authenticationService.register("bobovskiy@gmail.com", "dd");
             User mike = authenticationService.register("mike@i.ua", "23423");
             User den = authenticationService.register("dench@gmail.com", "3");
-        } catch (RegistrationException e) {
-            e.printStackTrace();
+        } catch (RegistrationException exc) {
+            throw new RuntimeException(exc);
         }
         try {
             System.out.println("bob was login "
                     + authenticationService.login("bobovskiy@gmail.com","02111970"));
-        } catch (AuthenticationException e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+        } catch (AuthenticationException exc) {
+            throw new RuntimeException(exc);
         }
         try {
             System.out.println("alice was login "
                     + authenticationService.login("alice@gmail.com","3"));
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
+        } catch (AuthenticationException exc) {
+            throw new RuntimeException(exc);
         }
     }
 }
