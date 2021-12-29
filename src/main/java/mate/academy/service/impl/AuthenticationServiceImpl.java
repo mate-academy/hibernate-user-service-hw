@@ -14,13 +14,12 @@ import mate.academy.util.HashUtil;
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
+    private int MIN_SIZE_EMAIL = 12;
+    private int MIN_SIZE_PASSWORD = 5;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can't authenticate user");
-        }
         User user = userFromDbOptional.get();
         String hashPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashPassword)) {
@@ -31,16 +30,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userServiceByEmailEmail = userService.findByEmail(email);
-        if (userServiceByEmailEmail.isPresent()) {
+        Optional<User> userFromDbOptional = userService.findByEmail(email);
+        if (userFromDbOptional.isPresent()) {
             throw new RegistrationException("This email is already in use " + email);
         }
-        if (email.length() < 12 || password.length() < 5) {
+        if (email.length() < MIN_SIZE_EMAIL || password.length() < MIN_SIZE_PASSWORD) {
             throw new RegistrationException("Invalid data");
         }
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        return user;
+        return userService.add(user);
     }
 }

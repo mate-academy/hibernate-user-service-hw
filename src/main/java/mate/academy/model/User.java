@@ -1,11 +1,7 @@
 package mate.academy.model;
 
 import java.util.Arrays;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -13,12 +9,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String email;
     private String password;
     private byte[] salt;
-
-    public User() {
-    }
 
     public Long getId() {
         return id;
@@ -57,7 +51,6 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", login='" + email + '\''
-                + ", salt=" + Arrays.toString(salt)
                 + '}';
     }
 }
