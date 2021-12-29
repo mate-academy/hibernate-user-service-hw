@@ -12,10 +12,10 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    private static final int MIN_SIZE_EMAIL = 12;
+    private static final int MIN_SIZE_PASSWORD = 5;
     @Inject
     private UserService userService;
-    private int MIN_SIZE_EMAIL = 12;
-    private int MIN_SIZE_PASSWORD = 5;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
