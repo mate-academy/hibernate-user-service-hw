@@ -62,9 +62,9 @@ public class Main {
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         Map<String, String> users = new HashMap<>() {{
-            put("user1@gmail.com", "12345");
-            put("user2@gmail.com", "3");
-            put("user3@gmail.com", "password");
+                put("user1@gmail.com", "12345");
+                put("user2@gmail.com", "3");
+                put("user3@gmail.com", "password");
         }};
         users.forEach((log, pass) -> {
             try {
