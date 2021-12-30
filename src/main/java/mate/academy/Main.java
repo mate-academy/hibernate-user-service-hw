@@ -10,9 +10,9 @@ public class Main {
         AuthenticationService authenticationService
                   = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-        authenticationService.register("Abcd", "123");
-        System.out.println(authenticationService.login("Abcd", "123"));
         try {
+            authenticationService.register("Abcd", "123");
+            System.out.println(authenticationService.login("Abcd", "123"));
             System.out.println(authenticationService.login("Abcd", "124"));
         } catch (Exception e) {
             System.out.println(e);
