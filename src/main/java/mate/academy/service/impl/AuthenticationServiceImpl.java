@@ -19,7 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> user = userService.findByEmail(email);
         if (user.isPresent()
-                && comparePassword(user.get(), password)) {
+                && comparePasswords(user.get(), password)) {
             return user.get();
         }
         throw new AuthenticationException("Can`t login. Incorrect email or password");
@@ -36,7 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return userService.add(user);
     }
 
-    private boolean comparePassword(User user, String password) {
+    private boolean comparePasswords(User user, String password) {
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         return user.getPassword().equals(hashedPassword);
     }
