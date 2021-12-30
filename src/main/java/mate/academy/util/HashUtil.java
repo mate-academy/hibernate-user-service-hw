@@ -8,7 +8,6 @@ public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
 
     private HashUtil() {
-
     }
 
     public static byte[] getSalt() {
@@ -28,7 +27,8 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", symbol));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Can't create hash using SHA-512 algorithm", e);
+            throw new IllegalStateException("Can't create hash using "
+                    + CRYPTO_ALGORITHM + " algorithm", e);
         }
         return hashedPassword.toString();
     }
