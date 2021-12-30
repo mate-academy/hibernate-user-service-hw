@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         AuthenticationService authenticationService
-              = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+                  = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
         authenticationService.register("Abcd", "123");
         System.out.println(authenticationService.login("Abcd", "123"));

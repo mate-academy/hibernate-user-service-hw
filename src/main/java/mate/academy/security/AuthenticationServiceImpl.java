@@ -9,7 +9,7 @@ import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
 @Service
-public class AuthenticationServiceImpl implements AuthenticationService{
+public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
 
@@ -24,7 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     @Override
     public User login(String email, String password) {
         Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isEmpty()){
+        if (userFromDb.isEmpty()) {
             throw new AuthenticationException("Can't find user by login - " + email);
         }
         User user = userFromDb.get();
