@@ -24,7 +24,7 @@ Your task is to implement the following steps:
     - AuthenticationService
         ````java
         public interface AuthenticationService {
-            User email(String email, String password) throws AuthenticationException;
+            User login(String email, String password) throws AuthenticationException;
 
             /**
             * We should register a new user. New user entity will contains the email and password
@@ -35,7 +35,7 @@ Your task is to implement the following steps:
             User register(String email, String password) throws RegistrationException;
         }
         ````
-    - Create your own checked `RegistrationException` and `AuthenticationException` to use it in `register()` and `email()` methods respectively
+    - Create your own checked `RegistrationException` and `AuthenticationException` to use it in `register()` and `login()` methods respectively
 
     - Please don’t forget to use salt and password hashing
 
