@@ -65,9 +65,13 @@ public class Main {
         String email = "mate@gamil.com";
         String password = "mate2021";
         try {
-            System.out.println(authenticationService.register(email, password));
-            System.out.println(authenticationService.login(email, password));
-        } catch (RegistrationException | AuthenticationException e) {
+            authenticationService.register(email, password);
+        } catch (RegistrationException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            authenticationService.login(email, password);
+        } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
         }
     }

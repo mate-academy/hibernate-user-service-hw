@@ -8,7 +8,6 @@ public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
 
     private HashUtil(){
-
     }
 
     public static byte[] getSalt() {
@@ -24,8 +23,8 @@ public class HashUtil {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
-            for (byte b : digest) {
-                hashedPassword.append(String.format("%02x", b));
+            for (byte bytes: digest) {
+                hashedPassword.append(String.format("%02x", bytes));
             }
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Could not crete hash using " + CRYPTO_ALGORITHM
