@@ -8,6 +8,9 @@ public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
     private static final int SALT_SIZE = 16;
 
+    private HashUtil() {
+    }
+
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[SALT_SIZE];
@@ -21,8 +24,8 @@ public class HashUtil {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
-            for (byte d : digest) {
-                result.append(String.format("%02x", d));
+            for (byte symbol : digest) {
+                result.append(String.format("%02x", symbol));
             }
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(
