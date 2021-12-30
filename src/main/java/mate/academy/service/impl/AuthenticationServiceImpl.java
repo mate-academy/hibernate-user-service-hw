@@ -17,10 +17,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isPresent() && userFromDb.get().getPassword()
-                .equals(HashUtil.getHashPassword(password, userFromDb.get().getSalt()))) {
-            return userFromDb.get();
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isPresent() && user.get().getPassword()
+                .equals(HashUtil.getHashPassword(password, user.get().getSalt()))) {
+            return user.get();
         }
         throw new AuthenticationException("Wrong authentication data");
     }
