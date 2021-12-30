@@ -28,7 +28,7 @@ public class Main {
     private static final AuthenticationService authService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+    public static void main(String[] args) {
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -67,10 +67,20 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        User registeredUser = authService.register("newuser@email.com", "123qwe");
-        System.out.println(authService.login("newuser@email.com", "123qwe")
-                .equals(registeredUser));
-        System.out.println(authService.login("newuser@email.com", "i dont know")
-                .equals(registeredUser));
+        User registeredUser = null;
+        try {
+            registeredUser = authService.register("newuser@email.com", "123qwe");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Registration failed", e);
+        }
+        try {
+            System.out.println(authService.login("newuser@email.com", "123qwe")
+                    .equals(registeredUser));
+            System.out.println(authService.login("newuser@email.com", "i dont know")
+                    .equals(registeredUser));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Authentication failed", e);
+        }
+
     }
 }
