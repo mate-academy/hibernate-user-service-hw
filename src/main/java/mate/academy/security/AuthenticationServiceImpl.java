@@ -22,16 +22,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        userService.save(user);
+        userService.add(user);
     }
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isPresent()
-                && userFromDb.get().getPassword()
-                .equals(HashUtil.hashPassword(password, userFromDb.get().getSalt()))) {
-            return userFromDb.get();
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isPresent()
+                && user.get().getPassword()
+                .equals(HashUtil.hashPassword(password, user.get().getSalt()))) {
+            return user.get();
         }
         throw new AuthenticationException("Can't authenticate user");
     }

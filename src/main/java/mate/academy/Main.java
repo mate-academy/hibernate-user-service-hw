@@ -12,7 +12,17 @@ public class Main {
 
         try {
             authenticationService.register("Abcd", "123");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        try {
             System.out.println(authenticationService.login("Abcd", "123"));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        try {
             System.out.println(authenticationService.login("Abcd", "124"));
         } catch (Exception e) {
             System.out.println(e);
