@@ -17,17 +17,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isPresent() && checkPassword(userFromDb.get(), password)) {
-            return userFromDb.get();
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isPresent() && checkPassword(user.get(), password)) {
+            return user.get();
         }
         throw new AuthenticationException("Can't authenticate user with e-mail " + email);
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> checkUser = userService.findByEmail(email);
-        if (checkUser.isEmpty()) {
+        Optional<User> userOptional = userService.findByEmail(email);
+        if (userOptional.isEmpty()) {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
