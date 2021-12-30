@@ -41,6 +41,8 @@ public class UserDaoImpl implements UserDao {
             return session.createQuery("from User u where u.login = :login", User.class)
                     .setParameter("login", login)
                     .uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't find a user with login: " + login, e);
         }
     }
 }

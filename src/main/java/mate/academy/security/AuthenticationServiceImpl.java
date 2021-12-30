@@ -15,7 +15,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User register(String password, String login) throws RegistrationException {
+    public User register(String login, String password) throws RegistrationException {
         Optional<User> userFromDbOptional = userService.findByLogin(login);
         if (userFromDbOptional.isPresent() || password.isEmpty()) {
             throw new RegistrationException("Can`t register user with login: "
@@ -30,13 +30,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String login, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByLogin(login);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can`t authenticate user with login: " + login);
-        }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
+        if (userFromDbOptional.isPresent()) {
+            User user = userFromDbOptional.get();
+            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+            if (user.getPassword().equals(hashedPassword)) {
+                return user;
+            }
         }
         throw new AuthenticationException("Can`t authenticate user with login: " + login);
     }

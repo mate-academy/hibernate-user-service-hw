@@ -72,7 +72,7 @@ public class Main {
             throw new RuntimeException(e);
         }
         try {
-            System.out.println(authenticationService.login(anya.getPassword(), anya.getLogin()));
+            System.out.println(authenticationService.login(anya.getLogin(), anya.getPassword()));
         } catch (AuthenticationException e) {
             throw new RuntimeException(e);
         }
