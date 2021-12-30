@@ -68,7 +68,7 @@ public class Main {
         try {
             user = authenticationService.register("user2@gmail.com", "qwerty");
         } catch (RegistrationException e) {
-            System.out.println("User with this email is already exists");
+            System.out.println("User with this email already exists");
         }
 
         try {
