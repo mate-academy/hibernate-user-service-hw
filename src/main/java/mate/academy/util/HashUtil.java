@@ -23,8 +23,8 @@ public class HashUtil {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
-            for (byte bytes: digest) {
-                hashedPassword.append(String.format("%02x", bytes));
+            for (byte symbol: digest) {
+                hashedPassword.append(String.format("%02x", symbol));
             }
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Could not crete hash using " + CRYPTO_ALGORITHM
