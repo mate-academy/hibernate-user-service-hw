@@ -70,7 +70,7 @@ public class Main {
         users.forEach((log, pass) -> {
             try {
                 User user = authenticationService.register(log, pass);
-                System.out.println(user + " have been registered");
+                System.out.println(user + " was registered");
             } catch (RegistrationException e) {
                 throw new RuntimeException(e);
             }
@@ -78,7 +78,7 @@ public class Main {
         users.forEach((log, pass) -> {
             try {
                 User user = authenticationService.login(log, pass);
-                System.out.println(user + " was logged");
+                System.out.println(user + " has logged");
             } catch (AuthenticationException e) {
                 e.printStackTrace();
             }
