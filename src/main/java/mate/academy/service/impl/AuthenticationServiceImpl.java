@@ -19,7 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userService.findByEmail(email).orElseThrow(() ->
                 new AuthenticationException("Email or password is incorrect"));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (!hashedPassword.equals(user.getHashedPassword())) {
+        if (!hashedPassword.equals(user.getPassword())) {
             throw new AuthenticationException("Email or password is incorrect");
         }
         return user;
@@ -36,20 +36,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!validatePassword(password)) {
             throw new RegistrationException("Password too short");
         }
-        byte[] salt = HashUtil.getSalt();
-        String hashedPassword = HashUtil.hashPassword(password, salt);
         User user = new User();
         user.setEmail(email);
-        user.setHashedPassword(hashedPassword);
-        user.setSalt(salt);
+        user.setPassword(password);
         return userService.add(user);
     }
 
-    private static boolean validateEmail(String email) {
+    private boolean validateEmail(String email) {
         return email.matches("^[\\w\\.-]+@([\\w-]+\\.)+[\\w-]{2,4}$");
     }
 
-    private static boolean validatePassword(String password) {
+    private boolean validatePassword(String password) {
         return password.length() > 3;
     }
 }
