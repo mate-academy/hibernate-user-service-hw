@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -14,12 +15,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email).orElseThrow(() ->
-                new AuthenticationException("Incorrect email"));
-        if (!HashUtil.hashPassword(password, user.getSalt()).equals(user.getPassword())) {
-            throw new AuthenticationException("Incorrect password");
+        Optional<User> user = userService.findByEmail(email);
+        if (!user.isPresent() || !HashUtil.hashPassword(password,
+                user.get().getSalt()).equals(user.get().getPassword())) {
+            throw new AuthenticationException("Incorrect login or password");
         }
-        return user;
+        return user.get();
     }
 
     @Override
@@ -27,13 +28,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with email " + email + " is already registered");
         }
-        if (password.length() == 0) {
+        if (password.isEmpty()) {
             throw new RegistrationException("Invalid password");
         }
         User user = new User();
         user.setEmail(email);
-        byte[] userSalt = HashUtil.getSalt();
-        user.setPassword(HashUtil.hashPassword(password, userSalt));
+        user.setPassword(password);
         return userService.add(user);
     }
 }
