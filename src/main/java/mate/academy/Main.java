@@ -20,7 +20,7 @@ public class Main {
         try {
             authenticationService.login("lavryniuk.dev@gmail.com", "123456789");
             authenticationService.login("young_trappa@gmail.com", "123");
-        }  catch (AuthenticationException e) {
+        } catch (AuthenticationException e) {
             throw new RuntimeException("Can't login", e);
         }
     }
