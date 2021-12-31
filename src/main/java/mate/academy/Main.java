@@ -14,8 +14,10 @@ public class Main {
         try {
             authenticationService.register("lavryniuk.dev@gmail.com", "123456789");
             System.out.println(authenticationService.login("lavryniuk.dev@gmail.com", "123456789"));
-        } catch (RegistrationException | AuthenticationException e) {
-            throw new RuntimeException("Can't register or login");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't login", e);
         }
     }
 }
