@@ -62,10 +62,14 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             authenticationService.register("userEmail@gmail.com", "userPassword");
-            System.out.println(authenticationService.login(
-                    "userEmail@gmail.com", "userPassword"));
         } catch (Exception e) {
-            throw new RuntimeException("Unable to register or login", e);
+            throw new RuntimeException("Unable to register");
+        }
+        try {
+            System.out.println(authenticationService
+                    .login("userEmail@gmail.com", "userPassword"));
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to login", e);
         }
     }
 }
