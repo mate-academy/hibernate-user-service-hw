@@ -13,10 +13,14 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             authenticationService.register("lavryniuk.dev@gmail.com", "123456789");
-            System.out.println(authenticationService.login("lavryniuk.dev@gmail.com", "123456789"));
+            authenticationService.register("young_trappa@gmail.com", "2281337");
         } catch (RegistrationException e) {
             throw new RuntimeException("Can't register", e);
-        } catch (AuthenticationException e) {
+        }
+        try {
+            authenticationService.login("lavryniuk.dev@gmail.com", "123456789");
+            authenticationService.login("young_trappa@gmail.com", "123");
+        }  catch (AuthenticationException e) {
             throw new RuntimeException("Can't login", e);
         }
     }
