@@ -19,7 +19,8 @@ public class HashUtil {
                 handlePassword.append(String.format("%s", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Can't create hash using " + CRIPTO_ALGORITM + " algorithm", e );
+            throw new IllegalStateException("Can't create hash using "
+                + CRIPTO_ALGORITM + " algorithm", e);
         }
         return handlePassword.toString();
     }
