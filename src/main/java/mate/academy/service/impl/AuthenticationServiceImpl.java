@@ -34,9 +34,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("e-mail already exists: " + email);
         }
-        if (password == null || password.isEmpty()) {
-            throw new RegistrationException("Incorrect password");
-        }
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
