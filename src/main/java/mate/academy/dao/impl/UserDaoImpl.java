@@ -22,7 +22,7 @@ public class UserDaoImpl implements UserDao {
             transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();
-        } catch (HibernateException exception) {
+        } catch (Exception exception) {
             if (transaction != null) {
                 transaction.rollback();
             }
