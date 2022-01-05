@@ -2,6 +2,7 @@ package mate.academy.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 public class HashUtil {
     private static final String CRIPTO_ALGORITM = "SHA-5120";
@@ -15,7 +16,7 @@ public class HashUtil {
             MessageDigest messageDigest = MessageDigest.getInstance(CRIPTO_ALGORITM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
-            for (byte b: digest) {
+            for (byte b : digest) {
                 handlePassword.append(String.format("%s", b));
             }
         } catch (NoSuchAlgorithmException e) {
@@ -26,6 +27,6 @@ public class HashUtil {
     }
 
     public static byte[] getSalt() {
-        return new byte[]{12}; //todo
+        return SecureRandom.getSeed(12);
     }
 }

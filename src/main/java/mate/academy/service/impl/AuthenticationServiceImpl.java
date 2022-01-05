@@ -7,6 +7,7 @@ import mate.academy.lib.Inject;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
+import mate.academy.util.HashUtil;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
@@ -15,7 +16,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> byEmail = userService.findByEmail(email);
-        if (byEmail.isEmpty() || !byEmail.get().getPassword().equals(password)) {
+        if (byEmail.isEmpty() ||
+            !byEmail.get().getPassword().equals(HashUtil.hashPassword(password, byEmail.get().getSalt()))) {
             throw new AuthenticationException("Can't find User with email = "
                 + email);
         }
@@ -25,6 +27,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        Optional<User> byEmail = userService.findByEmail(email);
+        if (byEmail.isPresent()) {
+            throw new RegistrationException("User with email: " + email + " already exist");
+        }
         return userService.add(new User(email, password));
     }
 }
