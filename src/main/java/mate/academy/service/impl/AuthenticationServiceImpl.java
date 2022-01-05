@@ -17,7 +17,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> byEmail = userService.findByEmail(email);
         if (byEmail.isEmpty() || !byEmail.get().getPassword().equals(password)) {
             throw new AuthenticationException("Can't find User with email = "
-                + email + " and password = " + password);
+                + email);
         }
 
         return byEmail.get();
