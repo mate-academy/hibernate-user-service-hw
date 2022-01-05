@@ -16,8 +16,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> byEmail = userService.findByEmail(email);
-        if (byEmail.isEmpty() ||
-            !byEmail.get().getPassword().equals(HashUtil.hashPassword(password, byEmail.get().getSalt()))) {
+        if (byEmail.isEmpty()
+                || !byEmail.get().getPassword().equals(
+                    HashUtil.hashPassword(password, byEmail.get().getSalt()))) {
             throw new AuthenticationException("Can't find User with email = "
                 + email);
         }
