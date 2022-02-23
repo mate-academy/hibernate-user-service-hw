@@ -70,12 +70,10 @@ public class Main {
         String aliceEmail = "test@gmail.com";
         String alicePass = "qwerty";
         User alice = authenticationService.register(aliceEmail, alicePass);
-        userService.add(alice);
 
         String bobEmail = "test2@gmail.com";
         String bobPass = "qwerty2";
         User bob = authenticationService.register(bobEmail, bobPass);
-        userService.add(bob);
 
         System.out.println(authenticationService.login(aliceEmail, alicePass));
         System.out.println(authenticationService.login(bobEmail, bobPass));

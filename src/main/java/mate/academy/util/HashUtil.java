@@ -30,9 +30,9 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", saltByte));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Can't create hashed password with SHA-256");
+            throw new IllegalStateException("Can't create hashed password with "
+                    + CRYPTO_ALGORITHM + " algorithm.");
         }
         return hashedPassword.toString();
     }
-
 }

@@ -19,7 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userByEmailOptional = userService.findByEmail(email);
 
-        if (userByEmailOptional.isPresent() && !email.isEmpty() && !password.isEmpty()) {
+        if (userByEmailOptional.isPresent()) {
             User userByEmailFromDB = userByEmailOptional.get();
             String hashedPassword = HashUtil.hashPassword(password, userByEmailFromDB.getSalt());
 
@@ -34,12 +34,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         Optional<User> userByEmailOptional = userService.findByEmail(email);
 
-        if (userByEmailOptional.isPresent() || email.isEmpty() || password.isEmpty()) {
-            throw new RegistrationException("Invalid input or email is already in use");
+        if (userByEmailOptional.isPresent()) {
+            throw new RegistrationException("Email is already in use.");
         }
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        return user;
+        return userService.add(user);
     }
 }
