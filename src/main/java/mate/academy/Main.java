@@ -13,7 +13,8 @@ public class Main {
         String email = "bohdan@gmail.com";
         String password = "1234";
         try {
-            System.out.println("Registration user with email: " + email + " and password: " + password);
+            System.out.println("Registration user with email: "
+                    + email + " and password: " + password);
             authenticationService.register(email, password);
             System.out.println("Getting user from DB with login()");
             System.out.println(authenticationService.login(email, password));

@@ -1,6 +1,5 @@
 package mate.academy.util;
 
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -8,6 +7,7 @@ import java.security.SecureRandom;
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
     private static final int SALT_LENGTH = 16;
+
     private HashUtil() {
     }
 
@@ -31,6 +31,5 @@ public class HashUtil {
         }
         return hashedPassword.toString();
     }
-
 
 }

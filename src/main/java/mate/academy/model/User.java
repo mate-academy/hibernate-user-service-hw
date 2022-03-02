@@ -1,12 +1,12 @@
 package mate.academy.model;
 
+import java.util.Arrays;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Arrays;
 
 @Entity
 @Table(name = "users")
