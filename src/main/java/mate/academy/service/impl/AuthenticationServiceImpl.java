@@ -16,7 +16,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private static final String ERROR_AUTH_MES = "Incorrect email or password";
     private static final int MIN_LEN_PASSWORD = 4;
     private static final Pattern EMAIL_PATTERN = Pattern
-            .compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$",
+            .compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
                     Pattern.CASE_INSENSITIVE);
     @Inject
     private UserService userService;
@@ -26,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userService.findByEmail(email)
                 .orElseThrow(() -> new AuthenticationException(ERROR_AUTH_MES));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
+        if (!user.getPassword().equals(hashedPassword)) {
             throw new AuthenticationException(ERROR_AUTH_MES);
         }
         return user;
