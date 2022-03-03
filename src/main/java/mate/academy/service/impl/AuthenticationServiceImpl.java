@@ -12,7 +12,6 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private static final String ERROR_AUTH_MES = "Incorrect email or password";
     private static final int MIN_LEN_PASSWORD = 4;
     private static final Pattern EMAIL_PATTERN = Pattern
             .compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
@@ -23,10 +22,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         User user = userService.findByEmail(email)
-                .orElseThrow(() -> new AuthenticationException(ERROR_AUTH_MES));
+                .orElseThrow(() -> new AuthenticationException("Incorrect email or password"));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (!user.getPassword().equals(hashedPassword)) {
-            throw new AuthenticationException(ERROR_AUTH_MES);
+            throw new AuthenticationException("Incorrect email or password");
         }
         return user;
     }
