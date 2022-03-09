@@ -18,7 +18,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> optionalUser = userService.findByEmail(email);
-
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             String hashPassword = HashUtil.hashPassword(password, user.getSalt());
@@ -27,21 +26,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return user;
             }
         }
-
         throw new AuthenticationException("Can't authenticate user. "
                 + "Check your email or password!");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> optionalUser = userService.findByEmail(email);
-
-        if (optionalUser.isPresent()) {
-            throw new RegistrationException("User exists!");
+        if (password == null || password.isEmpty()) {
+            throw new RegistrationException("Password can't be empty or null!");
         }
-
-        if (password.isEmpty()) {
-            throw new RegistrationException("Password can't be empty!");
+        Optional<User> optionalUser = userService.findByEmail(email);
+        if (optionalUser.isPresent()) {
+            throw new RegistrationException("User with such login already exists!");
         }
 
         User user = new User();
