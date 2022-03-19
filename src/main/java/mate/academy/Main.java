@@ -24,7 +24,6 @@ public class Main {
     private static final AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
