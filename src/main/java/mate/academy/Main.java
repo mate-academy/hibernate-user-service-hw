@@ -70,5 +70,6 @@ public class Main {
         System.out.println("Registered user: " + registeredUser);
         User loginedUser = authenticationService.login(email, password);
         System.out.println("Logined user: " + loginedUser);
+        authenticationService.login(email, wrongPassword);
     }
 }
