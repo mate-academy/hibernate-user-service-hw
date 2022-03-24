@@ -15,14 +15,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public void register(String login, String password) throws RegistrationException {
+    public User register(String login, String password) throws RegistrationException {
         Optional<User> findUser = userService.findByLogin(login);
-        if (!findUser.isPresent()) {
-            User user = new User();
-            user.setLogin(login);
-            user.setPassword(password);
+        if (findUser.isEmpty()) {
+            User user = new User(login, password);
             userService.add(user);
-            return;
+            return user;
         }
         throw new RegistrationException("Can't register user to DB with login: " + login);
     }
@@ -30,10 +28,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String login, String password) throws AuthenticationException {
         Optional<User> findUser = userService.findByLogin(login);
-        if (findUser.isPresent()
-                && findUser.get().getPassword()
-                .equals(HashUtil.hashPassword(password, findUser.get().getSalt()))) {
-            return findUser.get();
+        if (findUser.isPresent()) {
+            User userFromDB = findUser.get();
+            String hashPassword = HashUtil.hashPassword(password, userFromDB.getSalt());
+            if (userFromDB.getPassword().equals(hashPassword)) {
+                return userFromDB;
+            }
         }
         throw new AuthenticationException("Can't authenticate user with login: " + login);
     }
