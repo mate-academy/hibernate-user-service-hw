@@ -17,12 +17,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String login, String password) throws RegistrationException {
         Optional<User> findUser = userService.findByLogin(login);
-        if (findUser.isEmpty()) {
-            User user = new User(login, password);
-            userService.add(user);
-            return user;
+        if (findUser.isPresent()) {
+            throw new RegistrationException("Can't register user to DB with login: " + login);
         }
-        throw new RegistrationException("Can't register user to DB with login: " + login);
+        User user = new User(login, password);
+        userService.add(user);
+        return user;
     }
 
     @Override
