@@ -28,12 +28,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String login, String password) throws AuthenticationException {
         Optional<User> findUser = userService.findByLogin(login);
-        if (findUser.isPresent()) {
-            User userFromDB = findUser.get();
-            String hashPassword = HashUtil.hashPassword(password, userFromDB.getSalt());
-            if (userFromDB.getPassword().equals(hashPassword)) {
-                return userFromDB;
-            }
+        if (findUser.isPresent() && findUser.get().getPassword()
+                .equals(HashUtil.hashPassword(password, findUser.get().getSalt()))) {
+            return findUser.get();
         }
         throw new AuthenticationException("Can't authenticate user with login: " + login);
     }
