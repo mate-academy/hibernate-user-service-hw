@@ -18,7 +18,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isPresent() || password.isEmpty()) {
-            throw new RegistrationException("Can't register user with email: " + email);
+            throw new RegistrationException("Can't register user with email - " + email);
         }
         User user = new User(email, password);
         return userService.add(user);
@@ -34,6 +34,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return userFromDbOptional.get();
             }
         }
-        throw new AuthenticationException("Can't authenticate user with email " + email);
+        throw new AuthenticationException("Can't authenticate user with email - " + email);
     }
 }
