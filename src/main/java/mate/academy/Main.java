@@ -85,5 +85,14 @@ public class Main {
         } catch (AuthenticationException e) {
             System.out.println(e);
         }
+        // Not unique email
+        try {
+            registerUser = authenticationService.register(USER_EMAIL, USER_PASSWORD);
+            System.out.println(registerUser);
+        } catch (RegistrationException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+        }
+
     }
 }
