@@ -1,6 +1,11 @@
 package mate.academy.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -48,9 +53,9 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                '}';
+        return "User{"
+                + "id=" + id
+                + ", email='" + email + '\''
+                + '}';
     }
 }

@@ -2,7 +2,6 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -19,7 +18,6 @@ public class Main {
     private static final String USER_EMAIL = "user@mail.com";
     private static final String USER_PASSWORD = "UsErPaSsWoRd";
     private static final Injector injector = Injector.getInstance("mate.academy");
-
 
     public static void main(String[] args) {
 
