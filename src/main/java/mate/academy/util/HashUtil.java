@@ -2,6 +2,7 @@ package mate.academy.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
@@ -24,4 +25,12 @@ public class HashUtil {
         }
         return hashedPassword.toString();
     }
+
+    public static byte[] getSalt(int size) {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] salt = new byte[size];
+        secureRandom.nextBytes(salt);
+        return salt;
+    }
+
 }

@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.security.SecureRandom;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -34,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
             User user = new User();
             user.setEmail(email);
-            user.setSalt(getSalt());
+            user.setSalt(HashUtil.getSalt(SALT_SIZE));
             user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
             return userService.add(user);
         } catch (Exception e) {
@@ -44,12 +43,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private Boolean checkPassword(User user, String password) {
         return HashUtil.hashPassword(password, user.getSalt()).equals(user.getPassword());
-    }
-
-    private byte[] getSalt() {
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] salt = new byte[SALT_SIZE];
-        secureRandom.nextBytes(salt);
-        return salt;
     }
 }
