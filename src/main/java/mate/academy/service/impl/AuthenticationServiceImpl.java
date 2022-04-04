@@ -30,10 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         try {
             if (userService.findByEmail(email).isPresent()) {
-                throw new RuntimeException("Email is already used");
-            }
-            if (password.isEmpty()) {
-                throw new RuntimeException("Password shouldn't be empty");
+                throw new RuntimeException("Email " + email + "is already used");
             }
             User user = new User();
             user.setEmail(email);
