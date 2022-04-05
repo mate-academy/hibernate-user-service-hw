@@ -18,7 +18,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         String hashedPassword = HashUtil.hashPassword(password, userFromDbOptional.get().getSalt());
-        if (!userFromDbOptional.isEmpty() && userFromDbOptional.get().getPassword().equals(hashedPassword)) {
+        if (!userFromDbOptional.isEmpty()
+                && userFromDbOptional.get().getPassword().equals(hashedPassword)) {
             return userFromDbOptional.get();
         }
         throw new AuthenticationException("Login or password is incorrect");
