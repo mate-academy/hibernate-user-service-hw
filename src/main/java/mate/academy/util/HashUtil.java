@@ -32,5 +32,4 @@ public class HashUtil {
         secureRandom.nextBytes(salt);
         return salt;
     }
-
 }
