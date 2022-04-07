@@ -27,18 +27,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        try {
-            if (userService.findByEmail(email).isPresent()) {
-                throw new RuntimeException("Email " + email + "is already used");
-            }
-            User user = new User();
-            user.setEmail(email);
-            user.setSalt(HashUtil.getSalt(SALT_SIZE));
-            user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
-            return userService.add(user);
-        } catch (Exception e) {
-            throw new RegistrationException("Couldn't register new user with email: " + email, e);
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("Email " + email + "is already used");
         }
+        User user = new User();
+        user.setEmail(email);
+        user.setSalt(HashUtil.getSalt(SALT_SIZE));
+        user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
+        return userService.add(user);
     }
 
     private Boolean checkPassword(User user, String password) {
