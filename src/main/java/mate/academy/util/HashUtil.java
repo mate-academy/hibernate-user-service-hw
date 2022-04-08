@@ -23,8 +23,8 @@ public class HashUtil {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
-            for (Byte b : digest) {
-                hashPassword.append(String.format("%02x", b));
+            for (Byte byteOfHashedPassword : digest) {
+                hashPassword.append(String.format("%02x", byteOfHashedPassword));
             }
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Couldn't create hash using SHA-512 algorithm", e);
