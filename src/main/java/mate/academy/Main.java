@@ -1,3 +1,5 @@
+package mate.academy;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
@@ -19,32 +21,49 @@ public class Main {
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
-        @@ -27,7 +33,8 @@ public static void main(String[] args) {
-            secondCinemaHall.setCapacity(200);
-            secondCinemaHall.setDescription("second hall with capacity 200");
+        movieService.add(fastAndFurious);
+        System.out.println(movieService.get(fastAndFurious.getId()));
+        movieService.getAll().forEach(System.out::println);
 
-            CinemaHallService cinemaHallService = (CinemaHallService) injector
-                .getInstance(CinemaHallService.class);
-            cinemaHallService.add(firstCinemaHall);
-            cinemaHallService.add(secondCinemaHall);
+        CinemaHall firstCinemaHall = new CinemaHall();
+        firstCinemaHall.setCapacity(100);
+        firstCinemaHall.setDescription("first hall with capacity 100");
 
-            @@ -44,12 +51,19 @@ public static void main(String[] args) {
-                yesterdayMovieSession.setMovie(fastAndFurious);
-                yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
+        CinemaHall secondCinemaHall = new CinemaHall();
+        secondCinemaHall.setCapacity(200);
+        secondCinemaHall.setDescription("second hall with capacity 200");
 
-                MovieSessionService movieSessionService = (MovieSessionService) injector
-                    .getInstance(MovieSessionService.class);
-                movieSessionService.add(tomorrowMovieSession);
-                movieSessionService.add(yesterdayMovieSession);
+        CinemaHallService cinemaHallService = (CinemaHallService) injector
+            .getInstance(CinemaHallService.class);
+        cinemaHallService.add(firstCinemaHall);
+        cinemaHallService.add(secondCinemaHall);
 
-                System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-                System.out.println(movieSessionService.findAvailableSessions(
-                    fastAndFurious.getId(), LocalDate.now()));
+        System.out.println(cinemaHallService.getAll());
+        System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
 
-                AuthenticationService authenticationService = (AuthenticationService) injector
-                    .getInstance(AuthenticationService.class);
+        MovieSession tomorrowMovieSession = new MovieSession();
+        tomorrowMovieSession.setCinemaHall(firstCinemaHall);
+        tomorrowMovieSession.setMovie(fastAndFurious);
+        tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
 
-                System.out.println(authenticationService.register("dog@ukr.net", "doggy12345"));
-                System.out.println(authenticationService.login("dog@ukr.net", "doggy12345"));
-            }
-        }
+        MovieSession yesterdayMovieSession = new MovieSession();
+        yesterdayMovieSession.setCinemaHall(firstCinemaHall);
+        yesterdayMovieSession.setMovie(fastAndFurious);
+        yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
+
+        MovieSessionService movieSessionService = (MovieSessionService) injector
+            .getInstance(MovieSessionService.class);
+        movieSessionService.add(tomorrowMovieSession);
+        movieSessionService.add(yesterdayMovieSession);
+
+        System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
+        System.out.println(movieSessionService.findAvailableSessions(
+            fastAndFurious.getId(), LocalDate.now()));
+
+        AuthenticationService authenticationService = (AuthenticationService) injector
+            .getInstance(AuthenticationService.class);
+
+        System.out.println(authenticationService.register("pasha@gmail.com", "123456789"));
+        System.out.println(authenticationService.login("pasha@gmail.com", "123456789"));
+    }
+}
