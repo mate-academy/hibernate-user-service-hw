@@ -34,7 +34,7 @@ public class Main {
         secondCinemaHall.setDescription("second hall with capacity 200");
 
         CinemaHallService cinemaHallService = (CinemaHallService) injector
-            .getInstance(CinemaHallService.class);
+                .getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -52,16 +52,16 @@ public class Main {
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
         MovieSessionService movieSessionService = (MovieSessionService) injector
-            .getInstance(MovieSessionService.class);
+                .getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
-            fastAndFurious.getId(), LocalDate.now()));
+                fastAndFurious.getId(), LocalDate.now()));
 
         AuthenticationService authenticationService = (AuthenticationService) injector
-            .getInstance(AuthenticationService.class);
+                .getInstance(AuthenticationService.class);
 
         System.out.println(authenticationService.register("pasha@gmail.com", "123456789"));
         System.out.println(authenticationService.login("pasha@gmail.com", "123456789"));
