@@ -23,7 +23,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .equals(HashUtil.hashPassword(password, userOptional.get().getSalt()))) {
             return userOptional.get();
         } else {
-            throw new AuthenticationException("Wrong login or/and password");
+            throw new AuthenticationException("Wrong login and/or password");
         }
     }
 
