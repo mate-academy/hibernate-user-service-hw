@@ -12,7 +12,7 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private static final int MIN_LEN_PASSWORD = 4;
+    private static final int MIN_LENGTH_PASSWORD = 4;
     private static final Pattern EMAIL_PATTERN = Pattern
             .compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
                     Pattern.CASE_INSENSITIVE);
@@ -32,11 +32,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (password.length() < MIN_LEN_PASSWORD) {
+        if (password.length() < MIN_LENGTH_PASSWORD) {
             throw new RegistrationException("Short password");
-        } else if (!EMAIL_PATTERN.matcher(email).find()) {
+        }
+
+        if (!EMAIL_PATTERN.matcher(email).find()) {
             throw new RegistrationException("Invalid email");
         }
+
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
