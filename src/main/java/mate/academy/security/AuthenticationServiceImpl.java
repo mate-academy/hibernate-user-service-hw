@@ -15,8 +15,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String login, String password) throws RegistrationException {
-        Optional<User> userFromDB = userService.findByLogin(login);
-        if (userFromDB.isPresent()) {
+        if (userService.findByLogin(login).isPresent()) {
             throw new RegistrationException("Login " + login + " already in use");
         }
         User user = new User();
@@ -29,14 +28,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String login, String password) {
         Optional<User> userFromDB = userService.findByLogin(login);
-        if (userFromDB.isEmpty()) {
-            throw new ArithmeticException("Can`t find user where login is " + login);
+        if (userFromDB.isPresent()) {
+            User user = userFromDB.get();
+            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+            if (user.getPassword().equals(hashedPassword)) {
+                return user;
+            }
         }
-        User user = userFromDB.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new ArithmeticException("Can`t find user where login is " + login);
+        throw new ArithmeticException("Wrong login or password");
     }
 }
