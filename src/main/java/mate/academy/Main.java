@@ -64,6 +64,5 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         System.out.println(authenticationService.register("olofmeister@gmail.com", "olofmeister"));
         System.out.println(authenticationService.login("olofmeister@gmail.com", "olofmeister"));
-
     }
 }
