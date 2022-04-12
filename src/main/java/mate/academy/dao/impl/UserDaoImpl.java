@@ -12,7 +12,7 @@ import org.hibernate.Transaction;
 @Dao
 public class UserDaoImpl implements UserDao {
     @Override
-    public User create(User user) {
+    public User add(User user) {
         Session session = null;
         Transaction transaction = null;
         try {
