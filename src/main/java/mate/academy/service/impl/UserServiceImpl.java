@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.lib.Inject;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
     public User get(Long id) {
         return userDao.get(id).orElseThrow(
                 () -> {
-                    throw new RuntimeException("There is no user with id = " + id);
+                    throw new NoSuchElementException("There is no user with id = " + id);
                 }
         );
     }
