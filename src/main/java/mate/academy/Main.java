@@ -63,7 +63,7 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         authenticationService.register("example@gmail.com", "12345678");
-        System.out.println(authenticationService.email("example@gmail.com", "12345678"));
+        System.out.println(authenticationService.login("example@gmail.com", "12345678"));
         authenticationService.register("example@gmail.com", "123");
 
     }
