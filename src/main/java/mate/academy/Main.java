@@ -64,6 +64,7 @@ public class Main {
                 injector.getInstance(AuthenticationService.class);
         try {
             User bob = authenticationService.register("bob@i.ua", "qwerty");
+            authenticationService.register("bob@i.ua", "");
             authenticationService.login("bob@i.ua", "qwerty");
         } catch (RegistrationException e) {
             System.out.println("Couldn't register" + e.toString());
