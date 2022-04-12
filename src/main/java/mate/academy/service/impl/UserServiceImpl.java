@@ -2,16 +2,15 @@ package mate.academy.service.impl;
 
 import java.util.Optional;
 import mate.academy.dao.UserDao;
-import mate.academy.lib.Dao;
+import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
-import mate.academy.util.HibernateUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Dao
+    @Inject
     private UserDao userDao;
 
     @Override
