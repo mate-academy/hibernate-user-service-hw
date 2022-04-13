@@ -24,7 +24,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't add user: " + user + " from DB: ", e);
+            throw new RuntimeException("Can't add user: " + user + " into DB: ", e);
         } finally {
             if (session != null) {
                 session.close();
@@ -48,6 +48,8 @@ public class UserDaoImpl implements UserDao {
             return session.createQuery("from User where email = :email", User.class)
                     .setParameter("email", email)
                     .uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get a user by email:" + email, e);
         }
     }
 }
