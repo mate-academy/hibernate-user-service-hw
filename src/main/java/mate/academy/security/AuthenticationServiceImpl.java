@@ -16,8 +16,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email == null || password == null
-                || email.isBlank() || password.isBlank()
+        if (!isValid(email) || !isValid(password)
                 || userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Incorrect email or password");
         }
@@ -34,5 +33,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     + "Email or password is incorrect");
         }
         return user.get();
+    }
+
+    private boolean isValid(String data) {
+        return data != null && !data.isBlank();
     }
 }
