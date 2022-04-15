@@ -21,10 +21,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (user.isPresent() && user.get().getPassword()
                 .equals(HashUtil.hashPassword(password, user.get().getSalt()))) {
             return user.get();
-        } else {
-            throw new AuthenticationException("Account with email: " + email
-                    + " don't exist or password is invalid");
         }
+        throw new AuthenticationException("Account with email: " + email
+                + " don't exist or password is invalid");
     }
 
     @Override
