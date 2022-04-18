@@ -32,6 +32,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             User user = new User(email,password);
             return userService.add(user);
         }
-        throw new RegistrationException("Incorrect email or password.Email: " + email);
+        throw new RegistrationException("User with such login already exist " + email);
     }
 }
