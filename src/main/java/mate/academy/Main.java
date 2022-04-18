@@ -17,7 +17,7 @@ import mate.academy.service.MovieSessionService;
 public class Main {
     private static final Injector injectror = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+    public static void main(String[] args) {
         MovieService movieService =
                 (MovieService) injectror.getInstance(MovieService.class);
 
@@ -66,8 +66,17 @@ public class Main {
         AuthenticationService authenticationService =
                 (AuthenticationService) injectror.getInstance(AuthenticationService.class);
 
-        User alice = authenticationService.register("aliceStudent@mateacademy.com", "1234");
+        User alice = null;
+        try {
+            alice = authenticationService.register("aliceStudent@mateacademy.com", "1234");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't registration user: ", e);
+        }
         System.out.println(alice);
-        User aliceLogin = authenticationService.login("aliceStudent@mateacademy.com", "1234");
+        try {
+            User aliceLogin = authenticationService.login("aliceStudent@mateacademy.com", "1234");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't authenticate user. Email or password incorrect: ", e);
+        }
     }
 }

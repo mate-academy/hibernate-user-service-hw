@@ -28,11 +28,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()
-                && !password.isEmpty()) {
+        if (userFromDbOptional.isEmpty()) {
             User user = new User(email,password);
             return userService.add(user);
         }
-        throw new RegistrationException("Incorrect email or password");
+        throw new RegistrationException("Incorrect email or password.Email: " + email);
     }
 }
