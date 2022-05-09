@@ -5,6 +5,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashUtil {
+    private static final String CRYPTO_ALGORITHM = "SHA-512";
+
+    private HashUtil() {
+    }
+
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[16];
@@ -16,7 +21,7 @@ public class HashUtil {
         StringBuilder hashPasswordString = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest
-                    .getInstance("SHA-512");
+                    .getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
             for (byte b : digest) {
