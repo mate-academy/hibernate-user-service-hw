@@ -19,7 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
         User user = userFromDb.get();
-        if (!email.contains("@") || password.isEmpty()
+        if (email.isEmpty() || password.isEmpty()
                 || userFromDb.isEmpty()
                 || !user.getPassword().equals(HashUtil.hashPassword(password,user.getSalt()))) {
             throw new AuthenticationException("Can`t login by fields: email = "
@@ -30,7 +30,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (!email.contains("@") || password.isEmpty()) {
+        if (email.isEmpty() || password.isEmpty()
+                || userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Can`t register by fields: email = "
                     + email + " password = " + password);
         }
