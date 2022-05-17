@@ -74,8 +74,8 @@ public class Main {
         } catch (RegistrationException e) {
             System.err.println(e.getMessage());
         }
-        System.out.println(authenticationService.login(VALID_EMAIL, STRONG_PASSWORD));
         try {
+            System.out.println(authenticationService.login(VALID_EMAIL, STRONG_PASSWORD));
             System.out.println(authenticationService.login(INVALID_EMAIL, STRONG_PASSWORD));
         } catch (AuthenticationException e) {
             System.err.println(e.getMessage());

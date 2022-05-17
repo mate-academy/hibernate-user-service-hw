@@ -23,8 +23,8 @@ public class EncryptionUtil {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(str.getBytes());
-            for (byte b : digest) {
-                hashedString.append(String.format("%02x", b));
+            for (byte symbol : digest) {
+                hashedString.append(String.format("%02x", symbol));
             }
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Wrong algorithm " + CRYPTO_ALGORITHM, e);
