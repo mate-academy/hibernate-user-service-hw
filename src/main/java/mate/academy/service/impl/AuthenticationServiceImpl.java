@@ -29,8 +29,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("The user with email " + email + " already exist");
-        } else if (password.isEmpty()) {
-            throw new RegistrationException("Email or password is empty");
         }
         User user = new User(email, password);
         return userService.add(user);
