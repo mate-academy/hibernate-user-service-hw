@@ -61,13 +61,16 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
-;
+
         User user1 = new User();
         user1.setEmail("user1@server.net");
         user1.setPassword("superpassword");
         User user2 = new User();
         user2.setEmail("user2@server.net");
         user2.setPassword("newpasswd");
+        User user3 = new User();
+        user3.setEmail("user3@server.net");
+        user3.setPassword("newpasswd");
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
@@ -79,6 +82,7 @@ public class Main {
         try {
             System.out.println(authenticationService.login(user1.getEmail(), user1.getPassword()));
             System.out.println(authenticationService.login(user2.getEmail(), user2.getPassword()));
+            System.out.println(authenticationService.login(user3.getEmail(), user3.getPassword()));
         } catch (AuthenticationException e) {
             throw new RuntimeException(e);
         }
