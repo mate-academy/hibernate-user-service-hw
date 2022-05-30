@@ -8,7 +8,6 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -65,7 +64,7 @@ public class Main {
         try {
             AuthenticationService authenticationService = (AuthenticationService)
                     injector.getInstance(AuthenticationService.class);
-            User andrey = authenticationService.register("andrey123@gmail.com", "12345678");
+            authenticationService.register("andrey123@gmail.com", "12345678");
             authenticationService.login("andrey123@gmail.com", "12345678");
         } catch (RegistrationException | AuthenticationException e) {
             throw new RuntimeException(e);
