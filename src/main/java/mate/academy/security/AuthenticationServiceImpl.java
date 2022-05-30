@@ -1,7 +1,6 @@
 package mate.academy.security;
 
 import java.util.Optional;
-import java.util.regex.Pattern;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -12,10 +11,6 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private static final String REGEX_EMAIL =
-            "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+)*"
-                    + "@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
-
     @Inject
     private UserService userService;
 
@@ -31,12 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Pattern pattern = Pattern.compile(REGEX_EMAIL);
-        if (!userService.findByEmail(email).isEmpty()
-                || email.isEmpty()
-                || password.isEmpty()
-                || !pattern.matcher(email).matches()
-        ) {
+        if (!userService.findByEmail(email).isEmpty()) {
             throw new RegistrationException("Can't register user with the entered parameters");
         }
         return userService.add(createUserByEmailAndLogin(email, password));
@@ -45,8 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private User createUserByEmailAndLogin(String email, String password) {
         User user = new User();
         user.setEmail(email);
-        user.setSalt(HashUtil.getSalt());
-        user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
+        user.setPassword(password);
         return user;
     }
 }
