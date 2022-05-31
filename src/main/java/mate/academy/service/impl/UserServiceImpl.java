@@ -8,7 +8,7 @@ import mate.academy.model.User;
 import mate.academy.util.HashUtil;
 
 @Service
-public class UserServiceImpl implements mate.academy.service.UserService {
+public class UserServiceImpl implements UserService {
     @Inject
     private UserService userDao;
 

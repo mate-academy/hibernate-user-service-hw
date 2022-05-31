@@ -1,5 +1,6 @@
 package mate.academy.security;
 
+import java.util.Objects;
 import java.util.Optional;
 import javax.naming.AuthenticationException;
 import mate.academy.dao.UserService;
@@ -11,19 +12,16 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+
     @Inject
     private UserService userService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isEmpty()) {
-            throw new AuthenticationException("Cannot authenticate a user with the email " + email);
-        }
-        User user = userOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
+        if (userOptional.isPresent() && Objects.equals(userOptional.get().getPassword(),
+                HashUtil.hashPassword(password, userOptional.get().getSalt()))) {
+            return userOptional.get();
         }
         throw new AuthenticationException("Cannot authenticate a user with the email " + email);
     }
