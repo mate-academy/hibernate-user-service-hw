@@ -37,9 +37,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return userService.add(user);
     }
 
-    private boolean passwordMatches(Optional<User> optionalUser, String password) {
+    private boolean passwordMatches(Optional<User> userFromDb, String password) {
         String hashedPassword = HashUtil.hashPassword(password,
-                optionalUser.get().getSalt());
-        return hashedPassword.equals(optionalUser.get().getPassword());
+                userFromDb.get().getSalt());
+        return hashedPassword.equals(userFromDb.get().getPassword());
     }
 }
