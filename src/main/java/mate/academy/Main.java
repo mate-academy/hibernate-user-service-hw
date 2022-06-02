@@ -2,11 +2,13 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -22,6 +24,8 @@ public class Main {
         final MovieSessionService movieSessionService =
                 (MovieSessionService) injector.getInstance(MovieSessionService.class);
         final UserService userService = (UserService) injector.getInstance(UserService.class);
+        final AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -60,19 +64,13 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        User vlad = new User();
-        vlad.setPassword("qwerty");
-        vlad.setEmail("vlad@gmail.com");
-        userService.add(vlad);
-
-        User ira = new User();
-        ira.setEmail("ira@gmail.com");
-        ira.setPassword("blablabla");
-        userService.add(ira);
-
-        User sofia = new User();
-        sofia.setPassword("lu4shui_mentor_na_planete");
-        sofia.setEmail("ira@gmail.com");
-        userService.add(sofia);
+        try {
+            authenticationService.register("vlad@gmail.com", "qwerty");
+            authenticationService.login("vlad@gmail.com", "qwerty");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Email or password is incorrect");
+        }
     }
 }
