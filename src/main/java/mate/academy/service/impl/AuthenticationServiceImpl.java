@@ -18,8 +18,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        String hashedPassword = HashUtil.hashPassword(password,
-                userFromDbOptional.orElseThrow().getSalt());
+        String hashedPassword = HashUtil.hashPassword(password, userFromDbOptional
+                .orElseThrow().getSalt());
         if (!userFromDbOptional.get().getPassword().equals(hashedPassword)) {
             throw new AuthenticationException("Wrong email or password");
         }
