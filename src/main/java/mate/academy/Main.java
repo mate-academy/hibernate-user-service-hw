@@ -2,11 +2,13 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -22,6 +24,9 @@ public class Main {
             = (CinemaHallService) injector.getInstance(CinemaHallService.class);
     private static UserService userService
             = (UserService) injector.getInstance(UserService.class);
+
+    private static AuthenticationService authenticationService
+            = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
     public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -61,14 +66,13 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User bob = new User();
-        bob.setPassword("aloha");
-        bob.setEmail("ira@gmail.com");
-        userService.add(bob);
-
-        User alice = new User();
-        alice.setPassword("melon");
-        alice.setEmail("alice@gmail.com");
-        userService.add(alice);
+        try {
+            authenticationService.register("ira@gmail.com", "aloha");
+            authenticationService.login("ira@gmail.com", "aloha");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Something went wrong with registration", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Something went wrong with authentication", e);
+        }
     }
 }
