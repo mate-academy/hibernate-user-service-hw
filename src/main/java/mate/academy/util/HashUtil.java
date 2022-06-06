@@ -12,6 +12,10 @@ public class HashUtil {
     private static final int ITERATION = 65536;
     private static final int KEY_LENGTH = 128;
 
+    private HashUtil() {
+
+    }
+
     public static byte[] generateSalt() {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[32];
@@ -30,7 +34,7 @@ public class HashUtil {
                 KEY_LENGTH);
 
         try {
-            factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            factory = SecretKeyFactory.getInstance(ALGORITHM);
         } catch (NoSuchAlgorithmException ex) {
             throw new RuntimeException("Incorrect algorithm", ex);
         }
