@@ -24,7 +24,7 @@ public class HashUtil {
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
             for (byte symbol : digest) {
-                hashedPassword.append(String.format("$02x", symbol));
+                hashedPassword.append(String.format("%02x", symbol));
             }
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Can't create hash using SHA-256 algorithm", e);
