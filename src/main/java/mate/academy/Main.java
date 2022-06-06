@@ -71,6 +71,7 @@ public class Main {
         bob.setPassword("123456");
         userService.add(bob);
 
+        authenticationService.login(bob.getEmail(), "123456");
         authenticationService.register("new bob", "123456");
     }
 }
