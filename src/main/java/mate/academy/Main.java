@@ -66,12 +66,11 @@ public class Main {
         try {
             authenticationService.register("alice2357@gmail.com", "88888");
             authenticationService.login("alice2357@gmail.com", "88888");
+            System.out.println("Alice's registration was successful!");
         } catch (RegistrationException e) {
             throw new RuntimeException("Couldn't register a new user ", e);
         } catch (AuthenticationException e) {
             throw new RuntimeException("Couldn't authenticate such user ", e);
         }
-
-        System.out.println("Alice's registration is successful!");
     }
 }
