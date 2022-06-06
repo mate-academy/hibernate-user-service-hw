@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import java.util.Arrays;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -71,5 +72,15 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id, email, password);
+    }
+
+    @Override
+    public String toString() {
+        return "User{"
+                + "id=" + id
+                + ", email='" + email
+                + ", password='" + password
+                + ", salt=" + Arrays.toString(salt)
+                + '}';
     }
 }
