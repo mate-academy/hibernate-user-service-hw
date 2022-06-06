@@ -31,10 +31,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setEmail(email);
             user.setPassword(password);
             return userService.add(user);
-        } else {
-            throw new RegistrationException("Please check your login or password!\n"
-                    + "Maybe you already registration on this site?");
         }
+        throw new RegistrationException("Please check your login or password!\n"
+                + "Maybe you already registered on this site?");
     }
 
     private boolean checkPassword(String rawPassword, User userFromDb) {

@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -67,20 +69,26 @@ public class Main {
         try {
             User user = authenticationService.register("abrams.to.db@gmail.com", "123456");
             authenticationService.login("abrams.to.db@gmail.com", "123456");
-        } catch (Exception e) {
-            throw new RuntimeException("User already  exist ", e);
+        } catch (RegistrationException e) {
+            throw new RuntimeException("User already exist.", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Username or password is incorrect.", e);
         }
         try {
             User user = authenticationService.register("babrams.to.db@gmail.com", "123456");
             authenticationService.login("babrams.to.db@gmail.com", "123456");
-        } catch (Exception e) {
-            throw new RuntimeException("User already  exist ", e);
+        } catch (RegistrationException e) {
+            throw new RuntimeException("User already exist.", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Username or password is incorrect.", e);
         }
         try {
             User user = authenticationService.register("ababrams.to.db@gmail.com", "123456");
             authenticationService.login("ababrams.to.db@gmail.com", "123456");
-        } catch (Exception e) {
-            throw new RuntimeException("User already  exist ", e);
+        } catch (RegistrationException e) {
+            throw new RuntimeException("User already exist.", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Username or password is incorrect.", e);
         }
     }
 }

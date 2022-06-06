@@ -30,7 +30,7 @@ public class HashUtil {
             SecretKeyFactory factory = SecretKeyFactory.getInstance(ALGORITHM);
             hashPassword = factory.generateSecret(spec).getEncoded();
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new IllegalStateException("Can't create SHA-256 password-hash", e);
+            throw new IllegalStateException("Can't create PBKDF2WithHmacSHA1 password-hash", e);
         }
         return Hex.encodeHexString(hashPassword);
     }
