@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -68,6 +69,13 @@ public class Main {
             System.out.println(authenticationService.register(
                     "new_email@gmail.com", "newPassword"));
         } catch (RegistrationException e) {
+            throw new RuntimeException("Something went wrong", e);
+        }
+
+        try {
+            System.out.println(authenticationService.login(
+                    "new_email@gmail.com", "newPassword"));
+        } catch (AuthenticationException e) {
             throw new RuntimeException("Something went wrong", e);
         }
 
