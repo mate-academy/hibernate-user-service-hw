@@ -61,13 +61,15 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
+        AuthenticationService authenticationService = (AuthenticationService)
+                injector.getInstance(AuthenticationService.class);
         try {
-            AuthenticationService authenticationService = (AuthenticationService)
-                    injector.getInstance(AuthenticationService.class);
             authenticationService.register("andrey123@gmail.com", "12345678");
             authenticationService.login("andrey123@gmail.com", "12345678");
-        } catch (RegistrationException | AuthenticationException e) {
-            throw new RuntimeException(e);
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Couldn't register a new user ", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Couldn't authenticate such user ", e);
         }
     }
 }
