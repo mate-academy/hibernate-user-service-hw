@@ -14,7 +14,7 @@ public class User {
     private Long id;
     private String email;
     private String password;
-    private byte[] selt;
+    private byte[] salt;
 
     public Long getId() {
         return id;
@@ -40,11 +40,11 @@ public class User {
         this.password = password;
     }
 
-    public byte[] getSelt() {
-        return selt;
+    public byte[] getSalt() {
+        return salt;
     }
 
-    public void setSelt(byte[] selt) {
-        this.selt = selt;
+    public void setSalt(byte[] selt) {
+        this.salt = selt;
     }
 }
