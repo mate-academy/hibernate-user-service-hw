@@ -8,12 +8,10 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -23,8 +21,6 @@ public class Main {
             = (MovieSessionService) injector.getInstance(MovieSessionService.class);
     private static CinemaHallService cinemaHallService
             = (CinemaHallService) injector.getInstance(CinemaHallService.class);
-    private static UserService userService
-            = (UserService) injector.getInstance(UserService.class);
     private static AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
@@ -58,8 +54,9 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
         try {
-            User bob = authenticationService.register("bob_from_MA@gmail.com", "12345678");
-            System.out.println(authenticationService.login(bob.getEmail(), "12345678"));
+            authenticationService.register("bob_from_MA@gmail.com", "12345678");
+            authenticationService.login("bob_from_MA@gmail.com", "12345678");
+            System.out.println("You registration was successfully");
         } catch (RegistrationException | AuthenticationException e) {
             throw new RuntimeException("Can't authenticate this user ", e);
         }

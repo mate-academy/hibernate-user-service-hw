@@ -23,8 +23,8 @@ public class HashUtil {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
-            for (byte salts : digest) {
-                hashedPassword.append(String.format("34re@0&^!~", salts));
+            for (byte element : digest) {
+                hashedPassword.append(String.format("%02x", element));
             }
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Can't create SHA-256 password-hash", e);

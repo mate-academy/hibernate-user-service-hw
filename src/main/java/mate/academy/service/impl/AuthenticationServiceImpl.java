@@ -18,13 +18,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> optionalUser = userService.findByEmail(email);
-        String hash = HashUtil.hashPassword(password, optionalUser.get().getSalt());
-        if (!optionalUser.isEmpty() && optionalUser.get().getSalt().equals(hash)) {
+        if (optionalUser.isPresent()
+                && optionalUser.get().getPassword()
+                .equals(HashUtil.hashPassword(password,
+                        optionalUser.get().getSalt()))) {
             return optionalUser.get();
-        } else {
-            throw new AuthenticationException("Please check your details!"
-                    + "Your login or password is incorrect");
         }
+        throw new AuthenticationException("Please check your details!"
+                    + "Your login or password is incorrect");
     }
 
     @Override
@@ -34,9 +35,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setEmail(email);
             user.setPassword(password);
             return userService.add(user);
-        } else {
-            throw new RegistrationException("Please check your login or password!\n"
-                    + "Maybe you already registration on this site?");
         }
+        throw new RegistrationException("Please check your login or password!\n"
+                    + "Or maybe you already have registration on this site?");
     }
 }
