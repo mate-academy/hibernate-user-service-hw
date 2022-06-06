@@ -59,16 +59,13 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        User test = new User();
-        test.setEmail("email@i.ua");
-        test.setPassword("axcbtyr");
         AuthenticationService authenticationService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
         try {
             authenticationService.register("testingLogIn", "genericPassword");
             authenticationService.login("testingLogIn", "genericPassword");
         } catch (Exception e) {
-            throw new RuntimeException("Nope", e);
+            throw new RuntimeException("Unable to perform registration or authentication", e);
         }
     }
 }
