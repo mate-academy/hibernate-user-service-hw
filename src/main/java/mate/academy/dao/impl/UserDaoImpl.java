@@ -20,6 +20,7 @@ public class UserDaoImpl implements UserDao {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.save(user);
+            return user;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -30,7 +31,6 @@ public class UserDaoImpl implements UserDao {
                 session.close();
             }
         }
-        return null;
     }
 
     @Override
