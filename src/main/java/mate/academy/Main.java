@@ -25,7 +25,7 @@ public class Main {
             authenticationService.register("nickolai@email.com", "1234567890");
             authenticationService.login("nickolai@email.com", "1234567890");
         } catch (RegistrationException | AuthenticationException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't authenticate user",e);
         }
 
         Movie fastAndFurious = new Movie("Fast and Furious");
