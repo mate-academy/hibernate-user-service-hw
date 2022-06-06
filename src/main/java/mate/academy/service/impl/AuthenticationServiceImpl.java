@@ -17,12 +17,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDBOptional = userService.findByEmail(email);
-        if (userFromDBOptional.isEmpty()
-                || !passwordMatches(userFromDBOptional.get(), password)) {
+        Optional<User> userFromDbOptional = userService.findByEmail(email);
+        if (userFromDbOptional.isEmpty()
+                || !passwordMatches(userFromDbOptional.get(), password)) {
             throw new AuthenticationException("Incorrect login or password...");
         }
-        return userFromDBOptional.get();
+        return userFromDbOptional.get();
     }
 
     @Override
