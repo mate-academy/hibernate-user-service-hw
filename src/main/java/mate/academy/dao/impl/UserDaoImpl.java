@@ -13,8 +13,10 @@ import org.hibernate.Transaction;
 public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
+        Session session = null;
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();
@@ -23,7 +25,11 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't add user: " + user, e);
+            throw new DataProcessingException("Can't insert user " + user, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 

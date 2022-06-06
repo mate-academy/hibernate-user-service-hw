@@ -52,13 +52,15 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
+        AuthenticationService authenticationService = (AuthenticationService)
+                injector.getInstance(AuthenticationService.class);
         try {
-            AuthenticationService authenticationService = (AuthenticationService)
-                    injector.getInstance(AuthenticationService.class);
             authenticationService.register("Andriifabersky@gmail.com", "qwerty");
             authenticationService.login("Andriifabersky@gmail.com", "qwerty");
-        } catch (RegistrationException | AuthenticationException e) {
-            throw new RuntimeException(e);
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Email or password is incorrect");
         }
     }
 }
