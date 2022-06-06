@@ -42,8 +42,8 @@ public class UserDaoImpl implements UserDao {
                     .setParameter("email", email)
                     .uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("There is no user with email "
-                + email + " or it is invalid.", e);
+            throw new DataProcessingException("Can't get user with email "
+                    + email, e);
         }
     }
 }
