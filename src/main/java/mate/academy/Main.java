@@ -23,8 +23,10 @@ public class Main {
         try {
             User oleh = authenticationService.register("sred_a@i.ua", "1234");
             System.out.println(authenticationService.login(oleh.getEmail(), "1234"));
-        } catch (RegistrationException | AuthenticationException e) {
-            throw new RuntimeException();
+        } catch (RegistrationException e) {
+            throw new RuntimeException("User with this email already exists", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Wrong email or password", e);
         }
 
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
