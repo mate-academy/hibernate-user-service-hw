@@ -25,7 +25,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (user.getPassword().equals(hashPassword)) {
             return user;
         }
-        throw new AuthenticationException("Different password");
+        throw new AuthenticationException("Can't authentication user with email: " + email);
     }
 
     @Override
