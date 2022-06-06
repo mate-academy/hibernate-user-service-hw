@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
 
-    public HashUtil() {
+    private HashUtil() {
     }
 
     public static byte[] getSalt() {
@@ -18,15 +18,15 @@ public class HashUtil {
     }
 
     public static String hashPassword(String password, byte[] salt) {
-        StringBuilder hashed = new StringBuilder();
+        StringBuilder hashedPassword = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte [] digest = messageDigest.digest(password.getBytes());
             for (byte b : digest) {
-                hashed.append(String.format("%02x", b));
+                hashedPassword.append(String.format("%02x", b));
             }
-            return hashed.toString();
+            return hashedPassword.toString();
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Can't create hash using SHA-512 algorithm", e);
         }
