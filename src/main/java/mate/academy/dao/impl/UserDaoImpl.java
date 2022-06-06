@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao {
                     .uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("There is no user with email "
-                + email + " or email " + email + " is invalid.", e);
+                + email + " or it is invalid.", e);
         }
     }
 }
