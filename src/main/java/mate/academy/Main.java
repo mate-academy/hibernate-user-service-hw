@@ -72,7 +72,7 @@ public class Main {
 
         try {
             System.out.println(authenticationService.login("zuzo@meta.ua", "123456"));
-            // System.out.println(authenticationService.login("zuzu@meta.ua", "654321"));
+            // System.out.println(authenticationService.login("wrong@meta.ua", "654321"));
             System.out.println(authenticationService.login("zaza@meta.ua", "456789"));
         } catch (AuthenticationException e) {
             throw new RuntimeException("Email or password was invalid", e);
