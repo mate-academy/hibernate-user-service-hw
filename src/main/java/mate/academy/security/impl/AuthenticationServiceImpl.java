@@ -30,6 +30,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("There is already a registered user with this email "
+                    + email);
+        }
         if (email.isEmpty() || email.length() < MIN_LENGTH_LOGIN || !email.contains("@")) {
             throw new RegistrationException("Login can`t be empty or length over "
                     + MIN_LENGTH_LOGIN + ", or login contains @");
