@@ -31,9 +31,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("User with this email address "
                     + "already exists: " + email);
         }
-        if (!email.contains("@")) {
-            throw new RegistrationException("Incorrect email address");
-        }
         return userService.add(new User(email, password));
     }
 }
