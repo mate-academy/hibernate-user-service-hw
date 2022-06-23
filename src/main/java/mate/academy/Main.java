@@ -8,7 +8,6 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -64,10 +63,9 @@ public class Main {
 
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User validUser;
         try {
-            validUser = authenticationService
-                    .register("validEmail@gmail.com", "validPassword");
+            System.out.println(authenticationService
+                    .register("validEmail@gmail.com", "validPassword"));
         } catch (RegistrationException e) {
             throw new RuntimeException("Can't register user", e);
         }
