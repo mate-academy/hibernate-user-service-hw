@@ -23,7 +23,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         new AuthenticationException("User with this email "
                                 + email + " does not exist"));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (!user.getPassword().equals(password)) {
+        if (!user.getPassword().equals(hashedPassword)) {
             throw new AuthenticationException("Email or password is invalid");
         }
         return user;
