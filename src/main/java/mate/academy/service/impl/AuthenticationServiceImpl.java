@@ -29,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (password.isEmpty() || userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Invalid password");
+            throw new RegistrationException("Invalid registration data");
         }
         User user = new User();
         user.setEmail(email);
