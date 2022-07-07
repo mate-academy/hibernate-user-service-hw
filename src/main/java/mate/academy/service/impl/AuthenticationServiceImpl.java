@@ -32,11 +32,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("Invalid password");
         }
         User user = new User();
-        byte[] salt = HashUtil.getSalt();
-        String userPassword = HashUtil.hashPassword(password, salt);
         user.setEmail(email);
-        user.setSalt(salt);
-        user.setPassword(userPassword);
+        user.setPassword(password);
         userService.add(user);
         return user;
     }
