@@ -1,7 +1,6 @@
 package mate.academy.security;
 
 import java.util.Optional;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -40,8 +39,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private boolean emailValidator(String email) {
-        Pattern pattern = Pattern.compile(REGEX);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+        return Pattern.compile(REGEX).matcher(email).matches();
     }
 }
