@@ -14,6 +14,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private static final int MINIMUM_PASSWORD_LENGTH = 8;
     @Inject
     private UserService userService;
+
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
@@ -38,8 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = new User();
         user.setEmail(email);
-        user.setSalt(HashUtil.getSalt());
-        user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
+        user.setPassword(password);
         return userService.add(user);
     }
 }
