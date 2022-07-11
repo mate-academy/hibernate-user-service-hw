@@ -1,6 +1,5 @@
 package mate.academy.security;
 
-import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -17,11 +16,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isEmpty()) {
-            throw new AuthenticationException("Something wrong with login or password");
-        }
-        User user = userOptional.get();
+        User user = userService.findByEmail(email).orElseThrow(() ->
+                new AuthenticationException("Something wrong with login or password"));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (!user.getPassword().equals(hashedPassword)) {
             throw new AuthenticationException("Something wrong with login or password");

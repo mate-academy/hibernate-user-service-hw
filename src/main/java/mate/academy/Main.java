@@ -66,11 +66,8 @@ public class Main {
         try {
             authenticationService.register("Bob", "1123463697");
             System.out.println(authenticationService.login("Bob", "1123463697"));
-        } catch (RegistrationException e) {
-            throw new RuntimeException(e);
-        } catch (AuthenticationException e) {
+        } catch (RegistrationException | AuthenticationException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
