@@ -29,6 +29,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        return userService.add(user);
+        try {
+            return userService.add(user);
+        } catch (Exception e) {
+            throw new RegistrationException("Can`t register user with email: " + email);
+        }
     }
 }
