@@ -31,7 +31,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             String email = "jack@example.com";
-            String password = "12345";
+            String password = null;
             authenticationService.register(email, password);
             User jack = authenticationService.login(email, password);
             System.out.println("* ".repeat(10));

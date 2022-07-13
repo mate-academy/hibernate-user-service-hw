@@ -17,7 +17,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isPresent()) {
+        if (password != null && userOptional.isPresent()) {
             User user = userOptional.get();
             String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
             if (user.getPassword().equals(hashedPassword)) {
@@ -29,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (userService.findByEmail(email).isPresent()) {
+        if (email == null || password == null || userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Can't register user with this data");
         }
         return userService.add(new User(email, password));
