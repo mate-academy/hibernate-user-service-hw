@@ -17,21 +17,13 @@ import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
-    private static final MovieService movieService =
-            (MovieService) injector.getInstance(MovieService.class);
-    private static final CinemaHallService cinemaHallService =
-            (CinemaHallService) injector.getInstance(CinemaHallService.class);
-    private static final MovieSessionService movieSessionService =
-            (MovieSessionService) injector.getInstance(MovieSessionService.class);
-    private static final UserService userService =
-            (UserService) injector.getInstance(UserService.class);
-    private static final AuthenticationService authenticationService =
-            (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
     public static void main(String[] args) {
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             String email = "jack@example.com";
-            String password = null;
+            String password = "12345";
             authenticationService.register(email, password);
             User jack = authenticationService.login(email, password);
             System.out.println("* ".repeat(10));
@@ -41,9 +33,11 @@ public class Main {
         } catch (AuthenticationException e) {
             throw new RuntimeException("Authentication error", e);
         }
+        UserService userService = (UserService) injector.getInstance(UserService.class);
         System.out.println("* ".repeat(10));
         userService.getAll().forEach(System.out::println);
 
+        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -51,6 +45,8 @@ public class Main {
         System.out.println("* ".repeat(10));
         movieService.getAll().forEach(System.out::println);
 
+        CinemaHallService cinemaHallService =
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
         CinemaHall firstCinemaHall = new CinemaHall();
         firstCinemaHall.setCapacity(100);
         firstCinemaHall.setDescription("first hall with capacity 100");
@@ -68,12 +64,15 @@ public class Main {
         tomorrowMovieSession.setCinemaHall(firstCinemaHall);
         tomorrowMovieSession.setMovie(fastAndFurious);
         tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
-        movieSessionService.add(tomorrowMovieSession);
 
         MovieSession yesterdayMovieSession = new MovieSession();
         yesterdayMovieSession.setCinemaHall(firstCinemaHall);
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now());
+
+        MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println("* ".repeat(10));
