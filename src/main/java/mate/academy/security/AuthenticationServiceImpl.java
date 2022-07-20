@@ -17,7 +17,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> byEmailOptional = userService.findByEmail(email);
-        if (byEmailOptional.isPresent()) {
+        if (checkForNullEmptyWhitespace(email) && checkForNullEmptyWhitespace(password)
+                && byEmailOptional.isPresent()) {
             User user = byEmailOptional.get();
             String hashedPass = HashUtil.hashPassword(password, user.getSalt());
             if (user.getPassword().equals(hashedPass)) {
@@ -29,11 +30,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email.isEmpty()) {
-            throw new RegistrationException("Wrong email");
-        }
-        if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("User with such email exist already");
+        if (!checkForNullEmptyWhitespace(email) || !checkForNullEmptyWhitespace(password)
+                || userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("Can't register user. Please try another email and password");
         }
         User user = new User();
         user.setPassword(password);
@@ -41,4 +40,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userService.add(user);
         return user;
     }
+
+    private boolean checkForNullEmptyWhitespace(String string) {
+        return string != null && !string.isEmpty()
+                && string.trim().length() == string.length();
+    }
+
 }
