@@ -32,7 +32,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         if (!checkForNullEmptyWhitespace(email) || !checkForNullEmptyWhitespace(password)
                 || userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Can't register user. Please try another email and password");
+            throw new RegistrationException("Can't register user. "
+                    + "Please try another email and password");
         }
         User user = new User();
         user.setPassword(password);
