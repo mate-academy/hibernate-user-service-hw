@@ -22,7 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .equals(HashUtil.hashPassword(password, userOptional.get().getSalt()))) {
             return userOptional.get();
         }
-        throw new AuthenticationException("Can't authenticate user");
+        throw new AuthenticationException("Login or password was incorrect");
     }
 
     @Override
@@ -34,6 +34,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setPassword(password);
             return userService.add(user);
         }
-        throw new RegistrationException("Can't register user");
+        throw new RegistrationException("User with email: " + email + " already exist");
     }
 }
