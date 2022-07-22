@@ -17,7 +17,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        return null;
+        User user = new User(email, password);
+        return userService.add(user);
     }
 
     @Override
