@@ -55,4 +55,9 @@ public class User {
     public void setSalt(byte[] salt) {
         this.salt = salt;
     }
+
+    @Override
+    public String toString() {
+        return "User={Id=" + id + ", email=" + email + "}";
+    }
 }

@@ -67,7 +67,6 @@ public class Main {
         user.setEmail("special@gmail.com");
         user.setPassword("secret");
         authenticationService.register(user.getEmail(), user.getPassword());
-        System.out.println("User was registered");
         User userFromDB = authenticationService.login("special@gmail.com", "secret");
         System.out.println("userFromDB = " + userFromDB);
     }
