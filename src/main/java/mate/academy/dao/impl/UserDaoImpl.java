@@ -43,6 +43,5 @@ public class UserDaoImpl implements UserDao {
         } catch (Exception e) {
             throw new DataProcessingException("Can't get user by email: " + email, e);
         }
-
     }
 }

@@ -28,8 +28,10 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            User alice = authenticationService.register("test@gmail.com", "qwerty");
-            authenticationService.login("test@gmail.com", "qwerty");
+            User registeredUser = authenticationService.register("testbob@gmail.com", "qwerty");
+            User loggedUser = authenticationService.login("testbob@gmail.com", "qwerty");
+            System.out.println("User with email: " + registeredUser.getEmail() + " was registered");
+            System.out.println("User with email: " + loggedUser.getEmail() + " was authenticated");
         } catch (RegistrationException e) {
             throw new RuntimeException("Error in registration", e);
         } catch (AuthenticationException e) {
