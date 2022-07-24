@@ -23,7 +23,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!EMAIL_PATTERN.matcher(email).matches()) {
             throw new RegistrationException("Email isn't valid");
         }
-        if (userService.findByEmail(email).isEmpty()) {
+        if (userService.findByEmail(email).isPresent()) {
             User user = new User(email, password);
             return userService.add(user);
         }
