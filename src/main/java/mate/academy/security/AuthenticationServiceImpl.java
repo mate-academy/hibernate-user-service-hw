@@ -32,6 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isEmpty()) {
             return userService.add(new User(email, password));
         }
-        throw new RegistrationException("Can't register user");
+        throw new RegistrationException("Can't register user. "
+                + "User with such login already exist " + email);
     }
 }
