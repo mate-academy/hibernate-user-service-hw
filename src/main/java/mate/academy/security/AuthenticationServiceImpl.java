@@ -1,4 +1,4 @@
-package mate.academy.service.impl;
+package mate.academy.security;
 
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
@@ -6,7 +6,6 @@ import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
-import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
@@ -20,7 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isPresent() && userFromDbOptional.get().getPassword()
                     .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
-            throw new AuthenticationException("Can`t authenticate user");
+            throw new AuthenticationException("Can`t authenticate user: incorrect password or email");
         }
         return userFromDbOptional.get();
     }
@@ -33,6 +32,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setPassword(password);
             return userService.add(user);
         }
-        throw new RegistrationException("Can`t register user");
+        throw new RegistrationException("Can`t register user: email " + email + " already used");
     }
 }
