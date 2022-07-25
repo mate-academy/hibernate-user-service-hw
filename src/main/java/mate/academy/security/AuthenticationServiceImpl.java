@@ -19,7 +19,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isPresent() && userFromDbOptional.get().getPassword()
                     .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
-            throw new AuthenticationException("Can`t authenticate user: incorrect password or email");
+            throw new AuthenticationException("Can`t authenticate user: " 
+                                             + "incorrect password or email");
         }
         return userFromDbOptional.get();
     }
