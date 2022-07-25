@@ -2,6 +2,7 @@ package mate.academy.security.impl;
 
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.DataValidationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
@@ -19,7 +20,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private EmailValidatorService emailValidatorService;
 
     @Override
-    public User register(String email, String password) throws RegistrationException {
+    public User register(String email, String password)
+            throws RegistrationException, DataValidationException {
         emailValidatorService.isValid(email);
         if (!userService.findByEmail(email).isPresent()) {
             User user = new User(email, password);

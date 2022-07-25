@@ -1,7 +1,7 @@
 package mate.academy.service;
 
-import mate.academy.exception.RegistrationException;
+import mate.academy.exception.DataValidationException;
 
 public interface EmailValidatorService {
-    boolean isValid(String email) throws RegistrationException;
+    boolean isValid(String email) throws DataValidationException;
 }
