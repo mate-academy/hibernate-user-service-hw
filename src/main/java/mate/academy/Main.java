@@ -63,10 +63,13 @@ public class Main {
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
         try {
-            authenticationService.register("someother@gmail.com", "qwerty1234");
-            System.out.println(authenticationService.login("someother@gmail.com", "qwerty1234"));
-            System.out.println(authenticationService.login("olduser@gmail.com", "qwerty"));
-            System.out.println(authenticationService.login("newuser@gmail.com", "1234567"));
+            authenticationService.register("someother@gmail.com", "Qwerty1234");
+            System.out.println(
+                    authenticationService.login("someother@gmail.com", "Qwerty1234"));
+            System.out.println(
+                    authenticationService.login("olduser@gmail.com", "qwerty"));
+            System.out.println(
+                    authenticationService.login("newuser@gmail.com", "1234567"));
         } catch (RegistrationException e) {
             throw new RuntimeException("User was not registered");
         } catch (AuthenticationException e) {
