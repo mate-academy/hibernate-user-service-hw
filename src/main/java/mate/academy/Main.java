@@ -2,11 +2,14 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -64,5 +67,18 @@ public class Main {
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.add(user);
         System.out.println(userService.findByEmail(user.getEmail()));
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        try {
+            authenticationService.register(user.getEmail(), "122142141");
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            authenticationService.login(user.getEmail(), "00000000000");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
