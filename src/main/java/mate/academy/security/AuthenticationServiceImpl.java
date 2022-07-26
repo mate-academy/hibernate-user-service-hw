@@ -30,10 +30,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (password.length() < PASSWORD_LENGTH) {
-            throw new RegistrationException("You should use password longer than 8 symbols");
+            throw new DataProcessingException("You should use password longer than 8 symbols");
         }
         if (userService.findByEmail(email).isPresent()) {
-            throw new DataProcessingException("User with such email already exists" + email);
+            throw new RegistrationException("User with such email already exists" + email);
         }
         User user = new User();
         user.setEmail(email);
