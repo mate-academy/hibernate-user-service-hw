@@ -31,9 +31,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("User with same email already exist.Email: " + email
                     + "Change email or try to login");
         }
-        if (password.length() < 10) {
-            throw new RegistrationException("Password must contain 10 or more symbols");
-        }
         User current = new User();
         current.setEmail(email);
         current.setPassword(password);
