@@ -2,6 +2,7 @@ package mate.academy.security;
 
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
@@ -18,24 +19,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isEmpty()) {
-            throw new AuthenticationException("Can't find user in DB by email " + email);
+        if (userFromDb.isPresent() && userFromDb.get()
+                            .getPassword()
+                            .equals(HashUtil.hashPassword(password, userFromDb.get().getSalt()))) {
+            return userFromDb.get();
         }
-        User user = userFromDb.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("Can't authenticate user");
+        throw new AuthenticationException("Can't authenticate user by email " + email);
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("You should use unique email");
-        }
         if (password.length() < PASSWORD_LENGTH) {
             throw new RegistrationException("You should use password longer than 8 symbols");
+        }
+        if (userService.findByEmail(email).isPresent()) {
+            throw new DataProcessingException("User with such email already exists" + email);
         }
         User user = new User();
         user.setEmail(email);
