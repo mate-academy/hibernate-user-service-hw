@@ -28,7 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         Optional<User> user = userService.findByEmail(email);
         if (user.isPresent()) {
-            throw new RegistrationException("User with same email already exist."
+            throw new RegistrationException("User with same email already exist.Email: " + email
                     + "Change email or try to login");
         }
         if (password.length() < 10) {

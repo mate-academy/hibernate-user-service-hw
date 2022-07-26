@@ -40,8 +40,8 @@ public class UserDaoImpl implements UserDao {
                     HibernateUtil.getSessionFactory().openSession()) {
             Query<User> query = session.createQuery("FROM User u "
                     + "WHERE u.email = :userEmail", User.class);
-            query.setParameter("userEmail", email);
-            return Optional.ofNullable(query.getSingleResult());
+            return query.setParameter("userEmail", email)
+                    .uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get user by email: " + email, e);
         }
