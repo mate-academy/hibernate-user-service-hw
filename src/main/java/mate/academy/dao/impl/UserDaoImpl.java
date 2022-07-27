@@ -16,7 +16,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.save(user);
             return user;
@@ -25,6 +27,10 @@ public class UserDaoImpl implements UserDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't add a user " + user + " to DB", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
@@ -34,7 +40,7 @@ public class UserDaoImpl implements UserDao {
             Query<User> query = session.createQuery("from User "
                     + "where email = :email", User.class);
             query.setParameter("email", email);
-            return Optional.ofNullable(query.getSingleResult());
+            return query.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a user by email " + email, e);
         }

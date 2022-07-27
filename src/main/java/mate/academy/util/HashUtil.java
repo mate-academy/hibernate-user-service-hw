@@ -28,7 +28,7 @@ public class HashUtil {
                 stringBuilder.append(String.format("%02x", digit));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Can't create hash using SHA-512", e);
+            throw new IllegalStateException("Can't create hash using " + CRYPTO_ALGORITHM, e);
         }
         return stringBuilder.toString();
     }

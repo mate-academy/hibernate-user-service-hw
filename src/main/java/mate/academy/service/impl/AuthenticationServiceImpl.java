@@ -22,7 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .equals(userByEmail.get().getPassword())) {
             return userByEmail.get();
         }
-        throw new AuthenticationException("Can't login a user with email " + email);
+        throw new AuthenticationException("Login or password are incorrect");
     }
 
     @Override
@@ -30,9 +30,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setPassword(password);
         user.setEmail(email);
-        if (email.matches("^([a-zA-Z0-9_\\-\\.]+)"
-                + "@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")
-                && userService.add(user).getId() != null) {
+        if (userService.findByEmail(email).isEmpty()) {
+            userService.add(user);
             return user;
         }
         throw new RegistrationException("Can't register a user with email " + email);
