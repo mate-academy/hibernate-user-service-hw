@@ -2,17 +2,30 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
-    public static void main(String[] args) {
-        MovieService movieService = null;
+    private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final MovieService movieService
+            = (MovieService) injector.getInstance(MovieService.class);
+    private static final CinemaHallService cinemaHallService
+            = (CinemaHallService) injector.getInstance(CinemaHallService.class);
+    private static final MovieSessionService movieSessionService
+            = (MovieSessionService) injector.getInstance(MovieSessionService.class);
+    private static final AuthenticationService authenticationService
+            = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
+    public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -27,7 +40,6 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,12 +56,51 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        System.out.println("check user registration: new email -> successfully registered");
+        try {
+            User newUser = authenticationService.register("bob@gmail.com", "1234");
+            System.out.println("user " + newUser + " successfully registered");
+        } catch (RegistrationException re) {
+            System.out.println("new user registration failed");
+        }
+
+        System.out.println("check user registration: existed email -> registration failed");
+        try {
+            User existedUser = authenticationService.register("bob@gmail.com", "1234");
+            System.out.println("user " + existedUser + " successfully registered");
+        } catch (RegistrationException re) {
+            System.out.println("existedUser registration failed");
+        }
+
+        System.out.println("check user login: existed user -> successfully login");
+        try {
+            User existedUser = authenticationService.login("bob@gmail.com", "1234");
+            System.out.println("user " + existedUser + " successfully login");
+        } catch (AuthenticationException ae) {
+            System.out.println("existedUser login failed");
+        }
+
+        System.out.println("check user login: non-existed email -> login failed");
+        try {
+            User nonExistedUser = authenticationService.login("alice.com", "1234");
+            System.out.println("user " + nonExistedUser + " successfully login");
+        } catch (AuthenticationException ae) {
+            System.out.println("nonExistedUser login failed");
+        }
+
+        System.out.println("check user login: non-existed password -> login failed");
+        try {
+            User nonExistedUser = authenticationService.login("bob.com", "1235");
+            System.out.println("user " + nonExistedUser + " successfully login");
+        } catch (AuthenticationException ae) {
+            System.out.println("nonExistedUser login failed");
+        }
     }
 }
