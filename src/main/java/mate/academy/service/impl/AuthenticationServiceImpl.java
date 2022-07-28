@@ -37,6 +37,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userService.add(user);
             return user;
         }
-        throw new RegistrationException("User with such email address already exists");
+        throw new RegistrationException("User with such email address already exists " + email);
     }
 }
