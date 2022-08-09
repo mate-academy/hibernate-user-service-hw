@@ -8,6 +8,7 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
@@ -40,7 +41,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return Optional.ofNullable(session.get(User.class, email));
+            Query<User> findByEmailQuery = session.createQuery(
+                    "from User u where u.email = :email");
+            findByEmailQuery.setParameter("email", email);
+            return Optional.ofNullable(findByEmailQuery.uniqueResult());
         } catch (Exception e) {
             throw new DataProcessingException("Can't get user by email: " + email, e);
         }
