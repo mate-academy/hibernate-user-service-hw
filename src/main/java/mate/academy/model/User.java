@@ -1,7 +1,5 @@
 package mate.academy.model;
 
-import mate.academy.util.HashUtil;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
