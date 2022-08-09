@@ -1,5 +1,6 @@
-package mate.academy.dao;
+package mate.academy.dao.impl;
 
+import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.Movie;
@@ -37,21 +38,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> get(Long id) {
+    public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return Optional.ofNullable(session.get(User.class, id));
+            return Optional.ofNullable(session.get(User.class, email));
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get user by id: " + id, e);
-        }    }
-
-    @Override
-    public List<User> getAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder()
-                    .createQuery(User.class);
-            criteriaQuery.from(User.class);
-            return session.createQuery(criteriaQuery).getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get all users", e);
-        }    }
+            throw new DataProcessingException("Can't get user by email: " + email, e);
+        }
+    }
 }
