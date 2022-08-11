@@ -15,7 +15,8 @@ import mate.academy.service.MovieSessionService;
 
 public class Main {
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
-        MovieService movieService = (MovieService) Injector.getInstance("mate")
+        Injector injector = Injector.getInstance("mate");
+        MovieService movieService = (MovieService) injector
                 .getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -32,7 +33,7 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = (CinemaHallService) Injector.getInstance("mate")
+        CinemaHallService cinemaHallService = (CinemaHallService) injector
                 .getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
@@ -50,7 +51,7 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = (MovieSessionService) Injector.getInstance("mate")
+        MovieSessionService movieSessionService = (MovieSessionService) injector
                 .getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
@@ -60,7 +61,7 @@ public class Main {
                         fastAndFurious.getId(), LocalDate.now()));
 
         AuthenticationService authenticationService =
-                (AuthenticationService) Injector.getInstance("mate")
+                (AuthenticationService) injector
                         .getInstance(AuthenticationService.class);
         authenticationService.register("qwerty@gmail.com", "qwerty");
         authenticationService.login("qwerty@gmail.com", "qwerty");
