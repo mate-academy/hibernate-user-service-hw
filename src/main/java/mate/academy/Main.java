@@ -14,7 +14,7 @@ import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
-    private final static Injector injector = Injector.getInstance("mate");
+    private static final Injector injector = Injector.getInstance("mate");
 
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
         MovieService movieService = (MovieService) injector
