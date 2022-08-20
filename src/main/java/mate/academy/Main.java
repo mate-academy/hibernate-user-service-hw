@@ -2,19 +2,20 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
@@ -59,26 +60,35 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        // User
-        User alice = new User();
-        alice.setEmail("alice@gmail.com");
-        alice.setPassword("qwerty");
-        alice.setSalt(new byte[] {32});
+        // register
+        System.out.println("--------- register ------------");
+        AuthenticationService authenticationService = (AuthenticationService)
+                        injector.getInstance(AuthenticationService.class);
+        try {
+            authenticationService.register("alice@gmail.com", "qwerty");
+            authenticationService.register("bob@gmail.com", "123456");
+            authenticationService.register("notValid_email", "111111");
 
-        User bob = new User();
-        bob.setEmail("bob@gmail.com");
-        bob.setPassword("123456");
-        bob.setSalt(new byte[] {123});
+        } catch (RegistrationException e) {
+            System.out.println("Can't register user: not valid Email or user already exist");
+        }
 
-        // add
-        UserService userService = (UserService) injector.getInstance(UserService.class);
-        userService.add(bob);
-        userService.add(alice);
-
-        // findByEmail
-        System.out.println(userService.findByEmail("alice@gmail.com").get());
-        System.out.println(userService.findByEmail("bob@gmail.com").get());
-        System.out.println(userService.findByEmail("john@gmail.com").get());
-
+        // login
+        System.out.println("--------- login ------------");
+        try {
+            System.out.println(authenticationService.login("alice@gmail.com", "qwerqqty"));
+        } catch (AuthenticationException e) {
+            System.out.println("Can't login with this email and password");
+        }
+        try {
+            System.out.println(authenticationService.login("bob@gmail.com", "123456"));
+        } catch (AuthenticationException e) {
+            System.out.println("Can't login with this email and password");
+        }
+        try {
+            System.out.println(authenticationService.login("ali@gmail.com", "qwerty"));
+        } catch (AuthenticationException e) {
+            System.out.println("Can't login with this email and password");
+        }
     }
 }

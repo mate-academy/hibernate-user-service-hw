@@ -1,17 +1,15 @@
 package mate.academy.dao.impl;
 
+import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-
-import java.util.Optional;
 
 @Dao
 public class UserDaoImpl implements UserDao {
@@ -30,8 +28,7 @@ public class UserDaoImpl implements UserDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't add user " + user, e);
-        }
-        finally {
+        } finally {
             if (session != null) {
                 session.close();
             }
