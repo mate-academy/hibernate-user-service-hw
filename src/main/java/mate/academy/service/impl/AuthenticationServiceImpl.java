@@ -18,10 +18,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email).orElseThrow(() ->
-                new AuthenticationException("Wrong email or password"));
-        String hashedLoginPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (!user.getPassword().equals(hashedLoginPassword)) {
+        User user = userService.findByEmail(email).orElse(null);
+        if (user == null || !user.getPassword()
+                                .equals(HashUtil.hashPassword(password, user.getSalt()))) {
             throw new AuthenticationException("Wrong email or password");
         }
         return user;
@@ -29,11 +28,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (!emailValid(email)) {
+        if (!isEmailValid(email)) {
             throw new RegistrationException("Email is not valid");
         }
+        if (!isPasswordValid(password)) {
+            throw new RegistrationException("Password is not valid");
+        }
+
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("User with E-Mail " + email + " already exist");
+            throw new RegistrationException("User with email " + email + " already exist");
         }
         User user = new User();
         user.setEmail(email);
@@ -42,7 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return userService.add(user);
     }
 
-    private boolean emailValid(String email) {
+    private boolean isEmailValid(String email) {
         if (email == null) {
             return false;
         }
@@ -50,5 +53,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    private boolean isPasswordValid(String password) {
+        return password != null && !password.isEmpty();
     }
 }

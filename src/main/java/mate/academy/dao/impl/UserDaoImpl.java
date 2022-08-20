@@ -6,6 +6,7 @@ import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -43,6 +44,8 @@ public class UserDaoImpl implements UserDao {
                     "from User u where u.email = :email");
             getByEmailQuery.setParameter("email", email);
             return getByEmailQuery.uniqueResultOptional();
+        } catch (HibernateException e) {
+            throw new DataProcessingException("Can't get user from database by email", e);
         }
     }
 }
