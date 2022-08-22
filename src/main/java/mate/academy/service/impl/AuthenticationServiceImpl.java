@@ -30,7 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (!isEmailValid(email)) {
+        if (email.isEmpty()) {
             throw new RegistrationException("Email is not valid");
         }
         if (!isPasswordValid(password)) {
@@ -45,16 +45,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setSalt(HashUtil.getSalt());
         user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
         return userService.add(user);
-    }
-
-    private boolean isEmailValid(String email) {
-        if (email == null) {
-            return false;
-        }
-        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
     }
 
     private boolean isPasswordValid(String password) {
