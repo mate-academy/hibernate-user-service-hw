@@ -78,7 +78,6 @@ public class Main {
             System.out.println("Can't register user: entered email already exist");
         }
 
-
         // login
         System.out.println("--------- login ------------");
         try {
