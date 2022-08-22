@@ -72,6 +72,12 @@ public class Main {
         } catch (RegistrationException e) {
             System.out.println("Can't register user: not valid Email or user already exist");
         }
+        try {
+            authenticationService.register("alice@gmail.com", "qwerty");
+        } catch (RegistrationException e) {
+            System.out.println("Can't register user: entered email already exist");
+        }
+
 
         // login
         System.out.println("--------- login ------------");
