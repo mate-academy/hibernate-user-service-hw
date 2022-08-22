@@ -45,7 +45,7 @@ public class UserDaoImpl implements UserDao {
             getByEmailQuery.setParameter("email", email);
             return getByEmailQuery.uniqueResultOptional();
         } catch (HibernateException e) {
-            throw new DataProcessingException("Can't get user from database by email", e);
+            throw new DataProcessingException("Can't get user from database by email " + email, e);
         }
     }
 }
