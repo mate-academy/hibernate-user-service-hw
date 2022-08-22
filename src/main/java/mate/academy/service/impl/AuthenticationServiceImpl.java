@@ -2,6 +2,7 @@ package mate.academy.service.impl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -18,12 +19,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email).orElse(null);
-        if (user == null || !user.getPassword()
-                                .equals(HashUtil.hashPassword(password, user.getSalt()))) {
-            throw new AuthenticationException("Wrong email or password");
+        if (userService.findByEmail(email).isPresent()) {
+            User user = userService.findByEmail(email).get();
+            if (user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()))) {
+                return user;
+            }
         }
-        return user;
+        throw new AuthenticationException("Wrong email or password");
     }
 
     @Override
