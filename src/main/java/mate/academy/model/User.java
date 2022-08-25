@@ -11,10 +11,10 @@ import javax.persistence.Table;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String email;
-    String password;
-    String salt;
+    private Long id;
+    private String email;
+    private String password;
+    private byte[] salt;
 
     public Long getId() {
         return id;
@@ -40,11 +40,11 @@ public class User {
         this.password = password;
     }
 
-    public String getSalt() {
+    public byte[] getSalt() {
         return salt;
     }
 
-    public void setSalt(String salt) {
+    public void setSalt(byte[] salt) {
         this.salt = salt;
     }
 
