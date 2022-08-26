@@ -18,13 +18,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Incorrect password or mail.");
-        }
-        User user = userFromDbOptional.get();
-        String hashPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashPassword)) {
-            return user;
+        if (userFromDbOptional.isPresent()
+                && userFromDbOptional.get().getPassword()
+                    .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
+            return userFromDbOptional.get();
         }
         throw new AuthenticationException("Incorrect password or mail.");
     }
@@ -35,6 +32,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userFromDb.isEmpty()) {
             return userService.add(new User(email, password));
         }
-        throw new RegistrationException("A user with email" + email + " already exists.");
+        throw new RegistrationException("A user with email " + email + " already exists.");
     }
 }
