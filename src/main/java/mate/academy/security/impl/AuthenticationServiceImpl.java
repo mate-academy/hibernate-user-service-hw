@@ -38,18 +38,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private boolean validateEmail(String email) {
-        if (!email.contains("@")
-                || email.isEmpty()
-                || userService.findByEmail(email).isPresent()) {
-            return false;
-        }
-        return true;
+        return email == null || !email.contains("@") || userService.findByEmail(email).isPresent();
     }
 
     private boolean validatePassword(String password) {
-        if (password.isEmpty() || password == null) {
-            return false;
-        }
-        return true;
+        return password == null || password.isEmpty() || password.isBlank();
     }
 }
