@@ -81,5 +81,10 @@ public class Main {
         } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
         }
+        try {
+            user = authenticationService.register(email, password);
+        } catch (RegistrationException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

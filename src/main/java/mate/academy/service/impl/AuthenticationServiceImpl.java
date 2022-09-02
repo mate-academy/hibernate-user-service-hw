@@ -18,28 +18,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userByEmail = userService.findByEmail(email);
-        if (userByEmail.isEmpty()) {
-            throw new AuthenticationException("Email or password is incorrect");
-        }
-        User user = userByEmail.get();
-        String hashPassword = HashUtil
-                .hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashPassword)) {
-            return user;
+        if (userByEmail.isPresent()
+                && userByEmail.get().getPassword()
+                .equals(HashUtil.hashPassword(password, userByEmail.get().getSalt()))) {
+            return userByEmail.get();
         }
         throw new AuthenticationException("Email or password is incorrect");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email.isEmpty() || email.isBlank()) {
-            throw new RegistrationException("Invalid credentials. "
-                    + "Email can not be empty or blank");
-        }
-        if (password.isEmpty() || password.isBlank()) {
-            throw new RegistrationException("Invalid credentials. "
-                    + "Password can not be empty or blank");
-        }
         if (userService.findByEmail(email).isEmpty()) {
             User user = new User();
             user.setEmail(email);
