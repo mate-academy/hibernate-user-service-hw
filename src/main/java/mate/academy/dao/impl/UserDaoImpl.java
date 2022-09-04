@@ -1,8 +1,6 @@
 package mate.academy.dao.impl;
 
-import java.util.List;
 import java.util.Optional;
-import javax.persistence.criteria.CriteriaQuery;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -37,15 +35,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> get(Long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return Optional.ofNullable(session.get(User.class, id));
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get User with id " + id, e);
-        }
-    }
-
-    @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<User> getUserQuery = session
@@ -54,18 +43,6 @@ public class UserDaoImpl implements UserDao {
             return getUserQuery.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get User with email " + email, e);
-        }
-    }
-
-    @Override
-    public List<User> getAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<User> userQuery = session.getCriteriaBuilder()
-                    .createQuery(User.class);
-            userQuery.from(User.class);
-            return session.createQuery(userQuery).getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get all Users ", e);
         }
     }
 }

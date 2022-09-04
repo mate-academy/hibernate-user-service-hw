@@ -18,26 +18,23 @@ public class AuthenticationServise implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can't find user by email");
+        String hashedPassword = HashUtil.hashPassword(password, HashUtil.getSalt());
+        if (userFromDbOptional.isPresent() & userFromDbOptional.get()
+                .getPassword().equals(hashedPassword)) {
+            return userFromDbOptional.get();
         }
-        User userFromDB = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, userFromDB.getSalt());
-        if (userFromDB.getPassword().equals(hashedPassword)) {
-            return userFromDB;
-        }
-        throw new AuthenticationException("Can't find user by email");
+        throw new AuthenticationException("Can't find user by email " + email);
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isPresent()) {
-            throw new RegistrationException("User with email " + email + "already exist");
+        if (userFromDbOptional.isEmpty()) {
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
+            return userService.add(user);
         }
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        return userService.add(user);
+        throw new RegistrationException("User with email " + email + "already exist");
     }
 }

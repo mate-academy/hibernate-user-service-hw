@@ -16,8 +16,8 @@ import mate.academy.service.MovieSessionService;
 import mate.academy.service.UserService;
 
 public class Main {
-    private static final String INGECTOR_INSTANCE = "mate.academy";
-    private static final Injector injector = Injector.getInstance(INGECTOR_INSTANCE);
+    private static final String INJECTOR_INSTANCE = "mate.academy";
+    private static final Injector injector = Injector.getInstance(INJECTOR_INSTANCE);
 
     private static final int PASSWORD_MIN_LENGTH = 8;
 
@@ -69,7 +69,6 @@ public class Main {
         AuthenticationService authenticationService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
         UserService userService = (UserService) injector.getInstance(UserService.class);
-        //Register user with correct email & password
         User registeredGoodUser;
         if (goodUserEmail.contains("@") || goodUserPassword.length() >= PASSWORD_MIN_LENGTH) {
             registeredGoodUser = authenticationService
@@ -80,25 +79,6 @@ public class Main {
         System.out.println(registeredGoodUser);
         String badUserEmail = "bad@gmail.com";
         String badUserPassword = "1q2w3e";
-        /*
-        //Register user with correct email & wrong password
-        if (badUserEmail.contains("@") || badUserPassword.length() >= PASSWORD_MIN_LENGTH) {
-            authenticationService
-                    .register(badUserEmail, badUserPassword);
-        } else {
-            throw new RegistrationException("Can't register user with email " + goodUserEmail);
-        }
-        String awfulUserEmail = "verybad.gmail.com";
-        String awfulUserPassword = "";
-        //Register user with wrong email & wrong password
-        if (awfulUserEmail.contains("@") || awfulUserPassword.length() >= PASSWORD_MIN_LENGTH) {
-            authenticationService
-                    .register(awfulUserEmail, awfulUserPassword);
-        } else {
-            throw new RegistrationException("Can't register user with email " + goodUserEmail);
-        }
-         */
-        //Login with correct email & password
         String savedPasswordForGoodUser = userService.findByEmail(goodUserEmail)
                 .get().getPassword();
         if (goodUserEmail.contains("@") && goodUserPassword.length() >= PASSWORD_MIN_LENGTH
@@ -108,7 +88,6 @@ public class Main {
             throw new AuthenticationException("Can't login user with email " + goodUserEmail
                     + "! May be, wrong email or password?");
         }
-        //Login with correct email & wrong password
         String savedPasswordForBadUser = userService.findByEmail(badUserEmail).get().getPassword();
         if (badUserEmail.contains("@") && badUserPassword.length() >= PASSWORD_MIN_LENGTH
                 && savedPasswordForGoodUser.equals(goodUserPassword)) {
