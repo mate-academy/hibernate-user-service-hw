@@ -2,16 +2,27 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.UserService;
 
 public class Main {
-    public static void main(String[] args) {
-        MovieService movieService = null;
+    private static final String INGECTOR_INSTANCE = "mate.academy";
+    private static final Injector injector = Injector.getInstance(INGECTOR_INSTANCE);
+
+    private static final int PASSWORD_MIN_LENGTH = 8;
+
+    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -27,7 +38,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService = (CinemaHallService) injector
+                .getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,12 +56,67 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService = (MovieSessionService) injector
+                .getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+        String goodUserEmail = "good@gmail.com";
+        String goodUserPassword = "strongPassword";
+        AuthenticationService authenticationService = (AuthenticationService) injector
+                .getInstance(AuthenticationService.class);
+        UserService userService = (UserService) injector.getInstance(UserService.class);
+        //Register user with correct email & password
+        User registeredGoodUser;
+        if (goodUserEmail.contains("@") || goodUserPassword.length() >= PASSWORD_MIN_LENGTH) {
+            registeredGoodUser = authenticationService
+                    .register(goodUserEmail, goodUserPassword);
+        } else {
+            throw new RegistrationException("Can't register user with email " + goodUserEmail);
+        }
+        System.out.println(registeredGoodUser);
+        String badUserEmail = "bad@gmail.com";
+        String badUserPassword = "1q2w3e";
+        /*
+        //Register user with correct email & wrong password
+        if (badUserEmail.contains("@") || badUserPassword.length() >= PASSWORD_MIN_LENGTH) {
+            authenticationService
+                    .register(badUserEmail, badUserPassword);
+        } else {
+            throw new RegistrationException("Can't register user with email " + goodUserEmail);
+        }
+        String awfulUserEmail = "verybad.gmail.com";
+        String awfulUserPassword = "";
+        //Register user with wrong email & wrong password
+        if (awfulUserEmail.contains("@") || awfulUserPassword.length() >= PASSWORD_MIN_LENGTH) {
+            authenticationService
+                    .register(awfulUserEmail, awfulUserPassword);
+        } else {
+            throw new RegistrationException("Can't register user with email " + goodUserEmail);
+        }
+         */
+        //Login with correct email & password
+        String savedPasswordForGoodUser = userService.findByEmail(goodUserEmail)
+                .get().getPassword();
+        if (goodUserEmail.contains("@") && goodUserPassword.length() >= PASSWORD_MIN_LENGTH
+                && savedPasswordForGoodUser.equals(goodUserPassword)) {
+            authenticationService.login(goodUserEmail, goodUserPassword);
+        } else {
+            throw new AuthenticationException("Can't login user with email " + goodUserEmail
+                    + "! May be, wrong email or password?");
+        }
+        //Login with correct email & wrong password
+        String savedPasswordForBadUser = userService.findByEmail(badUserEmail).get().getPassword();
+        if (badUserEmail.contains("@") && badUserPassword.length() >= PASSWORD_MIN_LENGTH
+                && savedPasswordForGoodUser.equals(goodUserPassword)) {
+            authenticationService.login(badUserEmail, badUserPassword);
+        } else {
+            throw new AuthenticationException("Can't login user with email " + goodUserEmail
+                    + "! May be, wrong email or password?");
+        }
+        System.out.println(userService.findByEmail(badUserEmail).get());
     }
 }
