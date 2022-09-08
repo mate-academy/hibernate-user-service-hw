@@ -61,9 +61,14 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User registeredUser = authenticationService.register("admin@email.ua","1q2w3e");
-        System.out.println("Registered user " + registeredUser.toString());
-        User loggedInUser = authenticationService.login("admin@email.ua","1q2w3e");
-        System.out.println("LoggedIn user " + loggedInUser.toString());
+        try {
+            User registeredUser = authenticationService.register("admin@email.ua", "1q2w3e");
+            System.out.println("Registered user " + registeredUser.toString());
+            User loggedInUser = authenticationService.login("admin@email.ua","1q2w3e");
+            System.out.println("LoggedIn user " + loggedInUser.toString());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }
