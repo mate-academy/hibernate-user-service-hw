@@ -1,6 +1,6 @@
 package mate.academy.service.impl;
 
-import mate.academy.dao.UserDao;
+import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -9,8 +9,6 @@ import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
-
-import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -33,6 +31,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Email already exist");
+        }
+        if (password.isEmpty()) {
+            throw new RegistrationException("The password must not be empty");
         }
         User newUser = new User();
         newUser.setEmail(email);
