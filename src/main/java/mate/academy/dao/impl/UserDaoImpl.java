@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-
     @Override
     public User add(User user) {
         Transaction transaction = null;
