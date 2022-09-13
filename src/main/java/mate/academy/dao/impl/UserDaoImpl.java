@@ -16,20 +16,16 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = sessionFactory.openSession();
+
         Transaction transaction = null;
-        try {
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
                 throw new DataProcessingException("Can't add an user.", e);
-            }
-        } finally {
-            if (session != null) {
-                session.close();
             }
         }
         return user;
