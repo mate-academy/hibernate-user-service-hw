@@ -16,7 +16,6 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -25,7 +24,7 @@ public class UserDaoImpl implements UserDao {
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
-                throw new DataProcessingException("Can't add an user.", e);
+                throw new DataProcessingException("Can't add an user. " + user, e);
             }
         }
         return user;
@@ -34,10 +33,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<User> usereQuery = session.createQuery("from User "
+            Query<User> findByEmailQuery = session.createQuery("from User "
                             + "where email= :email", User.class);
-            usereQuery.setParameter("email", email);
-            return usereQuery.uniqueResultOptional();
+            findByEmailQuery.setParameter("email", email);
+            return findByEmailQuery.uniqueResultOptional();
         } catch (Exception e) {
             throw new RuntimeException("Can't get user sessions", e);
         }
