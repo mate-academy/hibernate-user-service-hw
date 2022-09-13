@@ -38,7 +38,7 @@ public class UserDaoImpl implements UserDao {
             findByEmailQuery.setParameter("email", email);
             return findByEmailQuery.uniqueResultOptional();
         } catch (Exception e) {
-            throw new RuntimeException("Can't get user sessions", e);
+            throw new DataProcessingException("Can't get user sessions", e);
         }
     }
 }
