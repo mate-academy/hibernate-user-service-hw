@@ -18,12 +18,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptionalFromDB = userService.findByEmail(email);
-        if (userOptionalFromDB.isPresent()) {
-            User user = userOptionalFromDB.get();
-            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-            if (user.getPassword().equals(hashedPassword)) {
-                return user;
-            }
+        if (userOptionalFromDB.isPresent() && userOptionalFromDB.get().getPassword()
+                .equals(HashUtil.hashPassword(password, userOptionalFromDB.get().getSalt()))) {
+            return userOptionalFromDB.get();
         }
         throw new AuthenticationException(
                 "Can't authenticate user by email: " + email);
@@ -33,9 +30,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Email: " + email + " is already registered.");
-        }
-        if (password == null || password.isEmpty()) {
-            throw new RegistrationException("Password can't be empty.");
         }
         User user = new User();
         user.setEmail(email);
