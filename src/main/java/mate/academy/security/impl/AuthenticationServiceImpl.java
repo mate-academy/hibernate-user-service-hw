@@ -17,12 +17,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        String emailNoWhitespace = email.strip();
-        String passwordNoWhitespace = password.strip();
-        Optional<User> userOptional = userService.findByEmail(emailNoWhitespace);
+        Optional<User> userOptional = userService.findByEmail(email);
         User user = userOptional.orElseThrow(
                 () -> new AuthenticationException("User or password is incorrect"));
-        String hashedPassword = HashUtil.hashPassword(passwordNoWhitespace, user.getSalt());
+        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;
         }
@@ -31,16 +29,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        String emailNoWhitespace = email.strip();
-        String passwordNoWhitespace = password.strip();
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException(
-                    "User with email '" + emailNoWhitespace + '\'' + " is already exist");
+                    "User with email '" + email + '\'' + " is already exist");
         }
-        if (passwordNoWhitespace.isEmpty()) {
+        if (password.isEmpty()) {
             throw new RegistrationException("Password could not be empty");
         }
-        User user = new User(emailNoWhitespace, passwordNoWhitespace);
+        User user = new User(email, password);
         userService.add(user);
         return user;
     }
