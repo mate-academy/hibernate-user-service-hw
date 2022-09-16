@@ -9,7 +9,6 @@ import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
-import org.apache.commons.validator.routines.EmailValidator;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -34,9 +33,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         String emailNoWhitespace = email.strip();
         String passwordNoWhitespace = password.strip();
-        if (!EmailValidator.getInstance().isValid(emailNoWhitespace)) {
-            throw new RegistrationException("Email '" + emailNoWhitespace + '\'' + " is not valid");
-        }
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException(
                     "User with email '" + emailNoWhitespace + '\'' + " is already exist");
