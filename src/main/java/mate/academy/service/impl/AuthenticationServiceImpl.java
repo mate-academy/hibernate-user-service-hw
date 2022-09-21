@@ -21,7 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userFromDB.isPresent()) {
             User user = userFromDB.get();
             String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-            if (user.getPassword().equals(hashedPassword) && !email.isEmpty()) {
+            if (user.getPassword().equals(hashedPassword)) {
                 return user;
             }
         }
