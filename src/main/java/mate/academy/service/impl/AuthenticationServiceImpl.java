@@ -3,7 +3,7 @@ package mate.academy.service.impl;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
-import mate.academy.lib.Injector;
+import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
@@ -12,8 +12,8 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private static final Injector injector = Injector.getInstance("mate.academy");
-    private final UserService userService = (UserService) injector.getInstance(UserService.class);
+    @Inject
+    private UserService userService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
@@ -27,7 +27,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (password.isEmpty() || !email.contains("@")) {
+        if (password.isEmpty() || !email.contains("@")
+                || userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Can't register user! Incorrect email or password!");
         }
         User user = new User();
