@@ -28,10 +28,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (email.isEmpty() || password.isEmpty()) {
-            throw new RegistrationException("The password and Email can't be empty.");
+            throw new RegistrationException("The password and email can't be empty.");
         }
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("This email is in the base");
+            throw new RegistrationException("This email exists.");
         }
         User newUser = new User();
         newUser.setEmail(email);
