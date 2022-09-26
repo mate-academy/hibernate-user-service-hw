@@ -30,12 +30,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
+        if (email.matches("\\w+@\\w+\\.[a-z]+") && userFromDbOptional.isEmpty()) {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
             return userService.add(user);
         }
-        throw new RegistrationException("User with this email already exists: " + email);
+        throw new RegistrationException("Can't register user with this email: " + email);
     }
 }
