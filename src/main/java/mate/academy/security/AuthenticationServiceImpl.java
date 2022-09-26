@@ -11,6 +11,7 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    private static final String EMAIL_TEMPLATE = "\\w+@\\w+\\.[a-z]+";
     @Inject
     private UserService userService;
 
@@ -29,8 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (email.matches("\\w+@\\w+\\.[a-z]+") && userFromDbOptional.isEmpty()) {
+        if (email.matches(EMAIL_TEMPLATE) && userService.findByEmail(email).isEmpty()) {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
