@@ -34,7 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!email.matches(VALIDATE_EMAIL)) {
             throw new RegistrationException("The mail is not valid. Adjust its appearance.");
         }
-        if (password.length() == 0) {
+        if (password.isEmpty()) {
             throw new RegistrationException("The password must be at least one character.");
         }
         User user = new User();
