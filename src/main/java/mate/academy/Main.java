@@ -72,15 +72,5 @@ public class Main {
         } catch (RegistrationException | AuthenticationException e) {
             System.out.println(e.getMessage());
         }
-
-        User user2 = new User();
-        user2.setEmail("user1@gmail.com");
-        user2.setPassword("123");
-        try {
-            authenticationService.register(user2.getEmail(), user2.getPassword());
-            authenticationService.login(user2.getEmail(), user2.getPassword());
-        } catch (RegistrationException | AuthenticationException e) {
-            System.out.println(e.getMessage());
-        }
     }
 }
