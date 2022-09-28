@@ -17,10 +17,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> byEmail = userService.findByEmail(email);
-        if (byEmail.isPresent() && HashUtil.hashPassword(password, byEmail.get().getSalt())
-                .equals(byEmail.get().getPassword())) {
-            return byEmail.get();
+        Optional<User> userOptional = userService.findByEmail(email);
+        if (userOptional.isPresent() && HashUtil
+                .hashPassword(password, userOptional.get().getSalt())
+                .equals(userOptional.get().getPassword())) {
+            return userOptional.get();
         }
         throw new AuthenticationException("Pair 'email - password' is incorect");
     }
@@ -30,8 +31,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (email.isEmpty() || password.isEmpty()) {
             throw new RegistrationException("Email or password can't be empty");
         }
-        Optional<User> byEmail = userService.findByEmail(email);
-        if (byEmail.isEmpty()) {
+        Optional<User> userOptional = userService.findByEmail(email);
+        if (userOptional.isEmpty()) {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
