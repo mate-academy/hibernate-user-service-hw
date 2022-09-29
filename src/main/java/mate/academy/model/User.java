@@ -69,7 +69,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, email, password);
+        int result = Objects.hash(id, email);
         result = 31 * result + Arrays.hashCode(salt);
         return result;
     }
@@ -79,8 +79,6 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", email='" + email + '\''
-                + ", password='" + password + '\''
-                + ", salt=" + Arrays.toString(salt)
                 + '}';
     }
 }

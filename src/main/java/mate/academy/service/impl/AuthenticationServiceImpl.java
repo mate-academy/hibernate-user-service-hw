@@ -12,15 +12,14 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    public static final String VALIDATE_EMAIL = "^(.+)@(.+)$";
+    public static final String EMAIL_PATTERN = "^(.+)@(.+)$";
     @Inject
     private UserService userService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isEmpty() || !userOptional.get().getPassword()
-                .equals(HashUtil.hashPassword(password, userOptional.get().getSalt()))) {
+        if (checkData(userOptional, email, password)) {
             throw new AuthenticationException("Email or password are incorrect.");
         }
         return userOptional.get();
@@ -31,7 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User already exists.");
         }
-        if (!email.matches(VALIDATE_EMAIL)) {
+        if (!email.matches(EMAIL_PATTERN)) {
             throw new RegistrationException("The mail is not valid. Adjust its appearance.");
         }
         if (password.isEmpty()) {
@@ -41,5 +40,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEmail(email);
         user.setPassword(password);
         return userService.add(user);
+    }
+
+    private boolean checkData(Optional<User> userOptional, String email, String password) {
+        return userOptional.isEmpty() || !userOptional.get().getPassword()
+                .equals(HashUtil.hashPassword(password, userOptional.get().getSalt()));
     }
 }
