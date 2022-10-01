@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert movie session" + user, e);
+            throw new DataProcessingException("Can't insert user " + user, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -49,8 +49,7 @@ public class UserDaoImpl implements UserDao {
             criteriaQuery.select(root).where(emailPredicate);
             return session.createQuery(criteriaQuery).uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get available user by email: " + email,
-                    e);
+            throw new DataProcessingException("Can't find user by email: " + email, e);
         }
     }
 }

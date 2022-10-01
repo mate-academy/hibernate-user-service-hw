@@ -1,6 +1,6 @@
 package mate.academy.model;
 
-import java.util.Arrays;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,12 +9,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue
     private long id;
     private String password;
-
+    @Column(unique = true)
     private String email;
     private byte[] salt;
 
@@ -65,7 +64,6 @@ public class User {
                 + "id=" + id
                 + ", password='" + password + '\''
                 + ", email='" + email + '\''
-                + ", salt=" + Arrays.toString(salt)
                 + '}';
     }
 }
