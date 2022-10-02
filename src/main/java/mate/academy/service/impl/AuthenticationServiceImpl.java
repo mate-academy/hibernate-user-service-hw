@@ -9,8 +9,6 @@ import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
-import mate.academy.util.HibernateUtil;
-import org.hibernate.Session;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -33,20 +31,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Optional<User> userFromDbOptional = userService.findByEmail(email);
-            if (userFromDbOptional.isPresent()) {
-                throw new RegistrationException("User with email=" + email
-                        + "already registered");
-            }
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(password);
-            System.out.println("User registered successfully!");
-            return userService.add(user);
-        } catch (Exception e) {
-            throw new RuntimeException(
-                    "Can't check user with email=" + email + " in DB");
+        Optional<User> userFromDbOptional = userService.findByEmail(email);
+        if (userFromDbOptional.isPresent()) {
+            throw new RegistrationException("Email=" + email
+                    + " already exists in database");
         }
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        System.out.println("User registered successfully!");
+        return userService.add(user);
     }
 }

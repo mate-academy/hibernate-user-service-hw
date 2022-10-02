@@ -16,9 +16,6 @@ public class User {
     private String password;
     private byte[] salt;
 
-    public User() {
-    }
-
     public String getEmail() {
         return email;
     }
