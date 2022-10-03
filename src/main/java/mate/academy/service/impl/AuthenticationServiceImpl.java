@@ -18,9 +18,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> optionalUser = userService.findByEmail(email);
-        if (optionalUser.isPresent()
-                && optionalUser.get().getPassword().equals(HashUtil.hashPassword(password,
-                optionalUser.get().getSalt()))) {
+        if (optionalUser.isPresent() && checkPassword(optionalUser.get(), password)) {
             return optionalUser.get();
         }
         throw new AuthenticationException("Wrong credentials, please try again.");
@@ -37,5 +35,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setPassword(password);
         userService.add(user);
         return user;
+    }
+
+    private boolean checkPassword(User user, String password) {
+        return user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()));
     }
 }
