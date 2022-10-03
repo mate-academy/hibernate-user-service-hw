@@ -7,6 +7,9 @@ import java.security.SecureRandom;
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
 
+    private HashUtil() {
+    }
+
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[16];
@@ -24,7 +27,7 @@ public class HashUtil {
                 hashBuilder.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Couldn't hash a password.",e);
         }
         return hashBuilder.toString();
     }

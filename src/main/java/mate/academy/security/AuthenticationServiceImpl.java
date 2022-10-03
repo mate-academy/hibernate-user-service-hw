@@ -1,6 +1,6 @@
 package mate.academy.security;
 
-import java.util.NoSuchElementException;
+import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -16,9 +16,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        if (!email.isEmpty() || !password.isEmpty()) {
-            User user = userService.findByEmail(email).orElseThrow(()
-                    -> new NoSuchElementException("Wrong email or password"));
+        Optional<User> optionalUser = userService.findByEmail(email);
+        if (!email.isEmpty() || !password.isEmpty() || optionalUser.isPresent()) {
+            User user = optionalUser.get();
             String currentlyPassword = HashUtil.hashPassword(password, user.getSalt());
             if (user.getPassword().equals(currentlyPassword)) {
                 return user;
