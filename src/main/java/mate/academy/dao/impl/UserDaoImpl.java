@@ -26,7 +26,8 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't save user in DB", e);
+            throw new RuntimeException("Can't save user with email="
+                    + user.getEmail() + " in DB", e);
         } finally {
             if (session != null) {
                 session.close();
@@ -43,7 +44,7 @@ public class UserDaoImpl implements UserDao {
                     .setParameter("email", email)
                     .uniqueResultOptional();
         } catch (HibernateException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Cannot fetch user with email=" + email + " from DB", e);
         }
     }
 }

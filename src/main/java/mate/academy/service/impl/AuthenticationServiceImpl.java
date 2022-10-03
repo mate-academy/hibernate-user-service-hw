@@ -17,29 +17,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isPresent()) {
-            User user = userFromDbOptional.get();
-            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-            if (user.getPassword().equals(hashedPassword)) {
-                System.out.println("User with email=" + email + " logged in successfully!");
-                return user;
-            }
+        Optional<User> userFromDb = userService.findByEmail(email);
+        if (userFromDb.isPresent() && checkPassword(userFromDb.get(), password)) {
+            return userFromDb.get();
         }
-        throw new AuthenticationException("Incorrect password or login ");
+        throw new AuthenticationException("Incorrect password or login");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isPresent()) {
+        Optional<User> userFromDb = userService.findByEmail(email);
+        if (userFromDb.isPresent()) {
             throw new RegistrationException("Email=" + email
                     + " already exists in database");
         }
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        System.out.println("User registered successfully!");
         return userService.add(user);
+    }
+
+    private boolean checkPassword(User user, String password) {
+        return user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()));
     }
 }
