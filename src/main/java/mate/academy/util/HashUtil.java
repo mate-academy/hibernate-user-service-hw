@@ -7,6 +7,9 @@ import java.security.SecureRandom;
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
 
+    public HashUtil() {
+    }
+
     public static byte[] getSalt() {
         byte[] salt = new byte[16];
         new SecureRandom().nextBytes(salt);
@@ -17,12 +20,14 @@ public class HashUtil {
         StringBuilder stringBuilder = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
+            messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
             for (byte b : digest) {
                 stringBuilder.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Can't create hash using " + CRYPTO_ALGORITHM + " algorithm!", e);
+            throw new RuntimeException("Can't create hash using "
+                    + CRYPTO_ALGORITHM + " algorithm!", e);
         }
         return stringBuilder.toString();
     }
