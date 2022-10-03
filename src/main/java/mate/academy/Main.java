@@ -15,7 +15,7 @@ public class Main {
                 injector.getInstance(AuthenticationService.class);
         try {
             User registerUser1 = authenticationService
-                    .register("", "p4S#31");
+                    .register("pietroGabinski@gmail.com", "p4S#31");
             System.out.println(registerUser1);
         } catch (RegisterException e) {
             System.out.println(e.getMessage());

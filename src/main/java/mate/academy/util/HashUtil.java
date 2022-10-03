@@ -7,13 +7,14 @@ import mate.academy.exception.DataProcessingException;
 
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
+    private static final int DEFAULT_SIZE = 16;
 
     private HashUtil(){
     }
 
     public static byte[] createSalt() {
         SecureRandom secureRandom = new SecureRandom();
-        byte[] salt = new byte[16];
+        byte[] salt = new byte[DEFAULT_SIZE];
         secureRandom.nextBytes(salt);
         return salt;
     }
