@@ -26,11 +26,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByLogin(String login) {
-        return userDao.findByLogin(login);
-    }
-
-    @Override
     public User get(Long id) {
         return userDao.get(id).orElseThrow(() ->
                 new RuntimeException("Can't get use by id = " + id));

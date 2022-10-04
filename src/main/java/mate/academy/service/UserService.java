@@ -8,7 +8,5 @@ public interface UserService {
 
     Optional<User> findByEmail(String email);
 
-    Optional<User> findByLogin(String login);
-
     User get(Long id);
 }

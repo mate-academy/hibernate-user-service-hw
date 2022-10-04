@@ -52,15 +52,4 @@ public class UserDaoImpl implements UserDao {
             throw new DataProcessingException("Can't fund user by email = " + email, e);
         }
     }
-
-    @Override
-    public Optional<User> findByLogin(String login) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from User u where u.login = :login", User.class)
-                    .setParameter("login", login)
-                    .uniqueResultOptional();
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get user by login = " + login, e);
-        }
-    }
 }
