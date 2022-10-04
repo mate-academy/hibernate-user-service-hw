@@ -28,7 +28,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Couldn't add user to db: " + user, e);
+            throw new DataProcessingException("Couldn't add user: " + user + " to DB.", e);
         } finally {
             if (session != null) {
                 session.close();
@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
             query.setParameter("email", email);
             return query.uniqueResultOptional();
         } catch (Exception e) {
-            throw new RuntimeException("Can't get user by this email: " + email, e);
+            throw new DataProcessingException("Can't get user by this email: " + email, e);
         }
     }
 }

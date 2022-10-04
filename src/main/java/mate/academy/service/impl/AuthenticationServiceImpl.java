@@ -36,6 +36,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setPassword(password);
             return userService.add(user);
         }
-        throw new RegistrationException("User with this email already in DB: " + email);
+        throw new RegistrationException("User with this email: " + email + " already in DB.");
     }
 }
