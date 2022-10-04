@@ -56,13 +56,9 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        String email = "qwerty@asd.com";
-        String password1 = "z1234567";
-        authenticationService.register(email, password1);
-        String email2 = "qwertyt@asd.com";
-        String password2 = "z12345678";
-        authenticationService.register(email2, password2);
-        User user = authenticationService.login(email2, password1);
-        System.out.println(user);
+        String email = "bob@asd.com";
+        String password = "b1234567";
+        authenticationService.register(email, password);
+        System.out.println(authenticationService.login(email, password));
     }
 }
