@@ -2,10 +2,14 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -14,8 +18,25 @@ public class Main {
     public static final Injector injector = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) {
-        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        String email = "someEmail@gmail.com";
+        String password = "password";
+        try {
+            authenticationService.register(email, password);
+            System.out.println("Registration ok");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Registration failed", e);
+        }
+        try {
+            User authorizedUser = authenticationService.login(email, password);
+            System.out.println("User " + authorizedUser + " authorized successful");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Authorization failed", e);
+        }
 
+        MovieService movieService =
+                (MovieService) injector.getInstance(MovieService.class);
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);

@@ -16,6 +16,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void register(String email, String password) throws RegistrationException {
+        if (email.isEmpty() || password.isEmpty()) {
+            throw new RegistrationException("Email and password can't be empty");
+        }
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isPresent()) {
             throw new RegistrationException("This email is already registered in DB: " + email);
