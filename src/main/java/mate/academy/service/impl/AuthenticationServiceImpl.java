@@ -18,24 +18,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDB = userService.findByEmail(email);
-        if (userFromDB.isEmpty()) {
+        if (userFromDB.isEmpty() || !userFromDB.get()
+                .getPassword().equals(HashUtil.hashPassword(password,
+                        userFromDB.get().getSalt()))) {
             throw new AuthenticationException("Can't authenticate user. "
                     + "Login or password are wrong");
         }
-        User user = userFromDB.get();
-        String hashPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashPassword)) {
-            return user;
-        } else {
-            throw new AuthenticationException("Can't authenticate user. "
-                    + "Login or password are wrong");
-        }
+        return userFromDB.get();
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with email: " + email + " already exist");
+        }
+        if (password.isBlank()) {
+            throw new RegistrationException("Password should be min 6 letters length");
         }
         User user = new User();
         user.setEmail(email);
