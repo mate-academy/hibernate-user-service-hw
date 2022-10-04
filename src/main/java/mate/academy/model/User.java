@@ -3,7 +3,7 @@ package mate.academy.model;
 public class User {
     private Long id;
     private String email;
-    private String salt;
+    private byte[] salt;
     private String password;
 
     public Long getId() {
@@ -22,11 +22,11 @@ public class User {
         this.email = email;
     }
 
-    public String getSalt() {
+    public byte[] getSalt() {
         return salt;
     }
 
-    public void setSalt(String salt) {
+    public void setSalt(byte[] salt) {
         this.salt = salt;
     }
 
