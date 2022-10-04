@@ -27,7 +27,7 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", b));
             }
         } catch (Exception exception) {
-            throw new IllegalStateException("Could not create hash", exception);
+            throw new IllegalStateException("Could not hash password", exception);
         }
         return hashedPassword.toString();
     }

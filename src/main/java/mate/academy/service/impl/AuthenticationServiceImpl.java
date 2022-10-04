@@ -20,7 +20,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 "Can`t authenticate user with email: " + email));
         String hashPassword = HashUtil.hashPassword(password, user.getSalt());
         if (!user.getPassword().equals(hashPassword)) {
-            throw new AuthenticationException("Wrong password for email :" + email);
+            throw new AuthenticationException("Wrong password or email :");
         }
         return user;
     }
