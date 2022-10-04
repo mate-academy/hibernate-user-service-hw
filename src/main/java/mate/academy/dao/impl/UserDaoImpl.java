@@ -1,6 +1,5 @@
 package mate.academy.dao.impl;
 
-import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
@@ -13,7 +12,7 @@ import org.hibernate.Transaction;
 @Dao
 public class UserDaoImpl implements UserDao {
     @Override
-    public User create(User user) {
+    public User add(User user) {
         Session session = null;
         Transaction transaction = null;
         try {
@@ -32,12 +31,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> getByEmail(String email) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<User> getAll() {
-        return null;
+    public Optional<User> findByEmail(String email) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                    "from User where email = :email", User.class)
+                    .setParameter("email", email).uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get user by email: " + email, e);
+        }
     }
 }
