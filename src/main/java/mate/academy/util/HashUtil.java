@@ -27,7 +27,8 @@ public class HashUtil {
                 hashPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Couldn't create hash using algorithm: " + CRYPTO_ALGORITHM, e);
+            throw new IllegalStateException("Couldn't create hash using algorithm: "
+                    + CRYPTO_ALGORITHM, e);
         }
         return hashPassword.toString();
     }
