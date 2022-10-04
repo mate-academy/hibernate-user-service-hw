@@ -20,7 +20,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
         if (userFromDb.isPresent()) {
-
             String hashingPasswor = HashUtil.hashPassword(password, userFromDb.get().getSalt());
             if (hashingPasswor.equals(userFromDb.get().getPassword())) {
                 return userFromDb.get();
