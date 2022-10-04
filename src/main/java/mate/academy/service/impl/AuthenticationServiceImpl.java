@@ -33,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         Optional<User> optionalUser = userService.findByEmail(email);
         if (optionalUser.isPresent()) {
-            throw new RegistrationException("Incorrect data!");
+            throw new RegistrationException("User with this email: " + email + "is already existing!");
         }
         User user = new User();
         user.setEmail(email);
