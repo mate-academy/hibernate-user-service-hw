@@ -11,31 +11,24 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-
     @Inject
     private UserService userService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
+        if (userFromDbOptional.isEmpty() || !userFromDbOptional.get().getPassword()
+                .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
             throw new AuthenticationException("Can't authenticate user");
         }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("Can't authenticate user");
+        return userFromDbOptional.get();
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email.isEmpty() || password.isEmpty()) {
+        if (email.isEmpty() || password.isEmpty()
+                || userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Can't register user");
-        }
-        if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("User with email: " + email + " already exist");
         }
         User user = new User();
         user.setEmail(email);
