@@ -24,11 +24,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         throw new AuthenticationException("Wrong login or password");
     }
 
-    private boolean checkPassword(User user, String password) {
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        return user.getPassword().equals(hashedPassword);
-    }
-
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (email.isEmpty() || password.isEmpty()) {
@@ -42,5 +37,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEmail(email);
         user.setPassword(password);
         return userService.add(user);
+    }
+
+    private boolean checkPassword(User user, String password) {
+        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        return user.getPassword().equals(hashedPassword);
     }
 }

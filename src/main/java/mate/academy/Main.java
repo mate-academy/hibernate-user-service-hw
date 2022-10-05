@@ -71,13 +71,13 @@ public class Main {
             System.out.println(registerUser);
 
         } catch (RegistrationException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage(), e);
         }
         try {
             User loginUser = authenticationService.login(user.getEmail(), user.getPassword());
             System.out.println(loginUser);
         } catch (AuthenticationException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 }
