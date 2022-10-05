@@ -32,8 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        userService.add(user);
-        return user;
+        return userService.add(user);
     }
 
     private boolean checkPassword(User user, String password) throws AuthenticationException {
