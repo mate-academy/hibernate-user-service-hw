@@ -40,7 +40,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 + " already registered");
     }
 
-    private static boolean checkPassword(User user, String password) {
+    private boolean checkPassword(User user, String password) {
         return user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()));
     }
 }
