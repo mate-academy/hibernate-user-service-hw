@@ -25,7 +25,8 @@ public class HashUtil {
             }
             return hashedPassword.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Can't create hash using SHA-512 algorithm", e);
+            throw new RuntimeException("Can't create hash using "
+                    + CRYPTO_ALGORITHM + " algorithm", e);
         }
     }
 }
