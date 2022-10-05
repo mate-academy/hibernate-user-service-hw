@@ -10,13 +10,6 @@ public class HashUtil {
     private HashUtil() {
     }
 
-    public static byte[] getSalt() {
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] salt = new byte[16];
-        secureRandom.nextBytes(salt);
-        return salt;
-    }
-
     public static String hashPassword(String password, byte[] salt) {
         try {
             StringBuilder hashedPassword = new StringBuilder();
@@ -30,5 +23,12 @@ public class HashUtil {
             throw new IllegalStateException("Can` create hash using "
                     + CRYPTO_ALGORITHM + " algorithm", e);
         }
+    }
+
+    public static byte[] getSalt() {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] salt = new byte[16];
+        secureRandom.nextBytes(salt);
+        return salt;
     }
 }
