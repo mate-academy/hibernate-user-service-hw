@@ -1,6 +1,5 @@
 package mate.academy.model;
 
-import java.util.Arrays;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -51,8 +50,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", email='"
-                + email + '\'' + ", password='" + password + '\''
-                + ", salt=" + Arrays.toString(salt) + '}';
+        return "User{" + "id=" + id
+                + ", email='" + email + '\'' + '}';
     }
 }
+
