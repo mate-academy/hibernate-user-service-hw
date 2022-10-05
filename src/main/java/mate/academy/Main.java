@@ -64,12 +64,12 @@ public class Main {
                         fastAndFurious.getId(), LocalDate.now()));
 
         try {
-            System.out.println(authenticationService.register("1", "1"));
+            System.out.println(authenticationService.register("test@mail.com", "qwerty"));
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }
         try {
-            System.out.println(authenticationService.login("1", "1"));
+            System.out.println(authenticationService.login("test@mail.com", "qwerty"));
         } catch (AuthenticationException e) {
             throw new RuntimeException(e);
         }
