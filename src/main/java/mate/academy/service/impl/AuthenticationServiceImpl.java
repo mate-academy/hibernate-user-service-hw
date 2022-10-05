@@ -18,9 +18,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isPresent() && HashUtil
-                .hashPassword(password, userOptional.get().getSalt())
-                .equals(userOptional.get().getPassword())) {
+        if (userOptional.isPresent() && checkPassword(userOptional.get(), password)) {
             return userOptional.get();
         }
         throw new AuthenticationException("Email or password is invalid");
@@ -35,5 +33,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return userService.add(user);
         }
         throw new RegistrationException("Can't register user with this email: " + email);
+    }
+
+    private boolean checkPassword(User user, String password) {
+        return HashUtil.hashPassword(password, user.getSalt()).equals(user.getPassword());
     }
 }
