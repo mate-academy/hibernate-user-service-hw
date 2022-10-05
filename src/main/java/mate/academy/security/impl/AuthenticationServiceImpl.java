@@ -35,7 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return userService.add(user);
     }
 
-    private boolean checkPassword(User user, String password) throws AuthenticationException {
+    private boolean checkPassword(User user, String password) {
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         return user.getPassword().equals(hashedPassword);
     }
