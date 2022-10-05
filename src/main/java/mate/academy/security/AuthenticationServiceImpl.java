@@ -17,24 +17,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        User user = userOptional.orElse(null);
-        if (user == null || !user.getPassword()
-                .equals(HashUtil.hashPassword(password, user.getSalt()))) {
-            throw new AuthenticationException(
-                    "Can't authenticate user. Email or password are incorrect.");
+        if (userOptional.isPresent() && matchPassword(password, userOptional.get())) {
+            return userOptional.get();
         }
-        return user;
+        throw new AuthenticationException(
+                "Can't authenticate user. Email or password are incorrect.");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("User with current email (" + email
-                    + ") already exists.");
+        if (userService.findByEmail(email).isEmpty()) {
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
+            return userService.add(user);
         }
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        return userService.add(user);
+        throw new RegistrationException("User with current email (" + email
+                + ") already exists.");
+    }
+
+    private boolean matchPassword(String password, User user) {
+        return user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()));
     }
 }
