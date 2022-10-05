@@ -16,7 +16,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String login, String password) {
+    public User login(String login, String password) throws AuthenticationException {
         Optional<User> optionalUser = userService.findByLogin(login);
         if (optionalUser.isEmpty()
                 || !passwordCheck(optionalUser.get(), password)) {
@@ -26,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User register(String login, String password) {
+    public User register(String login, String password) throws RegistrationException {
         Optional<User> userFromDbOptional = userService.findByLogin(login);
         if (userFromDbOptional.isPresent()) {
             throw new RegistrationException("User already exists");
