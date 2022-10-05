@@ -19,7 +19,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.ofNullable(userDao.findByEmail(email))
-                .orElseThrow(() -> new RuntimeException("Can't find user with this email"));
+        return Optional.of(userDao.findByEmail(email)).get();
     }
 }
