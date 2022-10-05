@@ -13,8 +13,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
-    private String password;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String email;
+    private String password;
     private byte[] salt;
 
     public Long getId() {
