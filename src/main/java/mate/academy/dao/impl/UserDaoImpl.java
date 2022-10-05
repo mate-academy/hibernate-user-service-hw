@@ -1,8 +1,6 @@
 package mate.academy.dao.impl;
 
-import java.util.List;
 import java.util.Optional;
-import javax.persistence.criteria.CriteriaQuery;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -32,27 +30,6 @@ public class UserDaoImpl implements UserDao {
             if (session != null) {
                 session.close();
             }
-        }
-    }
-
-    @Override
-    public Optional<User> get(Long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return Optional.ofNullable(session.get(User.class, id));
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get a user by id: " + id, e);
-        }
-    }
-
-    @Override
-    public List<User> getAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder()
-                    .createQuery(User.class);
-            criteriaQuery.from(User.class);
-            return session.createQuery(criteriaQuery).getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get all users", e);
         }
     }
 
