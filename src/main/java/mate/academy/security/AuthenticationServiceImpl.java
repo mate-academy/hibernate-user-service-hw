@@ -20,7 +20,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (optionalUser.isPresent() && checkPassword(optionalUser.get(), password)) {
             return optionalUser.get();
         }
-            throw new AuthenticationException("Username or password was incorrect");
+        throw new AuthenticationException("Username or password was incorrect");
     }
 
     @Override
