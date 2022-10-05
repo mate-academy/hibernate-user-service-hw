@@ -17,13 +17,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> optionalUser = userService.findByEmail(email);
-        if (optionalUser.isEmpty()
-                || !optionalUser.get().getPassword()
-                .equals(HashUtil.hashPassword(password,
-                        optionalUser.get().getSalt()))) {
-            throw new AuthenticationException("Username or password was incorrect");
+        if (optionalUser.isPresent() && checkPassword(optionalUser.get(), password)) {
+            return optionalUser.get();
         }
-        return optionalUser.get();
+            throw new AuthenticationException("Username or password was incorrect");
     }
 
     @Override
@@ -38,5 +35,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         newUser.setEmail(email);
         newUser.setPassword(password);
         return userService.add(newUser);
+    }
+
+    private boolean checkPassword(User user, String password) {
+        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        return hashedPassword.equals(user.getPassword());
     }
 }
