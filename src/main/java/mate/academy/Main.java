@@ -73,7 +73,7 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             authenticationService.register(adam.getEmail(), adam.getPassword());
-        } catch (Exception e) {
+        } catch (RegistrationException e) {
             throw new RuntimeException("User with the same email: " + adam.getEmail()
                     + " already registered", e);
         }
