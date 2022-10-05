@@ -2,11 +2,14 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -23,6 +26,8 @@ public class Main {
             (CinemaHallService) injector.getInstance(CinemaHallService.class);
     private static final UserService userService =
             (UserService) injector.getInstance(UserService.class);
+    private static final AuthenticationService authenticationService =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
     public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -67,14 +72,17 @@ public class Main {
         alice.setPassword("alice");
         alice.setSalt(HashUtil.getSalt());
 
-        User ben = new User();
-        ben.setEmail("ben459");
-        ben.setPassword("ben");
-        ben.setSalt(HashUtil.getSalt());
-
-        userService.add(alice);
-        userService.add(ben);
+        try {
+            authenticationService.register(alice.getEmail(), alice.getPassword());
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register user", e);
+        }
         System.out.println(userService.findByEmail("alice123"));
-        System.out.println(userService.findByEmail("ben459"));
+
+        try {
+            authenticationService.login(alice.getEmail(), alice.getPassword());
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't authenticate user", e);
+        }
     }
 }
