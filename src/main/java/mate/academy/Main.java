@@ -70,7 +70,7 @@ public class Main {
             throw new RuntimeException(e);
         }
         try {
-            System.out.println(service.login("newUser@ggg.www", "12345"));
+            System.out.println(service.login("newUser@ggg.wwww", "12345"));
         } catch (AuthenticationException e) {
             throw new RuntimeException(e);
         }
