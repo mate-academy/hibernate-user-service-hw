@@ -20,7 +20,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .getPassword().equals(HashUtil.hashPassword(password,
                         userFromDB.get().getSalt()))) {
             throw new AuthenticationException("Can't authenticate user. "
-                    + "Login or password are wrong", null);
+                    + "Login or password are wrong");
         }
         return userFromDB.get();
     }
@@ -28,7 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (email.isEmpty() || password.isEmpty()) {
-            throw new RegistrationException("Email or password is incorrect", null);
+            throw new RegistrationException("Email or password is incorrect");
         }
         if (userService.findByEmail(email).isEmpty()) {
             User user = new User();
@@ -37,6 +37,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return userService.add(user);
         }
         throw new RegistrationException("User with this email already exist. "
-                + "Email: " + email, null);
+                + "Email: " + email);
     }
 }
