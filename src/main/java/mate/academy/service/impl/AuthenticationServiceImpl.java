@@ -25,7 +25,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return userFromDb.get();
             }
         }
-        throw new AuthenticationException("Can`t authorize user with email:" + email);
+        throw new AuthenticationException("Can`t authorize user with email: " + email);
     }
 
     @Override
