@@ -17,16 +17,6 @@ public class User {
     private String password;
     private byte[] salt;
 
-    public User(Long id, String email, String password, byte[] salt) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.salt = salt;
-    }
-
-    public User() {
-    }
-
     public Long getId() {
         return id;
     }
