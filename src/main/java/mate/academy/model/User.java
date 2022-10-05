@@ -1,11 +1,11 @@
 package mate.academy.model;
 
+import java.util.Arrays;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Arrays;
-import java.util.Objects;
 
 @Entity
 public class User {
@@ -57,7 +57,8 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Arrays.equals(salt, user.salt);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email)
+                && Objects.equals(password, user.password) && Arrays.equals(salt, user.salt);
     }
 
     @Override
