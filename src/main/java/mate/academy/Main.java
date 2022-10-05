@@ -54,7 +54,7 @@ public class Main {
 
         MovieSessionService movieSessionService = (MovieSessionService) injector
                 .getInstance(MovieSessionService.class);
-        ;
+
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
