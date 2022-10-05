@@ -16,6 +16,5 @@ public class Main {
         String password = "b1234567";
         authenticationService.register(email, password);
         System.out.println(authenticationService.login(email, password));
-        Optional<String> optional = Optional.ofNullable(null);
     }
 }
