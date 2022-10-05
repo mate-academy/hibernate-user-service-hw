@@ -28,7 +28,8 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Failed to hash password using SHA-512 algorithm", e);
+            throw new IllegalStateException("Failed to hash password using "
+                    + CRYPTO_ALGORITHM + " algorithm", e);
         }
         return hashedPassword.toString();
     }
