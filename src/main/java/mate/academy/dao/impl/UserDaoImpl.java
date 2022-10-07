@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao {
                     .setParameter("email", email)
                     .uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't find user whis email:" + email,e );
+            throw new DataProcessingException("Can't find user whis email:" + email,e);
         }
     }
 }

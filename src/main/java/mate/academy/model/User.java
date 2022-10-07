@@ -1,12 +1,13 @@
 package mate.academy.model;
 
+import java.util.Arrays;
 import java.util.Objects;
-import javax.persistence.Id;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -55,8 +56,16 @@ public class User {
     }
 
     @Override
+    public String toString() {
+        return "User{"
+                + "id=" + id
+                + ", email='" + email
+                + '}';
+    }
+
+    @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, salt);
+        return Objects.hash(id, email, password, Arrays.hashCode(salt));
     }
 
     @Override
@@ -72,13 +81,5 @@ public class User {
                 && Objects.equals(password, user.password)
                 && Objects.equals(email, user.email)
                 && Objects.equals(salt, user.salt);
-    }
-
-    @Override
-    public String toString() {
-        return "User{"
-                + "id=" + id
-                + ", email='" + email
-                + '}';
     }
 }
