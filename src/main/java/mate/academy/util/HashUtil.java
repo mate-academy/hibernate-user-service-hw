@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashUtil {
-    private static final String CRYPTO_ALGORITHM = "SHA_512";
+    private static final String CRYPTO_ALGORITHM = "SHA-512";
 
     private HashUtil() {
     }
@@ -28,7 +28,7 @@ public class HashUtil {
             }
             return hashedPassword.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can`t hash the password", e);
         }
     }
 }
