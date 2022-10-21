@@ -2,11 +2,13 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -64,5 +66,14 @@ public class Main {
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.add(new User("bob@gmail.com", "1234"));
         System.out.println(userService.findByEmail("bob@gmail.com"));
+
+        AuthenticationService authenticationService
+                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        try {
+            authenticationService.login("bob@gmail.com", "1234");
+            System.out.println("Correct user");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can`t authenticate user ");
+        }
     }
 }
