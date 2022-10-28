@@ -1,6 +1,11 @@
 package mate.academy.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
@@ -11,12 +16,14 @@ public class User {
     private String login;
     private byte[] salt;
     private String password;
+    @Column(unique = true)
+    private String email;
 
     public User() {
     }
 
-    public User(String login, String password) {
-        this.login = login;
+    public User(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
@@ -57,6 +64,7 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", login='" + login + '\''
+                + ", email='" + email + '\''
                 + '}';
     }
 }
