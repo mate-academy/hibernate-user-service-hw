@@ -21,8 +21,9 @@ public class Main {
             (MovieSessionService) injector.getInstance(MovieSessionService.class);
     private static final CinemaHallService cinemaHallService =
             (CinemaHallService) injector.getInstance(CinemaHallService.class);
-    private static final AuthenticationService authenticationService  =
+    private static final AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
     public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -64,13 +65,13 @@ public class Main {
         try {
             System.out.println(authenticationService.register("user1@gmail.com", "12345678"));
         } catch (RegistrationException e) {
-            throw new RuntimeException("Invalid email or password", e);
+            throw new RuntimeException(e);
         }
 
         try {
             System.out.println(authenticationService.login("user1@gmail.com", "12345678"));
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Email or password was incorrect");
+            throw new RuntimeException(e);
         }
     }
 }

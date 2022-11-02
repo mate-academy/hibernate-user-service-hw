@@ -24,17 +24,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .equals(HashUtil.hashPassword(password, user.get().getSalt()))) {
             return user.get();
         }
-        throw new AuthenticationException ("Email or password was incorrect");
+        throw new AuthenticationException("Email or password was incorrect");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email.matches(EMAIL_VALIDATOR) && password.length() >= MIN_LENGTH) {
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(password);
-            return userService.add(user);
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("Email " + email + " already exists");
         }
-        throw new RegistrationException("Invalid email or password");
+        if (!email.matches(EMAIL_VALIDATOR)) {
+            throw new RegistrationException("Email " + email + " is invalid");
+        }
+        if (password.length() < MIN_LENGTH) {
+            throw new RegistrationException("Password must be at least "
+                    + MIN_LENGTH + " characters");
+        }
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        return userService.add(user);
     }
 }
