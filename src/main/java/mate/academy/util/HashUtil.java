@@ -10,14 +10,14 @@ public class HashUtil {
     public HashUtil() {
     }
 
-    public byte[] salt() {
+    public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[16];
         secureRandom.nextBytes(salt);
         return salt;
     }
 
-    public static String hashPassword(String password,byte[] salt) {
+    public static String hashPassword(String password, byte[] salt) {
         StringBuilder hashedPassword = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
@@ -27,7 +27,8 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Could not create hash using "+ CRYPTO_ALGORITHM + " algorithm" ,e);
+            throw new IllegalStateException("Could not create hash using "
+                    + CRYPTO_ALGORITHM + " algorithm", e);
         }
         return hashedPassword.toString();
     }

@@ -19,9 +19,9 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String email) {
-        this.id = id;
+    public User(String email, String password) {
         this.email = email;
+        this.password = password;
     }
 
     public Long getId() {

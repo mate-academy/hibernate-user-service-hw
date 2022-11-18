@@ -2,19 +2,26 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+    private static final String EMAIL_OK = "test@gmail.com";
+    private static final String PASSWORD_OK = "12345678";
+    private static final String PASSWORD_WRONG = "87654321";
+
     private static Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegistrationException, AuthenticationException {
         MovieService movieService = (MovieService)
                 injector.getInstance(MovieService.class);
 
@@ -58,5 +65,12 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        AuthenticationService authenticationService = (AuthenticationService)
+                injector.getInstance(AuthenticationService.class);
+        User registerUser = authenticationService.register(EMAIL_OK, PASSWORD_OK);
+        User loginUserOkPassword = authenticationService.login(EMAIL_OK, PASSWORD_OK);
+        //User loginUserWrongPassword = authenticationService.login(EMAIL_OK, PASSWORD_WRONG);
+        User registerUserSecond = authenticationService.register(EMAIL_OK, PASSWORD_WRONG);
     }
 }
