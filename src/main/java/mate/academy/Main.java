@@ -1,6 +1,7 @@
 package mate.academy;
 
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
@@ -11,7 +12,11 @@ public class Main {
     public static void main(String[] args) {
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        authenticationService.register("Alice", "4321");
+        try {
+            authenticationService.register("Alice", "4321");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Registration error");
+        }
 
         try {
             User alice = authenticationService.login("Alice", "4321");

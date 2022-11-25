@@ -2,6 +2,7 @@ package mate.academy.security;
 
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -14,7 +15,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User register(String login, String password) {
+    public User register(String login, String password) throws RegistrationException {
+        if (login.isEmpty() || password.isEmpty()) {
+            throw new RegistrationException("Can't register user");
+        }
+        if (userService.findByEmail(login).isPresent()) {
+            throw new RegistrationException("Please, use another email");
+        }
         User user = new User();
         user.setPassword(password);
         user.setLogin(login);
