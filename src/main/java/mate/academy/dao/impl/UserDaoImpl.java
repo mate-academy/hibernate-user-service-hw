@@ -1,9 +1,6 @@
 package mate.academy.dao.impl;
 
 import java.util.Optional;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -39,16 +36,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder criteriaBuilder = HibernateUtil.getSessionFactory()
-                    .getCriteriaBuilder();
-            CriteriaQuery<User> userQuery = criteriaBuilder.createQuery(User.class);
-            Root<User> userRoot = userQuery.from(User.class);
-            CriteriaBuilder.In<String> emailPredicate = criteriaBuilder.in(userRoot.get("email"));
-            emailPredicate.value(email);
-            userQuery.where(emailPredicate);
-            return session.createQuery(userQuery).uniqueResultOptional();
-        } catch (Exception e) {
-            throw new DataProcessingException("Error of founding user from DB " + email, e);
+            return session.createQuery("from User u where u.email = :email", User.class)
+                    .setParameter("email", email)
+                    .uniqueResultOptional();
         }
     }
 }
