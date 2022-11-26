@@ -16,10 +16,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String login, String password) throws RegistrationException {
-        if (login.isEmpty() || password.isEmpty()) {
-            throw new RegistrationException("Can't register user");
-        }
-        if (userService.findByEmail(login).isPresent()) {
+        if (login.isEmpty() || password.isEmpty() || userService.findByEmail(login).isPresent()) {
             throw new RegistrationException("Please, use another email");
         }
         User user = new User();
@@ -31,14 +28,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String login, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(login);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can't authenticate user");
-        }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
+        if (passwordIsValid(userFromDbOptional, password)) {
+            return userFromDbOptional.get();
         }
         throw new AuthenticationException("Can't authenticate user");
+    }
+
+    private boolean passwordIsValid(Optional<User> foundUser, String password) {
+        return foundUser.get()
+                .getPassword()
+                .equals(HashUtil.hashPassword(password, foundUser.get().getSalt()));
     }
 }
