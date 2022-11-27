@@ -29,7 +29,8 @@ public class HashUtil {
             }
 
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Couldn't create has using " + CRYPTO_ALGORITHM + " algorithm.", e);
+            throw new IllegalStateException("Couldn't create has using "
+                    + CRYPTO_ALGORITHM + " algorithm.", e);
         }
         return hashedPassword.toString();
     }

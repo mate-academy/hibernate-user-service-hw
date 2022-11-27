@@ -15,19 +15,19 @@ import mate.academy.util.HashUtil;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[\\w-_]+@[\\w-_]+$");
-    private static final Pattern PASSWORD_PATTERN
-            = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
+    private static final Pattern PASSWORD_PATTERN = Pattern
+            .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
     @Inject
     private UserService userService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
         if (EMAIL_PATTERN.matcher(email).matches() && !password.isEmpty()) {
-            Optional<User> userFromDBOptional = userService.findByEmail(email);
-            if (userFromDBOptional.isPresent()
-                    && userFromDBOptional.get().getPassword()
-                    .equals(HashUtil.hashPassword(password, userFromDBOptional.get().getSalt()))) {
-                return userFromDBOptional.get();
+            Optional<User> userFromDbOptional = userService.findByEmail(email);
+            if (userFromDbOptional.isPresent()
+                    && userFromDbOptional.get().getPassword()
+                    .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
+                return userFromDbOptional.get();
             }
         }
         throw new AuthenticationException("Wrong email or password");
