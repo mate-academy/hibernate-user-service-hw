@@ -22,13 +22,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        if (EMAIL_PATTERN.matcher(email).matches() && !password.isEmpty()) {
-            Optional<User> userFromDbOptional = userService.findByEmail(email);
-            if (userFromDbOptional.isPresent()
-                    && userFromDbOptional.get().getPassword()
-                    .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
-                return userFromDbOptional.get();
-            }
+        Optional<User> userFromDbOptional = userService.findByEmail(email);
+        if (userFromDbOptional.isPresent()
+                && userFromDbOptional.get().getPassword()
+                .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
+            return userFromDbOptional.get();
         }
         throw new AuthenticationException("Wrong email or password");
     }
@@ -44,10 +42,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!PASSWORD_PATTERN.matcher(password).matches()) {
             throw new RegistrationException("Use strong password!");
         }
-        try {
-            return userService.add(new User(email, password));
-        } catch (Exception e) {
-            throw new RegistrationException("Error occurred when adding the user");
-        }
+        return userService.add(new User(email, password));
     }
 }
