@@ -1,13 +1,14 @@
 package mate.academy.dao.impl;
 
+import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
-import java.util.Optional;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
@@ -36,7 +37,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return Optional.ofNullable(session.get(User.class, email));
+            Query<User> queryGetByEmail = session.createQuery("FROM User "
+                    + "WHERE email = :email", User.class);
+            queryGetByEmail.setParameter("email", email);
+            return queryGetByEmail.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find user with email " + email, e);
         }

@@ -11,12 +11,12 @@ import mate.academy.util.HashUtil;
 @Service
 public class UserServiceImpl implements UserService {
     @Inject
-    UserDao userDao;
+    private UserDao userDao;
 
     @Override
     public User save(User user) {
         user.setSalt(HashUtil.getSalt());
-        user.setPassword(HashUtil.HashPassword(user.getPassword(), user.getSalt()));
+        user.setPassword(HashUtil.hashPassword(user.getPassword(), user.getSalt()));
         return userDao.save(user);
     }
 
