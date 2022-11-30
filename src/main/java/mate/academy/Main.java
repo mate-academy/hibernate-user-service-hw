@@ -12,7 +12,6 @@ import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
-import mate.academy.service.UserService;
 
 public class Main {
     public static void main(String[] args) {
@@ -76,6 +75,6 @@ public class Main {
         if (!user.equals(actual)) {
             System.out.println("Test failed! Expected user: " + user
                     + ", actual: " + actual);
-        };
+        }
     }
 }

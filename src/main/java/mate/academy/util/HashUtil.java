@@ -28,7 +28,7 @@ public class HashUtil {
             }
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Couldn't create hash using "
-                    + CRYPTO_ALGORITHM + " algorithm" , e);
+                    + CRYPTO_ALGORITHM + " algorithm", e);
         }
         return hashedPassword.toString();
     }
