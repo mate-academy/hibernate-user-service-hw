@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -64,7 +65,14 @@ public class Main {
                 = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
         User user = authenticationService.register("email@domen", "password");
-        User actual = authenticationService.login(user.getEmail(), "password");
+        User actual = null;
+        try {
+            actual = authenticationService.login(user.getEmail(), "password");
+        } catch (AuthenticationException e) {
+            System.out.println("Failed to authenticate "
+                    + "user during test"
+                    + user);
+        }
         if (!user.equals(actual)) {
             System.out.println("Test failed! Expected user: " + user
                     + ", actual: " + actual);
