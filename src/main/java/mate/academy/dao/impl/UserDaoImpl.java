@@ -42,7 +42,7 @@ public class UserDaoImpl implements UserDao {
                     User.class
             );
             userQuery.setParameter("email", email);
-            return Optional.ofNullable(userQuery.uniqueResult());
+            return userQuery.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get user by email", e);
         }
