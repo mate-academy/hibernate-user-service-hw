@@ -1,11 +1,11 @@
 package mate.academy.model;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -15,15 +15,14 @@ public class User {
     private Long id;
     private String email;
     private String password;
-    private String salt;
+    private byte[] salt;
 
     public User() {
     }
 
-    public User(String email, String password, String salt) {
+    public User(String email, String password) {
         this.email = email;
         this.password = password;
-        this.salt = salt;
     }
 
     public Long getId() {
@@ -50,11 +49,11 @@ public class User {
         this.password = password;
     }
 
-    public String getSalt() {
+    public byte[] getSalt() {
         return salt;
     }
 
-    public void setSalt(String salt) {
+    public void setSalt(byte[] salt) {
         this.salt = salt;
     }
 
