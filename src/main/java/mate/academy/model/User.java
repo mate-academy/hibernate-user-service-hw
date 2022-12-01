@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,17 +14,22 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "movies")
+@Table(name = "users")
 @Getter
 @Setter
-@ToString
+@ToString()
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Movie {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     @NonNull
-    private String title;
-    private String description;
+    private String email;
+    @ToString.Exclude
+    @NonNull
+    private String password;
+    @ToString.Exclude
+    private byte[] salt;
 }
