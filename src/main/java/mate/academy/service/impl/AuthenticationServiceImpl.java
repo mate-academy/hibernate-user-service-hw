@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.Objects;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -22,7 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userFromDB.get();
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (userFromDB.isEmpty()
-                || !Objects.equals(hashedPassword, user.getPassword())) {
+                || !hashedPassword.equals(user.getPassword())) {
             throw new AuthenticationException("Invalid login or password!");
         }
         return user;
