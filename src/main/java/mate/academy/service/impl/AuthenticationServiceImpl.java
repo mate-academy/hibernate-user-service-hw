@@ -16,7 +16,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String email, String password) throws RegistrationException {
+    public User login(String email, String password) throws AuthenticationException {
         Optional<User> optionalUser = userService.findByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -25,14 +25,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return user;
             }
         }
-        throw new RegistrationException("Can't authenticate user. "
+        throw new AuthenticationException("Can't authenticate user. "
                 + "Email or password is incorrect");
     }
 
     @Override
-    public User register(String email, String password) throws AuthenticationException {
+    public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent() || !email.matches("^(.+)@(\\S+)$")) {
-            throw new AuthenticationException("Can't register user. "
+            throw new RegistrationException("Can't register user. "
                     + "The user is already registered at this email, "
                     + "or email is incorrect");
         }

@@ -1,8 +1,8 @@
 package mate.academy.service.impl;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 import mate.academy.dao.UserDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User get(Long id) {
         return userDao.get(id).orElseThrow(() ->
-                new NoSuchElementException("No user by id:" + id));
+                new EntityNotFoundException("No user by id:" + id));
     }
 
     @Override

@@ -2,7 +2,7 @@ package mate.academy.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
+import javax.persistence.EntityNotFoundException;
 import mate.academy.dao.MovieSessionDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
@@ -22,7 +22,7 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     @Override
     public MovieSession get(Long id) {
         return sessionDao.get(id).orElseThrow(() ->
-                new NoSuchElementException("No movie session by id:" + id));
+                new EntityNotFoundException("No movie session by id:" + id));
     }
 
     @Override
