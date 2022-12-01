@@ -15,7 +15,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CinemaHall {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int capacity;
     private String description;

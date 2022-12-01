@@ -20,7 +20,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class Movie {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NonNull
     private String title;

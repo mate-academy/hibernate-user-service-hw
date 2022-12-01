@@ -21,11 +21,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true) @NonNull
+    @Column(unique = true)
+    @NonNull
     private String email;
-    @ToString.Exclude @NonNull
+    @ToString.Exclude
+    @NonNull
     private String password;
     @ToString.Exclude
     private byte[] salt;

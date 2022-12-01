@@ -18,7 +18,8 @@ import lombok.ToString;
 @Setter
 @ToString
 public class MovieSession {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     private Movie movie;
