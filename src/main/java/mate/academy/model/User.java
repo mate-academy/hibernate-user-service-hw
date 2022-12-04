@@ -21,9 +21,8 @@ public class User {
     public User() {
     }
 
-    public User(String email, byte[] salt, String password) {
+    public User(String email, String password) {
         this.email = email;
-        this.salt = salt;
         this.password = password;
     }
 
