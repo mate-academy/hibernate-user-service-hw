@@ -8,12 +8,12 @@ public class PasswordUtil {
     private static final String HASH_ALGORITHM = "SHA-256";
     private static final String HEX_STRING = "%02x";
     private static final int SALT_LENGTH = 16;
+    private static final SecureRandom secureRandom = new SecureRandom();
 
     private PasswordUtil() {
     }
 
     public static byte[] getSalt() {
-        SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[SALT_LENGTH];
         secureRandom.nextBytes(salt);
         return salt;

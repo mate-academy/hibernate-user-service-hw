@@ -34,11 +34,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("User with such email is already registered!");
         }
         byte[] salt = PasswordUtil.getSalt();
-        String hash = PasswordUtil.getHash(password, salt);
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(hash);
-        user.setSalt(salt);
+        String passwordHash = PasswordUtil.getHash(password, salt);
+        User user = new User(email, salt, passwordHash);
         return userService.add(user);
     }
 }

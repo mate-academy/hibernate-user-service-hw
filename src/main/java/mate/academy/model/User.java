@@ -18,6 +18,15 @@ public class User {
     private byte[] salt;
     private String password;
 
+    public User() {
+    }
+
+    public User(String email, byte[] salt, String password) {
+        this.email = email;
+        this.salt = salt;
+        this.password = password;
+    }
+
     public Long getId() {
         return id;
     }
