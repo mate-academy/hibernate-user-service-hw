@@ -12,19 +12,17 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    public static final int MIN_PASSWORD_LENGTH = 6;
     @Inject
     private UserService userService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDB = userService.findByEmail(email);
-        User user = userFromDB.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (userFromDB.isEmpty()
-                || !hashedPassword.equals(user.getPassword())) {
+        if (userFromDB.isPresent() && isValidPassword(userFromDB.get(), password)) {
             throw new AuthenticationException("Invalid login or password!");
         }
-        return user;
+        return userFromDB.get();
     }
 
     @Override
@@ -33,9 +31,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userFromDB.isPresent()) {
             throw new RegistrationException("User with this login already exists!");
         }
-        if (password.length() < 6) {
+        if (password.length() < MIN_PASSWORD_LENGTH) {
             throw new RegistrationException("Password length cannot be less than 6 symbols!");
         }
         return userService.add(new User(email, password));
+    }
+
+    private boolean isValidPassword(User user, String password) {
+        return user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()));
     }
 }

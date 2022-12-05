@@ -66,6 +66,5 @@ public class Main {
         User loginUser = authenticationService.login(user.getEmail(), user.getPassword());
         System.out.println(registeredUser);
         System.out.println(loginUser);
-        //I tested registering a user with an email that already exists
     }
 }
