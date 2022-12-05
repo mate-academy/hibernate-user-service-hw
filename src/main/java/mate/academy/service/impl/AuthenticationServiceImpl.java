@@ -12,6 +12,8 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    private static final String EMAIL_PATTERN = "[\\w._]+@[.\\w]+";
+    private static final int MIN_PASSWORD_LENGTH = 6;
     @Inject
     private UserService userService;
 
@@ -32,11 +34,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("User with this email"
                     + " already exists");
         }
-        if (!email.matches("[\\w._]+@[.\\w]+")) {
+        if (!email.matches(EMAIL_PATTERN)) {
             throw new RegistrationException("Invalid email " + email
                     + ". Email should be in form: address@domen");
         }
-        if (password.length() < 6) {
+        if (password.length() < MIN_PASSWORD_LENGTH) {
             throw new RegistrationException("Invalid password " + email
                     + ". Password should at least 6 symbols long");
         }
