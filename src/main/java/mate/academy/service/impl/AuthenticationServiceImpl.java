@@ -28,13 +28,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        try {
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(password);
-            return userService.add(user);
-        } catch (Exception e) {
-            throw new RegistrationException(e);
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("User with this email"
+                    + " already exists");
         }
+        if (!email.matches("[\\w._]+@[.\\w]+")) {
+            throw new RegistrationException("Invalid email " + email
+                    + ". Email should be in form: address@domen");
+        }
+        if (password.length() < 6) {
+            throw new RegistrationException("Invalid password " + email
+                    + ". Password should at least 6 symbols long");
+        }
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        return userService.add(user);
     }
 }
