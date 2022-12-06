@@ -9,17 +9,17 @@ public class HashUtils {
 
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
-        byte[]salt = new byte[16];
+        byte[ ]salt = new byte[16];
         secureRandom.nextBytes(salt);
         return salt;
     }
 
-    public static String hashPassword(String password, byte[] salt) {
+    public static String hashPassword(String password, byte[ ] salt) {
         StringBuilder hashedPassword = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
-            byte[]digest = messageDigest.digest(password.getBytes());
+            byte[ ]digest = messageDigest.digest(password.getBytes());
             for (byte bt: digest) {
                 hashedPassword.append(String.format("&02x", bt));
             }
@@ -30,4 +30,3 @@ public class HashUtils {
     }
 
 }
-

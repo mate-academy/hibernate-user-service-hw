@@ -20,8 +20,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> user = userService.findByEmail(email);
-        System.out.println(user.get().getPassword());
-        System.out.println(password);
         user.orElseThrow(AuthenticationException::new);
         String hashedPassword = HashUtils.hashPassword(password, user.get().getSalt());
         if (!user.get().getPassword().equals(hashedPassword)) {
