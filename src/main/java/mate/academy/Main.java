@@ -17,7 +17,7 @@ import mate.academy.service.MovieSessionService;
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+    public static void main(String[] args) {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -62,9 +62,19 @@ public class Main {
                         fastAndFurious.getId(), LocalDate.now()));
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User someUser = authenticationService.register("someEmail@gmail.com", "somePassword");
+        User someUser = new User();
+        try {
+            someUser = authenticationService.register("someEmail@gmail.com", "somePassword");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't registered , such email was already registered", e);
+        }
         System.out.println(someUser);
-        User loginUser = authenticationService.login("1someEmail@gmail.com", "somePassword");
+        User loginUser = new User();
+        try {
+            loginUser = authenticationService.login("1someEmail@gmail.com", "somePassword");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't login , password or email was incorrect", e);
+        }
         System.out.println(loginUser);
     }
 }
