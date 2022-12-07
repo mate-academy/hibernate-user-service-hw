@@ -24,13 +24,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isPresent() && isValidPassword(password, userOptional.get())) {
+        if (userOptional.isPresent() && isPasswordValid(password, userOptional.get())) {
             return userOptional.get();
         }
         throw new AuthenticationException("Can't login. Email or Password is incorrect");
     }
 
-    public boolean isValidPassword(String password, User user) {
+    public boolean isPasswordValid(String password, User user) {
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         return user.getPassword().equals(hashedPassword);
     }
