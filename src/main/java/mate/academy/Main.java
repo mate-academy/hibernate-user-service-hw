@@ -70,8 +70,8 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        String testEmail = "test.regiser@gmailcom";
-        String testPassword = "235";
+        String testEmail = "test.register@gmail.com";
+        String testPassword = "password";
         System.out.println(authenticationService.register(testEmail, testPassword));
         System.out.println(authenticationService.login(testEmail, testPassword));
     }
