@@ -24,15 +24,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isEmpty()) {
-            throw new AuthenticationException("Can't login user. Email or password are incorrect");
+        if (userOptional.isPresent() && isValidPassword(password, userOptional.get())) {
+            return userOptional.get();
         }
-        User user = userOptional.get();
+        throw new AuthenticationException("Can't login. Email or Password are incorrect");
+    }
+
+    public boolean isValidPassword(String password, User user) {
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("Can't authenticate user by this email");
+        return user.getPassword().equals(hashedPassword);
     }
 
     public void validateUser(String email) throws RegistrationException {
