@@ -27,7 +27,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userOptional.isPresent() && isValidPassword(password, userOptional.get())) {
             return userOptional.get();
         }
-        throw new AuthenticationException("Can't login. Email or Password are incorrect");
+        throw new AuthenticationException("Can't login. Email or Password is incorrect");
     }
 
     public boolean isValidPassword(String password, User user) {
