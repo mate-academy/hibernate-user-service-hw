@@ -20,12 +20,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> user = userService.findByEmail(email);
-        user.orElseThrow(AuthenticationException::new);
         String hashedPassword = HashUtils.hashPassword(password, user.get().getSalt());
-        if (!user.get().getPassword().equals(hashedPassword)) {
-            throw new AuthenticationException("Invalid login or password");
-        } else {
+        if (user.isPresent() && password.equals(hashedPassword)) {
             return user.get();
+        } else {
+            throw new AuthenticationException("Cannot authenticate user by email: " + email);
         }
     }
 
@@ -41,21 +40,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (user.isPresent()) {
             throw new RegistrationException("Unable to register with current email: " + email);
         }
-        if (!checkValidEmail(email)) {
+        if (!isEmailValid(email)) {
             throw new RegistrationException("Not valid email format " + email);
         }
-        if (!checkValidPassword(password)) {
+        if (!isPasswordValid(password)) {
             throw new RegistrationException(
                     "Password length isnt correct.Min length of password: " + PASSWORD_MIN_LENGTH);
         }
         return true;
     }
 
-    public boolean checkValidEmail(String email) {
+    public boolean isEmailValid(String email) {
         return email.matches(REGEX_PATTERN);
     }
 
-    public boolean checkValidPassword(String password) {
+    public boolean isPasswordValid(String password) {
         return password.length() >= PASSWORD_MIN_LENGTH;
     }
 }
