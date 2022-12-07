@@ -41,7 +41,6 @@ public class UserDaoImpl implements UserDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-
             Root<User> userRoot = criteriaQuery.from(User.class);
             criteriaQuery.where(criteriaBuilder.equal(userRoot.get("email"), email));
             return session.createQuery(criteriaQuery).getResultList().stream().findFirst();
