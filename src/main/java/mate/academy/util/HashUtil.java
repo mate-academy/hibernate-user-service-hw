@@ -7,6 +7,7 @@ import java.security.SecureRandom;
 public class HashUtil {
     private static final int DEFAULT_LENGTH = 16;
     private static final String CRYPTO_ALGORITHM = "SHA-512";
+    private static final String FORMAT_SPECIFIER = "%02x";
 
     private HashUtil() {
     }
@@ -25,7 +26,7 @@ public class HashUtil {
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
             for (byte d: digest) {
-                hashedPassword.append(String.format("%02x", d));
+                hashedPassword.append(String.format(FORMAT_SPECIFIER, d));
             }
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Couldn't crate hash using SHA-512 algorithm ", e);
