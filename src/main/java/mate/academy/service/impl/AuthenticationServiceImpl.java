@@ -17,9 +17,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> optionalUser = userService.findByEmail(email);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+        Optional<User> userOptional = userService.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
             if (user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()))) {
                 return user;
             }
@@ -29,7 +29,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email.isBlank() || password.isBlank()) {
+        Optional<User> userOptional = userService.findByEmail(email);
+        if (userOptional.isPresent() || email.isBlank() || password.isBlank()) {
             throw new RegistrationException("Wrong input data");
         }
         User user = new User(email, password);
