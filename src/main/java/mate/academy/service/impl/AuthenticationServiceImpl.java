@@ -12,6 +12,7 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    private static final String EMAIL_PATTERN = "[a-zA-Z0-9_!#$%&’*+=?`{|}~^.-]+@[a-zA-Z0-9.-]+";
     @Inject
     private UserService userService;
 
@@ -32,6 +33,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with email: " + email + " already exists");
+        }
+        if (!email.matches(EMAIL_PATTERN)) {
+            throw new RegistrationException("Email: " + email + " is invalid");
         }
         if (password.isEmpty()) {
             throw new RegistrationException("Password is invalid");
