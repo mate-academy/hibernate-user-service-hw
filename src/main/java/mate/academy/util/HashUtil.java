@@ -9,6 +9,8 @@ import javax.crypto.spec.PBEKeySpec;
 
 public class HashUtil {
     private static final String PBKDF_ALGORITHM = "PBKDF2WithHmacSHA1";
+    private static final int ITERATION_COUNT = 65536;
+    private static final int KEY_LENGTH = 128;
 
     private HashUtil() {
     }
@@ -21,7 +23,7 @@ public class HashUtil {
     }
 
     public static String hashPassword(String password, byte[] salt) {
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, ITERATION_COUNT, KEY_LENGTH);
         try {
             SecretKeyFactory factory = SecretKeyFactory.getInstance(PBKDF_ALGORITHM);
             byte[] bytes = factory.generateSecret(spec).getEncoded();
