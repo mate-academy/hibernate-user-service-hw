@@ -87,8 +87,6 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", login='" + login + '\''
-                + ", password='" + password + '\''
-                + ", salt=" + Arrays.toString(salt)
                 + '}';
     }
 }
