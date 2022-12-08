@@ -37,16 +37,11 @@ public class User {
         this.password = password;
     }
 
-    private String getPasswordToStringConverter() {
-        return password.replaceAll("[A-Za-z0-9]", "*");
-    }
-
     @Override
     public String toString() {
         return "User{"
                 + "id=" + id
                 + ", email='" + email + '\''
-                + ", password='" + getPasswordToStringConverter() + '\''
                 + '}';
     }
 }
