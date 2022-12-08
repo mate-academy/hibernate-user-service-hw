@@ -22,7 +22,6 @@ public class Main {
         } catch (RegistrationException e) {
             System.out.println("RegistrationException cached");
         }
-
         try {
             authenticationService.login(maxine.getEmail(), maxine.getPassword());
             System.out.println("User with email=" + maxine.getEmail() + " was logginned");
@@ -40,7 +39,6 @@ public class Main {
         } catch (RegistrationException e) {
             System.out.println("RegistrationException cached");
         }
-
         try {
             authenticationService.login(anotherMaxine.getEmail(), anotherMaxine.getPassword());
             System.out.println("User with email=" + anotherMaxine.getEmail() + " was logginned");
@@ -48,5 +46,14 @@ public class Main {
             System.out.println("AuthenticationException cached");
         }
 
+        User dan = new User();
+        dan.setEmail("maxine.qwer@gmail.com");
+        dan.setPassword("nr");
+        try {
+            authenticationService.register(dan.getEmail(), dan.getPassword());
+            System.out.println("User with email=" + dan.getEmail() + " was registered");
+        } catch (RegistrationException e) {
+            System.out.println("RegistrationException cached");
+        }
     }
 }
