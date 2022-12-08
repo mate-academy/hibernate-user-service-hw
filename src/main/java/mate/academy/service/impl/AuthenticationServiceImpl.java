@@ -28,7 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String login, String password, String repeatPassword)
             throws RegistrationException {
-        if (isUserExist(login)) {
+        if (isLoginValid(login)) {
             throw new RegistrationException("User with this login already exist. "
                     + "Please try again.");
         }
@@ -42,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()));
     }
 
-    private boolean isUserExist(String login) {
+    private boolean isLoginValid(String login) {
         Optional<User> userFromDb = userService.findByLogin(login);
         return userFromDb.isPresent();
     }
