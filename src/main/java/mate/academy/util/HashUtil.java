@@ -31,5 +31,4 @@ public class HashUtil {
             throw new IllegalStateException("Could not create hash using SHA-512 algorithm", e);
         }
     }
-
 }

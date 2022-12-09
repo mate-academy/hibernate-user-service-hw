@@ -71,12 +71,11 @@ public class Main {
                 .register(userLuka.getEmail(), userLuka.getPassword()));
         System.out.println(authenticationService
                 .login(userLuka.getEmail(), userLuka.getPassword()));
-        User user2 = new User();
-        user2.setEmail("luka@gmail.com");
-        user2.setPassword("another password");
+        User userWithSameEmail = new User();
+        userWithSameEmail.setEmail("luka@gmail.com");
+        userWithSameEmail.setPassword("another password");
         System.out.println(authenticationService
-                .register(user2.getEmail(), user2.getPassword()));
-        //here exception is thrown - login already taken
+                .register(userWithSameEmail.getEmail(), userWithSameEmail.getPassword()));
         UserService userService = (UserService) injector.getInstance(UserService.class);
         System.out.println(userService.findByEmail(userLuka.getEmail()));
 

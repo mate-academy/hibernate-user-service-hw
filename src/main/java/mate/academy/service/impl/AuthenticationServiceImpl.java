@@ -27,11 +27,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Login is already taken!");
-        }
-        if (email.isBlank() || password.isBlank()) {
-            throw new RegistrationException("Email or password can't be empty!");
+        if (userService.findByEmail(email).isPresent() || email.isBlank() || password.isBlank()) {
+            throw new RegistrationException("Login is empty or already taken. "
+                    + "Password can't be empty too");
         }
         return userService.add(new User(email, password));
     }
