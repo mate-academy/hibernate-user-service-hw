@@ -27,7 +27,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't not add User", e);
+            throw new DataProcessingException("Can't not add User" + user, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -40,9 +40,7 @@ public class UserDaoImpl implements UserDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<User> findByLoginQuery =
                     session.createQuery("from User u where u.email = :email", User.class)
-                            .setParameter("email", email)
-                            .setFirstResult(0)
-                            .setMaxResults(1);
+                            .setParameter("email", email);
             return findByLoginQuery.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get user by email" + email, e);
