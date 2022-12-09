@@ -28,12 +28,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        try {
-            User user = new User(email, password);
-            userService.add(user);
-            return user;
-        } catch (Exception e) {
-            throw new RegistrationException("Can't register user with email " + email, e);
+        User user = new User(email, password);
+        if (userService.findByEmail(email).isEmpty()) {
+            return userService.add(user);
         }
+        throw new RegistrationException("Can't register user with email " + email);
     }
 }
