@@ -18,7 +18,6 @@ public class User {
     private String email;
     @NotNull
     private String password;
-
     private byte [] salt;
 
     public User() {
