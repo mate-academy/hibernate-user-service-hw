@@ -36,7 +36,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("SELECT u FROM User u "
+            return session.createQuery("FROM User u "
                             + "WHERE u.email = :email", User.class)
                     .setParameter("email", email)
                     .uniqueResultOptional();
