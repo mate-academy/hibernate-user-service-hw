@@ -29,6 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        isPasswordValid(password);
         Optional<User> user = userService.findByEmail(email);
         if (user.isEmpty()) {
             User uniqueUser = new User();
@@ -38,5 +39,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         throw new RegistrationException(
                 String.format("User with email=%s already created", email));
+    }
+
+    private void isPasswordValid(String password) throws RegistrationException {
+        if (password.length() < 4) {
+            throw new RegistrationException("your password is so short,"
+                    + " try to create a more length password");
+        }
     }
 }

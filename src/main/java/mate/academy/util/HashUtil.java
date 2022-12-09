@@ -25,6 +25,5 @@ public class HashUtil {
                     + CRYPTO_ALGORITHM + " algorithm");
         }
         return hashedPassword.toString();
-
     }
 }
