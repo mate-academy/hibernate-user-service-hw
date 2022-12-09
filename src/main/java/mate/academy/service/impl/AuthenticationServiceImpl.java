@@ -31,6 +31,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        checkParameters(email, password);
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        return userService.add(user);
+    }
+
+    private void checkParameters(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with email: " + email + " already exists");
         }
@@ -40,9 +48,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (password.isEmpty()) {
             throw new RegistrationException("Password is invalid");
         }
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        return userService.add(user);
     }
 }
