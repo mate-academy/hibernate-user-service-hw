@@ -17,11 +17,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isPresent()) {
-            String hashPassword = HashUtil.hashPassword(password, userFromDb.get().getSalt());
-            if (hashPassword.equals(userFromDb.get().getPassword())) {
-                return userFromDb.get();
-            }
+        if (userFromDb.isPresent() && matchPasswords(password, userFromDb.get())) {
+            return userFromDb.get();
         }
         throw new AuthenticationException("Can not authenticate user with email " + email);
     }
@@ -29,13 +26,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isEmpty()) {
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(password);
-            userService.add(user);
-            return user;
+        if (userFromDb.isPresent() || !email.matches("^(.+)@(.+)$")) {
+            throw new RegistrationException("Can not register user with email " + email);
         }
-        throw new RegistrationException("Can not register user with email " + email);
+        if (password.isBlank()) {
+            throw new RegistrationException("Password should contain symbols");
+        }
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        return userService.add(user);
+    }
+
+    private boolean matchPasswords(String password, User userFromDb) {
+        String hashPassword = HashUtil.hashPassword(password, userFromDb.getSalt());
+        return hashPassword.equals(userFromDb.getPassword());
     }
 }

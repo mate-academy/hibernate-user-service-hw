@@ -17,10 +17,7 @@ public class User {
     private String email;
     private String password;
     private byte[] salt;
-
-    public User() {
-    }
-
+    
     public Long getId() {
         return id;
     }
@@ -58,7 +55,6 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", email='" + email + '\''
-                + ", password='" + password + '\''
                 + '}';
     }
 }

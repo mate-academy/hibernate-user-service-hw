@@ -89,16 +89,15 @@ public class Main {
             auth.register(sameEmailNotOk.getEmail(), sameEmailNotOk.getPassword());
         } catch (RegistrationException e) {
             System.out.println(e);
-        } finally {
-            User loginDoesNotExistNotOk = new User();
-            loginDoesNotExistNotOk.setEmail("qwe@qwe");
-            loginDoesNotExistNotOk.setPassword("qwe");
-            try {
-                auth.login(loginDoesNotExistNotOk.getEmail(),
-                        loginDoesNotExistNotOk.getPassword());
-            } catch (AuthenticationException e) {
-                throw new RuntimeException(e);
-            }
+        }
+        User loginDoesNotExistNotOk = new User();
+        loginDoesNotExistNotOk.setEmail("qwe@qwe");
+        loginDoesNotExistNotOk.setPassword("qwe");
+        try {
+            auth.login(loginDoesNotExistNotOk.getEmail(),
+                    loginDoesNotExistNotOk.getPassword());
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e);
         }
     }
 }
