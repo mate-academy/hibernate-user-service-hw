@@ -20,7 +20,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userFromDb = userService.findByEmail(email);
         User user = userFromDb.get();
         if (user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()))) {
-                return user;
+            return user;
         }
         throw new AuthenticationException("Can't login user, please check your email or password");
     }
