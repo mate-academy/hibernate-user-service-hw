@@ -3,12 +3,16 @@ package mate.academy.service.impl;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Inject;
+import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
+@Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    @Inject
     private UserService userService;
 
     @Override
@@ -17,9 +21,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userOptional.isPresent() && isPasswordValid(password, userOptional.get())) {
             return userOptional.get();
         }
-        throw new AuthenticationException("Login failed. Email or password you entered is incorrect");
+        throw new AuthenticationException("Login failed. "
+                + "Email or password you entered is incorrect");
     }
-
 
     @Override
     public User register(String email, String password) throws RegistrationException {
