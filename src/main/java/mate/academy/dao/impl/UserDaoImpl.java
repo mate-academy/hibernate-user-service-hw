@@ -1,15 +1,18 @@
 package mate.academy.dao.impl;
 
-import java.util.List;
 import java.util.Optional;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
+import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+@Dao
 public class UserDaoImpl implements UserDao {
 
     @Override
@@ -44,14 +47,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> getAll() {
+    public Optional<User> findByLogin(String login) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder()
-                    .createQuery(User.class);
-            criteriaQuery.from(User.class);
-            return session.createQuery(criteriaQuery).getResultList();
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<User> queryUser = criteriaBuilder.createQuery(User.class);
+            Root<User> userRoot = queryUser.from(User.class);
+            queryUser.where(criteriaBuilder.equal(userRoot.get("login"), login));
+            return session.createQuery(queryUser).uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get all users ", e);
+            throw new DataProcessingException("Can not find user with email: " + login, e);
         }
     }
 }
