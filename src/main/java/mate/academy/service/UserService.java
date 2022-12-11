@@ -11,5 +11,5 @@ public interface UserService {
 
     List<User> getAll();
 
-    Optional<User> findByEmail(String email); // we will use this `Optional` later
+    Optional<User> findByEmail(String email);
 }
