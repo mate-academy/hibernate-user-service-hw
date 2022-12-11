@@ -1,19 +1,17 @@
 package mate.academy.dao.impl;
 
+import java.util.List;
+import java.util.Optional;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
-import mate.academy.model.Movie;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.util.List;
-import java.util.Optional;
 
 @Dao
 public class UserDaoImpl implements UserDao {
@@ -46,7 +44,7 @@ public class UserDaoImpl implements UserDao {
             CriteriaQuery<User> query = builder.createQuery(User.class);
             Root<User> root = query.from(User.class);
             query.where(builder.equal(root.get("email"), email));
-            return  Optional.ofNullable(session.createQuery(query).getSingleResult());
+            return Optional.ofNullable(session.createQuery(query).uniqueResult());
         } catch (Exception e) {
             throw new DataProcessingException("Can't get User with email " + email, e);
         }
