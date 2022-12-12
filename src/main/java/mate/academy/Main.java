@@ -71,11 +71,8 @@ public class Main {
             User loginUser = authenticationService.login("1234qwerty@google.com",
                     "1234567890");
             System.out.println(loginUser);
-        } catch (RegistrationException e) {
-            throw new RuntimeException("Can't register user!", e);
-        } catch (AuthenticationException e) {
-            throw new RuntimeException("Can't authenticate user!", e);
+        } catch (RegistrationException | AuthenticationException e) {
+            throw new RuntimeException(e);
         }
-
     }
 }
