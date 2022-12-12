@@ -55,12 +55,12 @@ public class Main {
         try {
             authenticationService.register("someEmail", "somePassword");
         } catch (RegistrationException e) {
-            throw new RuntimeException("Cant register user");
+            throw new RuntimeException("Can't register user", e);
         }
         try {
             authenticationService.login("someEmail", "somePassword");
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Cant login user");
+            throw new RuntimeException("Can't login user", e);
         }
     }
 }
