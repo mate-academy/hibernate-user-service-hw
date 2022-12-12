@@ -26,15 +26,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isPresent() || !email.matches("^(.+)@(.+)$")) {
-            throw new RegistrationException("Can't register user with email " + email);
-        }
-        if (password.isBlank()) {
-            throw new RegistrationException("Password should contain symbols");
-        }
-        User user = new User(email, password);
-        return userService.add(user);
+            if (userService.findByEmail(email).isEmpty()) {
+                User user = new User();
+                user.setLogin(email);
+                user.setPassword(password);
+                return userService.add(user);
+            }
+        throw new RegistrationException("This mail already exists");
     }
 
     private boolean matchPasswords(String password, User userFromDb) {

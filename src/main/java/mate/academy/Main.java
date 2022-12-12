@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -17,7 +18,7 @@ import mate.academy.service.MovieSessionService;
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegistrationException, AuthenticationException {
         MovieService movieService
                 = (MovieService) injector.getInstance(MovieService.class);
 
@@ -68,35 +69,25 @@ public class Main {
 
         AuthenticationService auth
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        try {
-            User register = auth.register(bob.getLogin(), bob.getPassword());
-            System.out.println(register);
-        } catch (RegistrationException e) {
-            throw new RuntimeException(e);
-        }
-        try {
+
+        User register = auth.register(bob.getLogin(), bob.getPassword());
+        System.out.println(register);
+
+
             User login = auth.login(bob.getLogin(), bob.getPassword());
             System.out.println(login);
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
 
         User sameEmailNotOk = new User();
         sameEmailNotOk.setLogin("123@123");
         sameEmailNotOk.setPassword("123");
-        try {
-            auth.register(sameEmailNotOk.getLogin(), sameEmailNotOk.getPassword());
-        } catch (RegistrationException e) {
-            System.out.println(e);
-        }
+
+        auth.register(sameEmailNotOk.getLogin(), sameEmailNotOk.getPassword());
+
         User loginDoesNotExistNotOk = new User();
         loginDoesNotExistNotOk.setLogin("qwe@qwe");
         loginDoesNotExistNotOk.setPassword("qwe");
-        try {
-            auth.login(loginDoesNotExistNotOk.getLogin(),
+
+        auth.login(loginDoesNotExistNotOk.getLogin(),
                     loginDoesNotExistNotOk.getPassword());
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
