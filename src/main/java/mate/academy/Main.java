@@ -2,7 +2,6 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -61,7 +60,7 @@ public class Main {
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
-                        fastAndFurious.getId(), LocalDate.now()));
+                fastAndFurious.getId(), LocalDate.now()));
 
         User bob = new User();
         bob.setLogin("123@123");
@@ -73,10 +72,8 @@ public class Main {
         User register = auth.register(bob.getLogin(), bob.getPassword());
         System.out.println(register);
 
-
-            User login = auth.login(bob.getLogin(), bob.getPassword());
-            System.out.println(login);
-
+        User login = auth.login(bob.getLogin(), bob.getPassword());
+        System.out.println(login);
         User sameEmailNotOk = new User();
         sameEmailNotOk.setLogin("123@123");
         sameEmailNotOk.setPassword("123");
@@ -88,6 +85,6 @@ public class Main {
         loginDoesNotExistNotOk.setPassword("qwe");
 
         auth.login(loginDoesNotExistNotOk.getLogin(),
-                    loginDoesNotExistNotOk.getPassword());
+                loginDoesNotExistNotOk.getPassword());
     }
 }
