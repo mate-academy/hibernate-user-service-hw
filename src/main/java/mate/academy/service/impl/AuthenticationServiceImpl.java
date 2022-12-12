@@ -16,31 +16,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        if (email.isBlank() || password.isBlank()) {
-            throw new AuthenticationException("Cannot login user. "
-                    + "Login or password is empty string or filled with whitespace. "
-                    + "email=" + email);
+        if (!email.isBlank() && !password.isBlank()) {
+            User user = userService.findByEmail(email).orElse(null);
+            if (user != null && user.getPassword()
+                    .equals(HashUtil.hashPassword(password, user.getSalt()))) {
+                return user;
+            }
         }
-        User user = userService.findByEmail(email).orElseThrow(() ->
-                new AuthenticationException("Cannot authenticate user. email=" + email));
-        if (!user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()))) {
-            throw new AuthenticationException("Cannot authenticate user. email=" + email);
-        }
-        return user;
+        throw new AuthenticationException("Cannot authenticate user. email=" + email);
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email.isBlank() || password.isBlank()) {
-            throw new RegistrationException("Cannot register user. "
-                    + "Login or password is empty string or filled with whitespace."
-                    + " email=" + email);
-        }
-        try {
+        if (!email.isBlank() && !password.isBlank() && userService.findByEmail(email).isEmpty()) {
             return userService.add(new User(email, password));
-        } catch (Exception e) {
-            throw new RegistrationException("Cannot register user. "
-                    + "Probably user already exists. email=" + email, e);
         }
+        throw new RegistrationException("Cannot register user. email=" + email);
     }
 }
