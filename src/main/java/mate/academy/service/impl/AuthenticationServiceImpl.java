@@ -9,7 +9,7 @@ import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
-q
+
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
