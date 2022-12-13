@@ -28,7 +28,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isEmpty()) {
             User user = new User();
-            user.setLogin(email);
+            user.setEmail(email);
             user.setPassword(password);
             return userService.add(user);
         }

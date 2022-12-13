@@ -63,28 +63,28 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         User bob = new User();
-        bob.setLogin("123@123");
+        bob.setEmail("123@123");
         bob.setPassword("qwerty");
 
         AuthenticationService auth
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-        User register = auth.register(bob.getLogin(), bob.getPassword());
+        User register = auth.register(bob.getEmail(), bob.getPassword());
         System.out.println(register);
 
-        User login = auth.login(bob.getLogin(), bob.getPassword());
+        User login = auth.login(bob.getEmail(), bob.getPassword());
         System.out.println(login);
         User sameEmailNotOk = new User();
-        sameEmailNotOk.setLogin("123@123");
+        sameEmailNotOk.setEmail("123@123");
         sameEmailNotOk.setPassword("123");
 
-        auth.register(sameEmailNotOk.getLogin(), sameEmailNotOk.getPassword());
+        auth.register(sameEmailNotOk.getEmail(), sameEmailNotOk.getPassword());
 
         User loginDoesNotExistNotOk = new User();
-        loginDoesNotExistNotOk.setLogin("qwe@qwe");
+        loginDoesNotExistNotOk.setEmail("qwe@qwe");
         loginDoesNotExistNotOk.setPassword("qwe");
 
-        auth.login(loginDoesNotExistNotOk.getLogin(),
+        auth.login(loginDoesNotExistNotOk.getEmail(),
                 loginDoesNotExistNotOk.getPassword());
     }
 }
