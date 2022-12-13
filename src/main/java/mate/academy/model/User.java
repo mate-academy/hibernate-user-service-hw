@@ -17,7 +17,6 @@ public class User {
     @Column(unique = true)
     private String email;
     private byte[] salt;
-    @JoinColumn(name = "hash")
     private String password;
 
     public User() {
