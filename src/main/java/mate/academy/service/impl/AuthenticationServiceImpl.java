@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -8,7 +9,7 @@ import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
-
+q
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -19,10 +20,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email)
-                .orElseThrow(() -> new AuthenticationException("Email or password are incorrect"));
-        if (isCorrectPassword(user, password)) {
-            return user;
+        Optional<User> userFromDb = userService.findByEmail(email);
+        if (userFromDb.isPresent() && isCorrectPassword(userFromDb.get(), password)) {
+            return userFromDb.get();
         }
         throw new AuthenticationException("Email or password are incorrect");
     }
@@ -41,8 +41,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = new User();
         user.setEmail(email);
-        user.setSalt(HashUtil.getSalt());
-        user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
         userService.add(user);
         return user;
     }
