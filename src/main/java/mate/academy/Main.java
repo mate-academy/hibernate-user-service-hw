@@ -2,14 +2,21 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+    private static final Injector INJECTOR = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
         MovieService movieService = null;
 
@@ -51,5 +58,24 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        User regiteredUser;
+        AuthenticationService authenticationService =
+                (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
+        try {
+            regiteredUser = authenticationService
+                    .register("bob@mate.academy","very_strong_password");
+            System.out.println(regiteredUser);
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Cannot register user.", e);
+        }
+
+        try {
+            User loginedUser = authenticationService
+                    .login(regiteredUser.getEmail(), regiteredUser.getPassword());
+            System.out.println(loginedUser);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Cannot login user", e);
+        }
     }
 }
