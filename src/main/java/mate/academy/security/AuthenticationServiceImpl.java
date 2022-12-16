@@ -21,7 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("Can't implement registration of user");
         }
         User user = new User();
-        user.setLogin(email);
+        user.setEmail(email);
         user.setPassword(password);
         return userService.add(user);
     }

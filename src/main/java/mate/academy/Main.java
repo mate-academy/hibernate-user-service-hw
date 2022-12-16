@@ -62,18 +62,18 @@ public class Main {
                         fastAndFurious.getId(), LocalDate.now()));
 
         User bob = new User();
-        bob.setLogin("Bob");
+        bob.setEmail("Bob");
         bob.setSalt(HashUtil.getSalt());
         bob.setPassword(HashUtil.hasPassword("qwerty", bob.getSalt()));
 
         User alice = new User();
-        alice.setLogin("Alice");
+        alice.setEmail("Alice");
         alice.setSalt(HashUtil.getSalt());
         alice.setPassword(HashUtil.hasPassword("12345", bob.getSalt()));
         AuthenticationService authenticationService = (AuthenticationService)
                 injector.getInstance(AuthenticationService.class);
-        authenticationService.register(alice.getLogin(), alice.getPassword());
-        authenticationService.register(bob.getLogin(), bob.getPassword());
-        authenticationService.login(alice.getLogin(), alice.getPassword());
+        authenticationService.register(alice.getEmail(), alice.getPassword());
+        authenticationService.register(bob.getEmail(), bob.getPassword());
+        authenticationService.login(alice.getEmail(), alice.getPassword());
     }
 }
