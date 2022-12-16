@@ -29,13 +29,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String login, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(login);
-        if (userOptional.isEmpty()) {
-            throw new AuthenticationException("Can't authenticate user");
-        }
-        User user = userOptional.get();
-        String hashPassword = HashUtil.hasPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashPassword)) {
-            return user;
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            String hashPassword = HashUtil.hasPassword(password, user.getSalt());
+            if (user.getPassword().equals(hashPassword)) {
+                return user;
+            }
         }
         throw new AuthenticationException("Can't authenticate user");
     }
