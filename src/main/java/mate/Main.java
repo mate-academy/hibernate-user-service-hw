@@ -68,9 +68,11 @@ public class Main {
                 .getInstance(UserService.class);
         userService.add(alice);
         System.out.println(alice);
-
         AuthenticationService authenticationService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
+
+        // check validate login and password ( register() and login() )
+
         try {
             System.out.println(authenticationService
                     .register("bob@google.com", "123456"));
@@ -78,6 +80,41 @@ public class Main {
             System.out.println(authenticationService
                     .login("bob@google.com", "123456"));
         } catch (RegistrationException | AuthenticationException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+
+            // check  not validate register login (without @)
+
+            System.out.println(authenticationService
+                     .register("Bananagoogle.com", "123456"));
+
+            // check  not validate register login (without .)
+
+            System.out.println(authenticationService
+                    .register("Banana@googlecom", "123456"));
+
+            // check  not validate register password ( length less than 6)
+
+            System.out.println(authenticationService
+                    .register("Banana@google.com", "12345"));
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+
+            // check not validate login
+
+            System.out.println(authenticationService
+                    .login("jeckie@google.com", "123456"));
+
+            // check not validate password
+
+            System.out.println(authenticationService
+                    .login("bob@google.com", "1234567890"));
+        } catch (AuthenticationException e) {
             throw new RuntimeException(e);
         }
     }

@@ -26,15 +26,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
+        if (userFromDbOptional.isEmpty() || !checkUserPassword(password,userFromDbOptional)) {
             throw new AuthenticationException("Can't authenticate user by email or password");
         }
-        User user = userFromDbOptional.get();
-        String hashPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (hashPassword.equals(user.getPassword())) {
-            return user;
-        }
-        throw new AuthenticationException("Can't authenticate user by email or password");
+        return userFromDbOptional.get();
     }
 
     @Override
@@ -45,7 +40,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         throw new RegistrationException("Can't register new User"
                 + " because your email or password is incorrect."
-                + " check email ( min length may be less 6 or without @ or .) "
-                + "or password ( min length may be less 6)");
+                + " Check email (min length may be less 6 or without @ or .) "
+                + "or password (min length may be less 6)");
+    }
+
+    private boolean checkUserPassword(String password, Optional<User> user) {
+        return HashUtil.hashPassword(password, user.get().getSalt())
+                .equals(user.get().getPassword());
     }
 }
