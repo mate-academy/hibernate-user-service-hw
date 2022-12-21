@@ -7,8 +7,6 @@ import mate.lib.Inject;
 import mate.lib.Service;
 import mate.model.User;
 import mate.security.AuthenticationService;
-import mate.service.EmailValidateService;
-import mate.service.PasswordValidateService;
 import mate.service.UserService;
 import mate.util.HashUtil;
 
@@ -16,12 +14,6 @@ import mate.util.HashUtil;
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
-
-    @Inject
-    private EmailValidateService emailValidateService;
-
-    @Inject
-    private PasswordValidateService passwordValidateService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
@@ -34,14 +26,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (emailValidateService.validate(email) && passwordValidateService.validate(password)) {
+        if (userService.findByEmail(email).isEmpty() && !password.isEmpty()) {
             User user = new User(email, password);
             return userService.add(user);
         }
         throw new RegistrationException("Can't register new User"
-                + " because your email or password is incorrect."
-                + " Check email (min length may be less 6 or without @ or .) "
-                + "or password (min length may be less 6)");
+                + " because your email is already exists in DB or your password is empty");
     }
 
     private boolean checkUserPassword(String password, Optional<User> user) {
