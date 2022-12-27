@@ -20,11 +20,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with email: " + email + ", already exist!");
         }
+        if (userService.findByEmail(email).get().getPassword().isEmpty()) {
+            throw new RegistrationException("Password can not be empty");
+        }
         User user = new User();
+        user.setPassword(password);
         user.setEmail(email);
-        user.setSalt(HashUtil.generateRandomSalt());
-        user.setPassword(HashUtil.hashPassword(password,user.getSalt()));
-
         userService.add(user);
     }
 
