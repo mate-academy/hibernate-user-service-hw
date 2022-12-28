@@ -20,8 +20,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with email: " + email + ", already exist!");
         }
-        if (userService.findByEmail(email).get().getPassword().isEmpty()) {
-            throw new RegistrationException("Password can not be empty");
+        if (password == null || email == null) {
+            throw new RegistrationException("Password or email can not be empty!");
         }
         User user = new User();
         user.setPassword(password);
@@ -32,13 +32,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String login, String password) throws AuthenticationException {
         Optional<User> optionalUser = userService.findByEmail(login);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            password = HashUtil.hashPassword(password, user.getSalt());
-            if (user.getPassword().equals(password)) {
-                return user;
-            }
+        if (optionalUser.isEmpty() || !HashUtil.hashPassword(password,
+                optionalUser.get().getSalt()).equals(optionalUser.get().getPassword())) {
+            throw new AuthenticationException("Wrong email or password!");
         }
-        throw new AuthenticationException("Wrong email or password");
+        return optionalUser.get();
     }
 }

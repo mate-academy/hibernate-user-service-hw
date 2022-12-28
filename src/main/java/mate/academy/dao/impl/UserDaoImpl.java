@@ -1,8 +1,6 @@
 package mate.academy.dao.impl;
 
-import java.util.List;
 import java.util.Optional;
-import javax.persistence.criteria.CriteriaQuery;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -20,18 +18,6 @@ public class UserDaoImpl implements UserDao {
                     User.class).setParameter("email", email).uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find user by email " + email, e);
-        }
-    }
-
-    @Override
-    public List<User> allUsers() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<User> criteriaQuery =
-                    session.getCriteriaBuilder().createQuery(User.class);
-            criteriaQuery.from(User.class);
-            return session.createQuery(criteriaQuery).getResultList();
-        } catch (Exception e) {
-            throw new RuntimeException("Can not get all users", e);
         }
     }
 

@@ -10,7 +10,6 @@ public class HashUtil {
     private static final String HEX_STRING = "%02x";
 
     private HashUtil() {
-
     }
 
     public static byte[] generateRandomSalt() {

@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.lib.Inject;
@@ -17,11 +16,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByEmail(String email) {
         return userDao.findByEmail(email);
-    }
-
-    @Override
-    public List<User> allUsers() {
-        return userDao.allUsers();
     }
 
     @Override
