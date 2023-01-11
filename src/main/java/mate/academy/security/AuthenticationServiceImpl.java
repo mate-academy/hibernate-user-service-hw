@@ -1,5 +1,6 @@
 package mate.academy.security;
 
+import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -8,12 +9,10 @@ import mate.academy.model.User;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
-import java.util.Optional;
-
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
-    UserService userService;
+    private UserService userService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
@@ -23,7 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             String userPassword = user.getPassword();
             byte[] salt = user.getSalt();
             boolean flag =
-                    HashUtil.hashPassword(password, salt).equals(HashUtil.hashPassword(userPassword, salt));
+                    user.getPassword().equals(HashUtil.hashPassword(userPassword, salt));
             if (flag) {
                 return user;
             }
@@ -33,6 +32,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        return null;
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        try {
+            user = userService.add(user);
+            return user;
+        } catch (NullPointerException e) {
+            throw new RegistrationException("Can't register user:" + user, e);
+        }
     }
 }
