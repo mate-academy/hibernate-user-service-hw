@@ -26,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return user;
             }
         }
-        throw new AuthenticationException("Error authorization", new Exception());
+        throw new AuthenticationException("Error authorization");
     }
 
     @Override
@@ -37,8 +37,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             user = userService.add(user);
             return user;
-        } catch (NullPointerException e) {
-            throw new RegistrationException("Can't register user:" + user, e);
+        } catch (RuntimeException e) {
+            throw new RegistrationException("Can't register user:" + user);
         }
     }
 }
