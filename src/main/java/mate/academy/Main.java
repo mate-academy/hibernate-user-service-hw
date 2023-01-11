@@ -11,10 +11,10 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.UserService;
-import mate.academy.util.HashUtil;
 
 public class Main {
     private static Injector injector = Injector.getInstance("mate");
+
     public static void main(String[] args) {
         User bob = new User();
         bob.setEmail("bob@jm.com");
