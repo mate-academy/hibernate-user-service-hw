@@ -19,10 +19,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userOptional = userService.findByEmail(email);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            String userPassword = user.getPassword();
             byte[] salt = user.getSalt();
             boolean flag =
-                    user.getPassword().equals(HashUtil.hashPassword(userPassword, salt));
+                    user.getPassword().equals(HashUtil.hashPassword(password, salt));
             if (flag) {
                 return user;
             }

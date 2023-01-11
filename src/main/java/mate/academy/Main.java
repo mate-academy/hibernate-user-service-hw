@@ -2,32 +2,36 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static Injector injector = Injector.getInstance("mate");
 
     public static void main(String[] args) {
-        User bob = new User();
-        bob.setEmail("bob@jm.com");
-        bob.setPassword("1234567890");
+        AuthenticationService authenticationService = (AuthenticationService)
+                injector.getInstance(AuthenticationService.class);
+        try {
+            authenticationService.register("bob@jm.com", "1234567890");
+            authenticationService.register("alice@jm.com", "abcdefghikl");
+        } catch (RegistrationException re) {
+            System.out.println("Error registration");
+        }
 
-        User alice = new User();
-        alice.setEmail("alice@jm.com");
-        alice.setPassword("abcdefghikl");
-
-        UserService userService = (UserService)
-                injector.getInstance(UserService.class);
-        userService.add(bob);
-        userService.add(alice);
+        try {
+            System.out.println(authenticationService.login("bob@jm.com", "1234567890"));
+            System.out.println(authenticationService.login("alice@jm.com", "abcdefghikl"));
+        } catch (AuthenticationException ae) {
+            System.out.println("Error authorization");
+        }
 
         MovieService movieService = (MovieService)
                 injector.getInstance(MovieService.class);
