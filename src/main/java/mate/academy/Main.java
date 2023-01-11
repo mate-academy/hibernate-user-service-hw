@@ -6,13 +6,31 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.UserService;
+import mate.academy.util.HashUtil;
 
 public class Main {
     private static Injector injector = Injector.getInstance("mate");
     public static void main(String[] args) {
+        User bob = new User();
+        bob.setEmail("bob@jm.com");
+        bob.setPassword("1234567890");
+        bob.setSalt(HashUtil.getSalt());
+
+        User alice = new User();
+        alice.setEmail("alice@jm.com");
+        alice.setPassword("abcdefghikl");
+        alice.setSalt(HashUtil.getSalt());
+
+        UserService userService = (UserService)
+                injector.getInstance(UserService.class);
+        userService.add(bob);
+        userService.add(alice);
+
         MovieService movieService = (MovieService)
                 injector.getInstance(MovieService.class);
         Movie fastAndFurious = new Movie("Fast and Furious");
