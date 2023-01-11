@@ -19,12 +19,10 @@ public class Main {
         User bob = new User();
         bob.setEmail("bob@jm.com");
         bob.setPassword("1234567890");
-        bob.setSalt(HashUtil.getSalt());
 
         User alice = new User();
         alice.setEmail("alice@jm.com");
         alice.setPassword("abcdefghikl");
-        alice.setSalt(HashUtil.getSalt());
 
         UserService userService = (UserService)
                 injector.getInstance(UserService.class);

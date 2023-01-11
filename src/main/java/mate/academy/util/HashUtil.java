@@ -9,7 +9,7 @@ public class HashUtil {
 
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
-        byte[] salt = new byte[512];
+        byte[] salt = new byte[64];
         secureRandom.nextBytes(salt);
         return salt;
     }
