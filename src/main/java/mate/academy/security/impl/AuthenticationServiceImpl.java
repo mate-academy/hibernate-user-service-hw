@@ -11,7 +11,6 @@ import mate.academy.security.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
-
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     private static final int PASSWORD_LENGTH = 6;
