@@ -8,7 +8,6 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -25,9 +24,7 @@ public class Main {
     static final AuthenticationService authenticationService = (AuthenticationService) injector
             .getInstance(AuthenticationService.class);
 
-    public static void main(String[] args) throws RegistrationException, AuthenticationException,
-            javax.naming.AuthenticationException {
-
+    public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -64,12 +61,29 @@ public class Main {
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
-                        fastAndFurious.getId(), LocalDate.now()));
+                fastAndFurious.getId(), LocalDate.now()));
 
-        String email = "Max";
-        String password = "sldkjf";
-        authenticationService.register(email, password);
-        User loginedUser = authenticationService.login(email, password);
-        System.out.println(loginedUser);
+        System.out.println("Registration test and login with correct data");
+
+        try {
+            System.out.println(authenticationService.register("test@gmail.com", "1234"));
+            System.out.println(authenticationService.login("test@gmail.com", "1234"));
+        } catch (RegistrationException | AuthenticationException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Login test with incorrect password");
+        try {
+            System.out.println(authenticationService.login("test@gmail.com", "12356573"));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Test of registration of the same e-mails");
+        try {
+            System.out.println(authenticationService.register("test@gmail.com", "123244234"));
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

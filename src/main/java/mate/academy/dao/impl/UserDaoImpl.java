@@ -12,39 +12,39 @@ import org.hibernate.Transaction;
 
 @Dao
 public class UserDaoImpl implements UserDao {
+    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     @Override
     public User add(User user) {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
-            session.save(user);
+            session.persist(user);
             transaction.commit();
+            return user;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
-                throw new DataProcessingException("Can't add user to DB." + user, e);
             }
+            throw new DataProcessingException("Can't insert user: " + user, e);
         } finally {
             if (session != null) {
                 session.close();
             }
         }
-        return user;
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        String query = "FROM User u WHERE u.email =:email";
         try (Session session = sessionFactory.openSession()) {
-            return session
-                    .createQuery("from User u where u.login = :email", User.class)
+            return session.createQuery(query, User.class)
                     .setParameter("email", email)
                     .uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get an user by email:" + email
-            + "email or password is incorrect", e);
+            throw new DataProcessingException("Can't get a user by email: " + email, e);
         }
     }
 }
