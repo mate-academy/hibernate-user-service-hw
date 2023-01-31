@@ -11,6 +11,7 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    private static final int MIN_PASSWORD_LENGTH = 6;
     @Inject
     private UserService userService;
 
@@ -23,13 +24,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return user;
             }
         }
-        throw new AuthenticationException("Can not authenticate user with email: " + email);
+        throw new AuthenticationException("Incorrect email or password");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (checkUserEmail(email).isPresent()) {
-            throw new RegistrationException("Can not register user with this email: " + email);
+            throw new RegistrationException("This email has already registered." + email);
+        } else if (password.length() < MIN_PASSWORD_LENGTH) {
+            throw new RegistrationException("This password is incorrect. "
+                    + "Must be longer than: " + MIN_PASSWORD_LENGTH + " symbols");
         }
         User user = new User();
         user.setEmail(email);

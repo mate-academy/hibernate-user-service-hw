@@ -26,7 +26,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            authenticationService.register("JackSparow@ukr.net", "12345");
+            authenticationService.register("JackSparow@ukr.net", "123456");
             authenticationService.register("WillTerner@ukr.net", "76543");
             authenticationService.register("ElizabetSwan@ukr.net", "12345");
             authenticationService.register("JackSparow@ukr.net", "12");
