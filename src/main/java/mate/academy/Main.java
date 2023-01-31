@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -60,8 +62,17 @@ public class Main {
 
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        System.out.println(authenticationService.register("bob@gmail.com", "123456"));
-        authenticationService.register("alice@gmail.com", "qwerty");
-        System.out.println(authenticationService.login("alice@gmail.com", "qwerty"));
+
+        try {
+            System.out.println(authenticationService.register("bob@gmail.com", "123456"));
+            authenticationService.register("alice@gmail.com", "qwerty");
+        } catch (RegistrationException e) {
+            System.out.println("Can't authenticate User. Wrong E-mail or password.");
+        }
+        try {
+            System.out.println(authenticationService.login("alice@gmail.com", "qwerty"));
+        } catch (AuthenticationException e) {
+            System.out.println("Wrong E-mail or password.");
+        }
     }
 }
