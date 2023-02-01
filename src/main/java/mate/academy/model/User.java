@@ -16,9 +16,6 @@ public class User {
     private String password;
     private byte[] salt;
 
-    public User () {
-    }
-
     public Long getId() {
         return id;
     }
@@ -53,6 +50,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{id=" + id + ", email='" + email + '}';
+        return "User{ id=" + id + ", email='" + email + '}';
     }
 }
