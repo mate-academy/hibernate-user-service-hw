@@ -5,28 +5,30 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashUtil {
-    private static final String CRYPTO_ALGORITHM = "SHA-512";
+    private static final String HASH_ALGORITHM = "SHA-512";
+    private static final String FORMAT = "%02x";
+    private static final int SALT_SIZE = 16;
 
     private HashUtil() {
     }
 
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
-        byte[] salt = new byte[16];
+        byte[] salt = new byte[SALT_SIZE];
         secureRandom.nextBytes(salt);
         return salt;
     }
 
     public static String getHashPassword(String password, byte[] salt) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder hashedPassword = new StringBuilder();
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
+            MessageDigest messageDigest = MessageDigest.getInstance(HASH_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
             for (byte b : digest) {
-                stringBuilder.append(String.format("%02x", b));
+                hashedPassword.append(String.format(FORMAT, b));
             }
-            return stringBuilder.toString();
+            return hashedPassword.toString();
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Could not create hash using SHA-512 algorithm", e);
         }

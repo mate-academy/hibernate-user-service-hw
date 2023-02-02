@@ -60,20 +60,16 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        User user1 = new User();
-        user1.setEmail("borysenko@gmail.com");
-        user1.setPassword("Hello");
+        User borysenko = new User("borysenko@gmail.com", "Hello");
 
         AuthenticationService authService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User registeredUser = authService.register(user1.getEmail(), user1.getPassword());
+        authService.register(borysenko.getEmail(), borysenko.getPassword());
         User authenticetedUser = authService
                 .login("borysenko@gmail.com", "Hello");
         System.out.println(authenticetedUser);
 
-        User user2 = new User();
-        user2.setEmail("borysenko@gmail.com");
-        user2.setPassword("123");
-        User registeredUser2 = authService.register(user2.getEmail(), user2.getPassword());
+        User borysenkoDuplicate = new User("borysenko@gmail.com", "123");
+        authService.register(borysenkoDuplicate.getEmail(), borysenkoDuplicate.getPassword());
     }
 }
