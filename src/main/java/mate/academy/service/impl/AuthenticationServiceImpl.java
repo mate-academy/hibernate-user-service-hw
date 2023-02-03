@@ -18,14 +18,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("User with email " + email + " is already exist");
+            throw new RegistrationException("User with email " + email + " already exists");
         }
         User user = new User();
         user.setEmail(email);
-        user.setSalt(HashUtil.getSalt());
-        user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
-        userService.add(user);
-        return user;
+        user.setPassword(password);
+        return userService.add(user);
     }
 
     @Override

@@ -65,14 +65,12 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             System.out.println(authenticationService.register("bob", "password"));
-            // exception here
             authenticationService.register("bob", "password");
         } catch (RegistrationException e) {
             System.out.println("User with this login is already exist");
         }
         try {
             System.out.println(authenticationService.login("bob", "password"));
-            // exception here
             authenticationService.login("bob", "invalidPassword");
         } catch (AuthenticationException e) {
             System.out.println("Password is invalid");
@@ -80,7 +78,7 @@ public class Main {
         try {
             authenticationService.login("notBob", "password");
         } catch (AuthenticationException e) {
-            System.out.println("login is invalid");
+            System.out.println("Login is invalid");
         }
     }
 }

@@ -29,7 +29,7 @@ public class HashUtil {
             }
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(
-                    "Can't the hash of the password using algorithm: " + CRYPTO_ALGORITHM, e);
+                    "Can't hash password using algorithm: " + CRYPTO_ALGORITHM, e);
         }
         return hashedPassword.toString();
     }
