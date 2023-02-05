@@ -17,7 +17,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Try another login. Such login is not allowed");
+            throw new RegistrationException("This login is already exist, try another one");
         }
         User user = new User(email, password);
         return userService.add(user);
@@ -26,14 +26,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String login, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(login);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can't authenticate user");
+        if (userFromDbOptional.isEmpty()
+                || !userFromDbOptional
+                .get()
+                .getPassword()
+                .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
+            throw new AuthenticationException("Email or password is incorrect");
         }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("Can't authenticate user");
+        return userFromDbOptional.get();
     }
 }

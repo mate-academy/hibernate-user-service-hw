@@ -65,11 +65,11 @@ public class Main {
         UserService userService = (UserService) injector.getInstance(UserService.class);
         User userOne = new User("emailOne", "passwordOne");
         userService.add(userOne);
-        System.out.println(userService.findByEmail(userOne.getLogin()));
+        System.out.println(userService.findByEmail(userOne.getEmail()));
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        authenticationService.register("emailTwo", "passwordTwo");
-        authenticationService.register("emailNew", "passwordNew");
-        authenticationService.login("emailOne", "passwordOne");
+        System.out.println(authenticationService.register("emailTwo", "passwordTwo"));
+        System.out.println(authenticationService.register("emailNew", "passwordNew"));
+        System.out.println(authenticationService.login("emailOne", "passwordOne"));
     }
 }
