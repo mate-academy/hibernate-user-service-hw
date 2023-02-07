@@ -10,12 +10,12 @@ public class HashUtil {
     public HashUtil() {
     }
 
-    public static String getHash(String pas, byte[] salt) {
+    public static String getHash(String password, byte[] salt) {
         StringBuilder builder = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
-            byte[] digest = messageDigest.digest(pas.getBytes());
+            byte[] digest = messageDigest.digest(password.getBytes());
             for (byte b: digest) {
                 builder.append(String.format("%x", b));
             }
