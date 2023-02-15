@@ -22,13 +22,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
             return userFromDbOptional.get();
         }
-        throw new AuthenticationException("Can't authenticate user");
+        throw new AuthenticationException("Email or password is incorrect");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Can't register user");
+            throw new RegistrationException("User with this email already exists");
         }
         User user = new User(email, password);
         return userService.add(user);
