@@ -26,13 +26,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (user.getPassword().equals(hashPassword)) {
             return user;
         }
-        throw new AuthenticationException("Email or password is incorrect");
+        throw new AuthenticationException("Something went wrong! Try later");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (email.isEmpty() || password.isEmpty()) {
             throw new RegistrationException("Email and password can't be empty");
+        }
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("This email already registered");
         }
         User user = new User(email, password);
         userService.add(user);
