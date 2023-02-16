@@ -16,8 +16,9 @@ import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+    private static final Injector injector = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
-        Injector injector = Injector.getInstance("mate.academy");
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -64,22 +65,25 @@ public class Main {
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         List<User> userList = List.of(
-                new User("1", "1"),
-                new User("2", "2"),
-                new User("1", "2")
+                new User("qwer", "qwer"),
+                new User("rewq", "rewq"),
+                new User("qwer", "rewq")
         );
         userList.forEach(user -> {
             try {
-                authenticationService.register(user.getLogin(), user.getPassword());
+                authenticationService.register(user.getEmail(), user.getPassword());
+                System.out.println("registration success");
             } catch (RegistrationException e) {
-                System.out.println("User with this login already exists: " + user.getLogin());
+                System.out.println("Can't save user with email "
+                        + user.getEmail() + " password " + user.getPassword());
             }
         });
         userList.forEach(user -> {
             try {
-                authenticationService.login(user.getLogin(), user.getPassword());
+                authenticationService.login(user.getEmail(), user.getPassword());
+                System.out.println("login success");
             } catch (AuthenticationException e) {
-                System.out.println("Login or password is invalid");
+                System.out.println("Email or/and password is invalid");
             }
         });
     }

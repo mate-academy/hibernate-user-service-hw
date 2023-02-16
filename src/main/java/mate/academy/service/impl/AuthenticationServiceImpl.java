@@ -18,9 +18,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> storedUser = userService.findByEmail(email);
-        if (storedUser.isEmpty()
-                || !HashUtil.hashPassword(password, storedUser.get().getSalt())
-                .equals(storedUser.get().getPassword())) {
+        if (storedUser.isEmpty() || !checkPassword(storedUser.get(), password)) {
             throw new AuthenticationException("Login or password are invalid");
         }
         return storedUser.get();
@@ -32,8 +30,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("User " + email + " already exists");
         }
         User user = new User();
-        user.setLogin(email);
+        user.setEmail(email);
         user.setPassword(password);
+        userService.add(user);
         return user;
+    }
+
+    private boolean checkPassword(User user, String password) {
+        return HashUtil.hashPassword(password, user.getSalt())
+                .equals(user.getPassword());
     }
 }

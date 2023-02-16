@@ -25,7 +25,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't add user with email " + user.getLogin(), e);
+            throw new DataProcessingException("Can't add user with email " + user.getEmail(), e);
         } finally {
             if (session != null) {
                 session.close();
@@ -38,7 +38,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<User> getUserByEmailQuery = session.createQuery("from User u "
-                    + "where u.login = :login");
+                    + "where u.email = :login");
             getUserByEmailQuery.setParameter("login", email);
             return Optional.ofNullable(getUserByEmailQuery.uniqueResult());
         } catch (Exception e) {
