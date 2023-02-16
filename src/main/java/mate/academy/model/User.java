@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import mate.academy.util.HashUtil;
 
 @Entity
 @Table(name = "users")
@@ -20,7 +19,6 @@ public class User {
     private byte[] salt;
 
     public User() {
-        this.salt = HashUtil.getSalt();
     }
 
     public Long getId() {
@@ -49,6 +47,10 @@ public class User {
 
     public byte[] getSalt() {
         return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
     }
 
     @Override

@@ -12,14 +12,14 @@ import org.hibernate.Transaction;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-    private SessionFactory sf = HibernateUtil.getSessionFactory();
+    private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     @Override
     public User add(User user) {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = sf.openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();
@@ -38,7 +38,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        try (Session session = sf.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from User u where u.email = : email", User.class)
                     .setParameter("email", email)
                     .uniqueResultOptional();
