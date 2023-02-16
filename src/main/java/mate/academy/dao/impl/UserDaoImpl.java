@@ -12,7 +12,7 @@ import org.hibernate.Transaction;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-    private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     @Override
     public User add(User user) {
