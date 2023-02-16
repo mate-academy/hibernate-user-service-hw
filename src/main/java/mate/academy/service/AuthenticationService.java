@@ -9,4 +9,3 @@ public interface AuthenticationService {
 
     User register(String email, String password) throws RegistrationException;
 }
-
