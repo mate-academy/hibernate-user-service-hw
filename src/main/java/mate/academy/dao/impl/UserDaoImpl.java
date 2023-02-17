@@ -14,16 +14,17 @@ import org.hibernate.query.Query;
 public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
+        Transaction transaction = null;
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
+            transaction = session.beginTransaction();
             session.save(user);
-            session.getTransaction().commit();
+            transaction.commit();
             return user;
         } catch (HibernateException e) {
-            if (session != null) {
-                session.getTransaction().rollback();
+            if (transaction != null) {
+                transaction.rollback();
             }
             throw new DataProcessingException("Can't insert user " + user, e);
         } finally {
