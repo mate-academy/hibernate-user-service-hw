@@ -64,7 +64,6 @@ public class Main {
 
         AuthenticationService authenticationService =
                     (AuthenticationService) injector.getInstance(AuthenticationService.class);
-
         User newUser = authenticationService.register("hello-world@i.ua", "01012000");
         authenticationService.login(newUser.getEmail(), newUser.getPassword());
     }
