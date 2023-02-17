@@ -6,6 +6,8 @@ import java.security.SecureRandom;
 
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
+    private static final String EXCEPTION_MESSAGE =
+            "Can't create hash using " + CRYPTO_ALGORITHM + " algorithm ";
 
     private HashUtil() {
 
@@ -28,7 +30,7 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Can't create hash using SHA-152 algorithm ", e);
+            throw new IllegalStateException(EXCEPTION_MESSAGE, e);
         }
         return hashedPassword.toString();
     }
