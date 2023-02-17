@@ -77,7 +77,7 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             System.out.println("Authentication successful "
-                    + authenticationService.authenticate("john@gmail.com", "asdfgh"));
+                    + authenticationService.login("john@gmail.com", "asdfgh"));
         } catch (AuthenticationException e) {
             throw new RuntimeException(e);
         }

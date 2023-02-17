@@ -16,18 +16,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public void register(String email, String password) throws RegistrationException {
+    public User register(String email, String password) throws RegistrationException {
         Optional<User> userFromDB = userService.findByEmail(email);
         if (userFromDB.isPresent()) {
             throw new RegistrationException("Sorry user with this "
                     + "email already register, try another email");
         }
         User user = new User(email, password);
-        userService.add(user);
+        return userService.add(user);
     }
 
     @Override
-    public User authenticate(String email, String password) throws AuthenticationException {
+    public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDB = userService.findByEmail(email);
         if (userFromDB.isEmpty()) {
             throw new AuthenticationException("Can`t find user with email " + email);
@@ -36,8 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;
-        } else {
-            throw new AuthenticationException("Incorrect data, please try again");
         }
+        throw new AuthenticationException("Incorrect data, please try again");
     }
 }
