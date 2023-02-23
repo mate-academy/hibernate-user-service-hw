@@ -17,11 +17,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        if (email == null || email.isEmpty()) {
-            throw new AuthenticationException("Field email cannot be empty.");
-        }
-        if (password == null || password.isEmpty()) {
-            throw new AuthenticationException("Field password cannot be empty.");
+        Optional<String> errorMsg = validateInputAndGetErrorMsg(email, password);
+        if (errorMsg.isPresent()) {
+            throw new AuthenticationException(errorMsg.get());
         }
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isPresent()) {
@@ -36,11 +34,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email == null || email.isEmpty()) {
-            throw new RegistrationException("Field email cannot be empty.");
-        }
-        if (password == null || password.isEmpty()) {
-            throw new RegistrationException("Field password cannot be empty.");
+        Optional<String> errorMsg = validateInputAndGetErrorMsg(email, password);
+        if (errorMsg.isPresent()) {
+            throw new RegistrationException(errorMsg.get());
         }
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with email " + email + " is already registered.");
@@ -49,5 +45,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEmail(email);
         user.setPassword(password);
         return userService.add(user);
+    }
+
+    private Optional<String> validateInputAndGetErrorMsg(String email, String password) {
+        if (email == null || email.isEmpty()) {
+            return Optional.of("Field email cannot be empty.");
+        }
+        if (password == null || password.isEmpty()) {
+            return Optional.of("Field password cannot be empty.");
+        }
+        return Optional.empty();
     }
 }
