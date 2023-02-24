@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,8 +13,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String email;
-    private String login;
     private String password;
     private byte[] salt;
 
@@ -31,14 +32,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getPassword() {
@@ -61,7 +54,6 @@ public class User {
     public String toString() {
         return "User{"
                 + "id=" + id
-                + ", login='" + login + '\''
                 + ", email='" + email + '\''
                 + '}';
     }
