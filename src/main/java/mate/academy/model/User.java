@@ -12,6 +12,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String email;
     private String login;
     private String password;
     private byte[] salt;
@@ -22,6 +23,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getLogin() {
@@ -53,6 +62,7 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", login='" + login + '\''
+                + ", email='" + email + '\''
                 + '}';
     }
 }
