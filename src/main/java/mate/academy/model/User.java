@@ -19,7 +19,6 @@ public class User {
     private byte[] salt;
 
     public User() {
-
     }
 
     public String getEmail() {
@@ -49,7 +48,8 @@ public class User {
     @Override
     public String toString() {
         return "User{"
-                + " email='" + email + '\''
+                + " id=" + id
+                + ", email='" + email + '\''
                 + '}';
     }
 }

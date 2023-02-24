@@ -6,10 +6,10 @@ import java.security.SecureRandom;
 
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
+    private static final String HEXADECIMAL_FORMAT = "%02x";
     private static final int SALT_SIZE = 16;
 
     private HashUtil() {
-
     }
 
     public static byte[] getSalt() {
@@ -26,7 +26,7 @@ public class HashUtil {
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
             for (byte b : digest) {
-                hashedPassword.append(String.format("%02x", b));
+                hashedPassword.append(String.format(HEXADECIMAL_FORMAT, b));
             }
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Could not create hash using "
