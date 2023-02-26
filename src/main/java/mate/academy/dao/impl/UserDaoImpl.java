@@ -1,8 +1,6 @@
 package mate.academy.dao.impl;
 
-import java.util.List;
 import java.util.Optional;
-import javax.persistence.criteria.CriteriaQuery;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
