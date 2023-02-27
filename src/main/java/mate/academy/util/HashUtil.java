@@ -17,7 +17,7 @@ public class HashUtil {
         return salt;
     }
 
-    public static String hashedPassword(String password, byte[] salt) {
+    public static String hashPassword(String password, byte[] salt) {
         StringBuilder stringBuilder = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);

@@ -19,7 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptionalFromDb = userService.findByEmail(email);
         if (userOptionalFromDb.isEmpty() || !userOptionalFromDb.get().getPassword()
-                .equals(HashUtil.hashedPassword(password,
+                .equals(HashUtil.hashPassword(password,
                         userOptionalFromDb.get().getSalt()))) {
             throw new AuthenticationException("Email or password was incorrect");
         }
