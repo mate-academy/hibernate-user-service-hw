@@ -23,7 +23,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!userFromDbOptional.isEmpty() && user.getPassword().equals(hashedPassword)) {
             return user;
         }
-        throw new AuthenticationException("Can't authenticate user");
+        throw new AuthenticationException("Can't authenticate user. Email or password is incorrect");
     }
 
     @Override
