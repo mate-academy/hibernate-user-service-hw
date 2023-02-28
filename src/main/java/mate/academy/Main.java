@@ -1,16 +1,18 @@
 package mate.academy;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import mate.academy.model.CinemaHall;
-import mate.academy.model.Movie;
-import mate.academy.model.MovieSession;
-import mate.academy.service.CinemaHallService;
-import mate.academy.service.MovieService;
-import mate.academy.service.MovieSessionService;
+import javax.naming.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
+import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
+import mate.academy.service.UserService;
+import mate.academy.util.HashUtil;
 
 public class Main {
-    public static void main(String[] args) {
+    private static final Injector injector = Injector.getInstance("mate.academy");
+
+    public static void main(String[] args) throws AuthenticationException, RegistrationException {
+        /*
         MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -51,5 +53,37 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+         */
+
+        final UserService userService =
+                (UserService) injector.getInstance(UserService.class);
+
+        User bob = new User("bob@gmail", "qwery");
+        bob.setSalt(HashUtil.getSalt());
+        bob.setPassword(HashUtil.hashPassword("qwery", bob.getSalt()));
+
+        User alisa = new User("alise@gmail", "12345");
+        bob.setSalt(HashUtil.getSalt());
+        bob.setPassword(HashUtil.hashPassword("12345", bob.getSalt()));
+
+        User john = new User("john@gmail", "helloword");
+        bob.setSalt(HashUtil.getSalt());
+        bob.setPassword(HashUtil.hashPassword("helloword", bob.getSalt()));
+        //        userService.add(bob);
+        //        userService.add(alisa);
+        //        userService.add(john);
+
+        userService.getAll().forEach(x -> System.out.println(x));
+        // System.out.println(userService.findByEmail("john@gmail"));
+
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
+        //System.out.println(authenticationService.login("alise@gmail", "12345"));
+
+        // System.out.println(authenticationService.register("pony@gmail.com", "ponypony"));
+        System.out.println(userService.findByEmail("pony@gmail.com"));
     }
 }
+
