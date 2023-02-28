@@ -84,6 +84,7 @@ public class Main {
 
         // System.out.println(authenticationService.register("pony@gmail.com", "ponypony"));
         System.out.println(userService.findByEmail("pony@gmail.com"));
+
     }
 }
 
