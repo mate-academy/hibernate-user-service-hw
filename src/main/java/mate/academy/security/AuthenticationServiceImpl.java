@@ -21,15 +21,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (userFromDbOptional.isEmpty() || !user.getPassword().equals(hashedPassword)) {
             throw new AuthenticationException("Can`t authenticate user");
-        } else {
-            return user;
         }
+        return user;
     }
 
     public User register(String email, String password) throws RegistrationException {
         Optional<User> optionalUser = userService.findByEmail(email);
-        //System.out.println(optionalUser);
-        //User user = userService.findByEmail(email).get();
         if (!optionalUser.isEmpty()) {
             throw new RegistrationException("User is allready exist !");
         } else {
