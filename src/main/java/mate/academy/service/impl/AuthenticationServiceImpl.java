@@ -41,13 +41,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("User with email: " + email + " already exist");
         }
 
-        byte[] salt = HashUtil.getSalt();
-        String hashedPassword = HashUtil.hashPassword(password, salt);
-
         User user = new User();
         user.setEmail(email);
-        user.setPassword(hashedPassword);
-        user.setSalt(new String(salt));
+        user.setPassword(password);
         return userService.add(user);
     }
 }
