@@ -8,7 +8,7 @@ import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
-import mate.academy.util.HashUtil;
+import mate.academy.util.PasswordHasher;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -17,15 +17,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        if (email.isEmpty() || password.isEmpty()) {
-            throw new AuthenticationException("Email and password must not be empty. "
+        if (email.isEmpty()) {
+            throw new AuthenticationException("Email must not be empty. "
                     + "Email = " + email);
+        }
+
+        if (password.isEmpty()) {
+            throw new AuthenticationException("Password must not be empty.");
         }
 
         Optional<User> optionalUser = userService.findByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            if (user.getPassword().equals(HashUtil.hashPassword(
+            if (user.getPassword().equals(PasswordHasher.hashPassword(
                     password, user.getSalt().getBytes()))) {
                 return user;
             }

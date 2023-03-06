@@ -35,7 +35,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> getUserByEmail(String email) {
+    public Optional<User> getByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<User> userQuery = session.createQuery(
                     "FROM User u WHERE u.email = :email", User.class);

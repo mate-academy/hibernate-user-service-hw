@@ -4,10 +4,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class HashUtil {
-    public static final String CRYPTO_ALGORITHM = "SHA-512";
+public class PasswordHasher {
+    private static final String CRYPTO_ALGORITHM = "SHA-512";
 
-    private HashUtil() {
+    private PasswordHasher() {
     }
 
     public static String hashPassword(String password, byte[] salt) {
@@ -16,7 +16,7 @@ public class HashUtil {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
-            for (byte b: digest) {
+            for (byte b : digest) {
                 hashedPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
@@ -26,7 +26,7 @@ public class HashUtil {
         return hashedPassword.toString();
     }
 
-    public static byte[] getSalt() {
+    public static byte[] generateSalt() {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[16];
         secureRandom.nextBytes(salt);

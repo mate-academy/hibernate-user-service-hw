@@ -6,5 +6,5 @@ import mate.academy.model.User;
 public interface UserDao {
     User add(User user);
 
-    Optional<User> getUserByEmail(String email);
+    Optional<User> getByEmail(String email);
 }
