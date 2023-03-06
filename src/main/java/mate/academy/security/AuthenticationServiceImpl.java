@@ -15,35 +15,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String email, String password) {
-        try {
-            Optional<User> userByEmail = userService.findByEmail(email);
-            if (userByEmail.isEmpty()) {
-                throw new AuthenticationException("Can't authenticate user by this email: "
-                        + userByEmail);
-            }
-            User user = userByEmail.get();
-            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-            if (user.getPassword().equals(hashedPassword)) {
-                return user;
-            }
-            throw new AuthenticationException("Wrong password for this email: " + email);
-        } catch (AuthenticationException e) {
-            throw new RuntimeException("login are failed by this email " + email, e);
+    public User login(String email, String password) throws AuthenticationException {
+        Optional<User> userByEmail = userService.findByEmail(email);
+        User user = userByEmail.get();
+        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        if (!user.getPassword().equals(hashedPassword)) {
+            throw new AuthenticationException("Authentication are failed by this email: "
+                    + email + " and password " + password);
         }
+        return user;
+
     }
 
     @Override
-    public User register(String email, String password) {
-        try {
-            if (userService.findByEmail(email).isPresent()) {
-                throw new RegistrationException("this email already exist " + email);
-            }
-            if (email.isEmpty() || password.isEmpty()) {
-                throw new RegistrationException("Can't create by empty email or password");
-            }
-        } catch (RegistrationException e) {
-            throw new RuntimeException("registration are failed by this email " + email, e);
+    public User register(String email, String password) throws RegistrationException {
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("this email already exist");
         }
         User user = new User();
         user.setEmail(email);
