@@ -18,6 +18,10 @@ public class User {
     private String password;
     private byte[]salt;
 
+    public User() {
+
+    }
+
     public Long getId() {
         return id;
     }
