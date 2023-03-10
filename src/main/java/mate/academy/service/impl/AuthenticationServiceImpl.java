@@ -28,15 +28,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        if (email == null || password == null) {
+            throw new RegistrationException("All fields must be filled");
+        }
         if (password.length() < MIN_PASSWORD_LENGTH) {
             throw new RegistrationException("Password less than 8 symbols");
         }
         if (password.contains("[/^[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]*$/]")) {
             throw new RegistrationException("Password must contain only letters or figures,"
-                    + "any special symbols, please");
-        }
-        if (email == null) {
-            throw new RegistrationException("You need to add correct email");
+                    + "avoid any special symbols, please");
         }
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("This login was already registered, "
