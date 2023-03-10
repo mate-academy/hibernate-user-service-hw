@@ -28,11 +28,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        if (password.isEmpty() || email.isEmpty()) {
+            throw new RegistrationException("Incorrect data entered "
+                    + "(at least one field is empty).");
+        }
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with this email already registered");
-        }
-        if (password.isEmpty() || email.isEmpty()) {
-            throw new RegistrationException("Incorrect data entered");
         }
         User user = new User();
         user.setEmail(email);

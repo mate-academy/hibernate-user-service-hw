@@ -69,7 +69,7 @@ public class Main {
         }
         try {
             System.out.println(authenticationService
-                    .login("moonkit@gmail.com", "qwerty123"));
+                    .login(null, "qwerty123"));
         } catch (AuthenticationException e) {
             throw new RuntimeException("Couldn't login user", e);
         }
