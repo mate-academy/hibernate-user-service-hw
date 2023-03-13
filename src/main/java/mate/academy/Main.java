@@ -1,6 +1,7 @@
 package mate.academy;
 
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
@@ -23,11 +24,11 @@ public class Main {
         System.out.println(userService.add(user));
         System.out.println(userService.findByEmail(user.getEmail()));
 
-        System.out.println(authenticationService.register("email123@gmail.com", "qweety1"));
         try {
-            authenticationService.login("email@gmail123.com", "qweety1");
-        } catch (AuthenticationException e) {
-            throw new RuntimeException("Can't login to DB");
+            authenticationService.register("email@bobik", "sobaka");
+            authenticationService.login("email@bobik", "sobaka");
+        } catch (AuthenticationException | RegistrationException e) {
+            throw new RuntimeException(e);
         }
     }
 }
