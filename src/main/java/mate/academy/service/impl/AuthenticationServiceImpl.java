@@ -32,15 +32,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDB = userService.findByEmail(email);
-        if (userFromDB.isEmpty()) {
+        if (userFromDB.isEmpty() || !HashUtil.hashPassword(password, userFromDB.get().getSalt())
+                .equals(userFromDB.get().getPassword())) {
             throw new AuthenticationException(
                     "This email address is not registered into DB" + email);
         }
-        User user = userFromDB.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("This password are incorrect with this email " + email);
+        return userFromDB.get();
     }
 }
