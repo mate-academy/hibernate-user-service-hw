@@ -17,15 +17,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String mail, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByMail(mail);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("User by this mail not registered ");
+        String hashedPassword = HashUtil.hashPassword(password, HashUtil.getSalt());
+        if (userFromDbOptional.isPresent() && userFromDbOptional.get().getPassword()
+                .equals(hashedPassword)) {
+            return new User(mail, password);
         }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("Wrong password ");
+        throw new AuthenticationException("Wrong login or password ");
     }
 
     @Override

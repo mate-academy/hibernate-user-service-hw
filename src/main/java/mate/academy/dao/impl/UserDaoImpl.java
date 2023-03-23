@@ -24,7 +24,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't add new User " + user.getMail(), e);
+            throw new RuntimeException("Can't add new User " + user, e);
         } finally {
             if (session != null) {
                 session.close();

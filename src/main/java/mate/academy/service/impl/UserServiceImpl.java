@@ -22,7 +22,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByMail(String mail) {
-
         return userDao.findByMail(mail);
     }
 }

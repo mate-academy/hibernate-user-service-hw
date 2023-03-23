@@ -76,9 +76,9 @@ public class Main {
         thirdUser.setMail("Ad.com");
         thirdUser.setPassword("12345");
 
-        User dublicateUser = new User();
-        dublicateUser.setMail("Gmail.com");
-        dublicateUser.setPassword("12345");
+        User duplicateUser = new User();
+        duplicateUser.setMail("Gmail.com");
+        duplicateUser.setPassword("12345");
 
         //Checking the operation of registration and user login
         try {
@@ -91,7 +91,7 @@ public class Main {
         }
         //Try registration user with same mail
         try {
-            authenticationService.register(dublicateUser.getMail(), dublicateUser.getPassword());
+            authenticationService.register(duplicateUser.getMail(), duplicateUser.getPassword());
         } catch (RegistrationException e) {
             System.out.println(e.getMessage());
         }
