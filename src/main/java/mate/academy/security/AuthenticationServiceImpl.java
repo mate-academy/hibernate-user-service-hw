@@ -1,6 +1,5 @@
 package mate.academy.security;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -36,8 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userService.add(user);
             return user;
         }
-        throw  new RegistrationException("Cant register email " + email
-                + ". This email is already in DB");
+        throw new RegistrationException("Cant register email " + email
+               + ". This email is already in DB");
     }
-
 }
