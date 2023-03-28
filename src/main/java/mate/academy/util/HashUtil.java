@@ -24,10 +24,10 @@ public class HashUtil {
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
             for (byte b:digest) {
-                hashedPassword.append(String.format("%02x",b));
+                hashedPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Could not create algorithm using SHA-512",e);
+            throw new IllegalStateException("Could not create algorithm using SHA-512", e);
         }
         return hashedPassword.toString();
     }

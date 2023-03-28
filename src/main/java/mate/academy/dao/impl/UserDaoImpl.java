@@ -40,7 +40,7 @@ public class UserDaoImpl implements UserDao {
             query.setParameter("email",email);
             return query.uniqueResultOptional();
         } catch (Exception e) {
-            throw new RuntimeException("Cant find by email " + email,e);
+            throw new DataProcessingException("Cant find by email " + email,e);
         }
     }
 }

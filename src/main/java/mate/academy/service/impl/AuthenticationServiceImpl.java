@@ -18,7 +18,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty() || !matchPasswords(password,userFromDbOptional.get())) {
+        if (userFromDbOptional.isEmpty() || !matchPasswords(password, userFromDbOptional.get())) {
             throw new AuthenticationException("Cant authenticate user");
         }
         return userFromDbOptional.get();
@@ -30,7 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userFromDbOptional.isPresent()) {
             throw new RegistrationException("Cant register user");
         }
-        User user = new User(email,password);
+        User user = new User(email, password);
         userService.add(user);
         return user;
     }
