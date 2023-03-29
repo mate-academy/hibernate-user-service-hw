@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -63,19 +64,30 @@ public class Main {
 
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        try {
-            authenticationService.register("hello", "qwerty");
-            authenticationService.register("hello22", "qwertyasd");
-            authenticationService.register("hello", "qwertyasd");
-        } catch (RegistrationException e) {
-            System.out.println(e.getMessage());
+        List<String> logins = List.of("qwerty", "a", "", "bbbab");
+        List<String> passwords = List.of("1234", "1", "", "0000s0");
+        List<String> invalidPasswords = List.of("333", "", "", "gggg");
+        for (int i = 0; i < 4; i++) {
+            try {
+                System.out.println(authenticationService.register(logins.get(i), passwords.get(i)));
+            } catch (RegistrationException e) {
+                System.out.println("can't create user with email " + logins.get(i));
+            }
         }
-        try {
-            System.out.println(authenticationService.login("hello", "qwerty"));
-            System.out.println(authenticationService.login("hello22", "qwertyasd"));
-            System.out.println(authenticationService.login("hello", ""));
-        } catch (AuthenticationException e) {
-            System.out.println(e.getMessage());
+        for (int i = 0; i < 4; i++) {
+            try {
+                System.out.println(authenticationService.login(logins.get(i), passwords.get(i)));
+            } catch (AuthenticationException e) {
+                System.out.println("can't login user with password " + passwords.get(i));
+            }
+        }
+        for (int i = 0; i < 4; i++) {
+            try {
+                System.out.println(authenticationService.login(logins.get(i),
+                        invalidPasswords.get(i)));
+            } catch (AuthenticationException e) {
+                System.out.println("can't login user with password " + passwords.get(i));
+            }
         }
     }
 }
