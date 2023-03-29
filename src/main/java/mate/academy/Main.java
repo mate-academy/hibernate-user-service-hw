@@ -67,21 +67,21 @@ public class Main {
         List<String> logins = List.of("qwerty", "a", "", "bbbab");
         List<String> passwords = List.of("1234", "1", "", "0000s0");
         List<String> invalidPasswords = List.of("333", "", "", "gggg");
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < logins.size(); i++) {
             try {
                 System.out.println(authenticationService.register(logins.get(i), passwords.get(i)));
             } catch (RegistrationException e) {
                 System.out.println("can't create user with email " + logins.get(i));
             }
         }
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < logins.size(); i++) {
             try {
                 System.out.println(authenticationService.login(logins.get(i), passwords.get(i)));
             } catch (AuthenticationException e) {
                 System.out.println("can't login user with password " + passwords.get(i));
             }
         }
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < logins.size(); i++) {
             try {
                 System.out.println(authenticationService.login(logins.get(i),
                         invalidPasswords.get(i)));
