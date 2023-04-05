@@ -5,15 +5,12 @@ import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
-import mate.academy.util.HashUtil;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-
     @Override
     public User add(User user) {
         Transaction transaction = null;
@@ -21,9 +18,6 @@ public class UserDaoImpl implements UserDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            byte[] salt = HashUtil.getSalt();
-            user.setSalt(salt);
-            user.setPassword(HashUtil.hashPassword(user.getPassword(), salt));
             session.save(user);
             transaction.commit();
             return user;
@@ -42,11 +36,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<User> query =
-                    session.createQuery("from User u where u.email = :email ",
-                            User.class);
-            query.setParameter("email", email);
-            return query.uniqueResultOptional();
+            return session.createQuery("from User u where u.email = :email ", User.class)
+                    .setParameter("email", email)
+                    .uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get user by email " + email, e);
         }

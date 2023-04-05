@@ -76,6 +76,5 @@ public class Main {
             throw new RuntimeException("Can't login user ", e);
         }
         System.out.println(loginUser);
-
     }
 }
