@@ -1,5 +1,6 @@
 package mate.academy.dao.impl;
 
+import jakarta.persistence.criteria.CriteriaDelete;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -46,7 +47,8 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     @Override
     public List<MovieSession> findAvailableSessions(Long movieId, LocalDate date) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaBuilder criteriaBuilder =
+                    (CriteriaBuilder) session.getCriteriaBuilder();
             CriteriaQuery<MovieSession> criteriaQuery =
                     criteriaBuilder.createQuery(MovieSession.class);
             Root<MovieSession> root = criteriaQuery.from(MovieSession.class);
@@ -57,7 +59,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             criteriaQuery.select(root).where(allConditions);
             root.fetch("movie");
             root.fetch("cinemaHall");
-            return session.createQuery(criteriaQuery).getResultList();
+            return session.createQuery((CriteriaDelete) criteriaQuery).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get available sessions for movie with id: "
                     + movieId + " for date: " + date, e);

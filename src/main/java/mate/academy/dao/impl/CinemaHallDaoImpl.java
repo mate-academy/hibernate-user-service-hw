@@ -1,5 +1,6 @@
 package mate.academy.dao.impl;
 
+import jakarta.persistence.criteria.CriteriaDelete;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.criteria.CriteriaQuery;
@@ -47,10 +48,11 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
     @Override
     public List<CinemaHall> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<CinemaHall> criteriaQuery = session.getCriteriaBuilder()
+            CriteriaQuery<CinemaHall> criteriaQuery =
+                    (CriteriaQuery<CinemaHall>) session.getCriteriaBuilder()
                     .createQuery(CinemaHall.class);
             criteriaQuery.from(CinemaHall.class);
-            return session.createQuery(criteriaQuery).getResultList();
+            return session.createQuery((CriteriaDelete) criteriaQuery).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get all cinema halls", e);
         }
