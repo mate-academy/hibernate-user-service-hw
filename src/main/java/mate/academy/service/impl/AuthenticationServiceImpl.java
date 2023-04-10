@@ -18,12 +18,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userByEmail = userService.findByEmail(email);
-        if (userByEmail.isPresent()) {
-            User user = userByEmail.get();
-            String hashPassword = HashUtil.hashPassword(password, user.getSalt());
-            if (user.getPassword().equals(hashPassword)) {
-                return user;
-            }
+        if (userByEmail.isPresent() && isMatchPassword(password, userByEmail.get())) {
+            return userByEmail.get();
         }
         throw new AuthenticationException("Login or password was incorrect");
     }
@@ -35,5 +31,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("User with email " + email + " already exists");
         }
         return userService.add(new User(email, password));
+    }
+
+    private boolean isMatchPassword(String password, User userByEmail) {
+        String hashPassword = HashUtil.hashPassword(password, userByEmail.getSalt());
+        return userByEmail.getPassword().equals(hashPassword);
     }
 }
