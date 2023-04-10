@@ -29,10 +29,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         User user = userService.findByEmail(email)
-                .orElseThrow(() -> new AuthenticationException("Can't authenticate user"));
+                .orElseThrow(() -> new AuthenticationException("Can't authenticate user: " +
+                        "Wrong email " + email));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (!user.getPassword().equals(hashedPassword)) {
-            throw new AuthenticationException("Can't authenticate user");
+            throw new AuthenticationException("Can't authenticate user: " +
+                    "Wrong password " + password);
         }
         return user;
     }
@@ -50,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (password == null
                 || password.isEmpty()
                 || password.isBlank()) {
-            throw new DataValidationException("Password isn't valid");
+            throw new DataValidationException("Password cannot be empty");
         }
         return true;
     }
