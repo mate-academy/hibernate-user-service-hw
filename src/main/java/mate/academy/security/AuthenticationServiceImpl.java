@@ -16,14 +16,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
 
-    public User register(String login, String password)
+    public User register(String email, String password)
             throws RegistrationException {
-        if (userService.findByEmail(login).isEmpty() && !password.isEmpty()) {
-            User user = new User(login, password);
+        if (userService.findByEmail(email).isEmpty() && !password.isEmpty()) {
+            User user = new User(email, password);
             return userService.add(user);
         }
         throw new RegistrationException("Can not register user cause"
-                + " password or login is incorrect");
+                + " password or email is incorrect");
     }
 
     @Override
