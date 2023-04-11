@@ -1,5 +1,6 @@
 package mate.academy.security.impl;
 
+import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.DataValidationException;
 import mate.academy.exception.RegistrationException;
@@ -20,7 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         isValidEmail(email);
         isValidPassword(password);
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Can't register user");
+            throw new RegistrationException("User already exists!");
         }
         User user = new User(email, password);
         return userService.add(user);
@@ -28,32 +29,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email)
-                .orElseThrow(() -> new AuthenticationException("Can't authenticate user: "
-                        + "Wrong email " + email));
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (!user.getPassword().equals(hashedPassword)) {
-            throw new AuthenticationException("Can't authenticate user: "
-                    + "Wrong password " + password);
+        Optional<User> optionalUser = userService.findByEmail(email);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            String hashPassword = HashUtil.hashPassword(password, user.getSalt());
+            if (user.getPassword().equals(hashPassword)) {
+                return user;
+            }
         }
-        return user;
+        throw new AuthenticationException("Can't authenticate user. "
+                + "Email or password is incorrect!");
     }
 
-    private boolean isValidEmail(String email) {
+    private void isValidEmail(String email) {
         if (email == null
-                || !email.contains("@")
-                || !email.contains(".")) {
+                || !email.contains("@")) {
             throw new DataValidationException("Email isn't valid");
         }
-        return true;
     }
 
-    private boolean isValidPassword(String password) {
+    private void isValidPassword(String password) {
         if (password == null
-                || password.isEmpty()
                 || password.isBlank()) {
             throw new DataValidationException("Password cannot be empty");
         }
-        return true;
     }
 }
