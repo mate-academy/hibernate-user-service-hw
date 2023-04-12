@@ -22,7 +22,8 @@ public class HashUtil {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
-            byte[] digest = messageDigest.digest(password.getBytes());
+            byte[] digest = messageDigest.digest(
+                    password == null ? new byte[0] : password.getBytes());
             for (byte b : digest) {
                 hash.append(String.format("%02x", b));
             }

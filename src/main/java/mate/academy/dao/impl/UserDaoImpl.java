@@ -42,7 +42,7 @@ public class UserDaoImpl implements UserDao {
             userQuery.setParameter("email", email);
             return userQuery.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get all movies", e);
+            throw new DataProcessingException("Can't get user by email" + email, e);
         }
     }
 }
