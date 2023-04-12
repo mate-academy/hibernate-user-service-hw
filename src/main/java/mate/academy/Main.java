@@ -16,10 +16,11 @@ import mate.academy.service.MovieSessionService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final AuthenticationService authenticationService =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
     public static void main(String[] args) {
         MovieService movieService = null;
-
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -59,17 +60,15 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        AuthenticationService authenticationService =
-                (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
-            authenticationService.register("email@gail.com", "1234");
+            authenticationService.register("manager@russni.net", "23dfDN0Q1ss");
         } catch (RegistrationException e) {
             throw new RuntimeException("Can't register user ", e);
         }
 
         User loginUser;
         try {
-            loginUser = authenticationService.login("email@gail.com", "1234");
+            loginUser = authenticationService.login("manager@russni.net", "23dfDN0Q1ss");
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't login user ", e);
         }
