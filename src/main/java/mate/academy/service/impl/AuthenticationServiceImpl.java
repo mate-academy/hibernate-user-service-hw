@@ -14,12 +14,13 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private static final String EMAIL_PATTERN =
+    private static final String EMAIL_PATTERN_REGEX =
             "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                     + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    private static final String PASSWORD_PATTERN =
+    private static final String PASSWORD_PATTERN_REGEX =
             "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
-    private final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+    private final Pattern patternForEmail = Pattern.compile(EMAIL_PATTERN_REGEX);
+    private final Pattern patternForPassword = Pattern.compile(PASSWORD_PATTERN_REGEX);
     @Inject
     private UserService userService;
 
@@ -56,13 +57,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private boolean isValidEmail(String email) {
-        Matcher matcher = pattern.matcher(email);
+        Matcher matcher = patternForEmail.matcher(email);
         return matcher.matches();
     }
 
-    public static boolean isValidPassword(String password) {
-        Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
-        Matcher matcher = pattern.matcher(password);
+    public boolean isValidPassword(String password) {
+        Matcher matcher = patternForPassword.matcher(password);
         return matcher.matches();
     }
 }
