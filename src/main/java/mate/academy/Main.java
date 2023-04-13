@@ -2,16 +2,30 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+    private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final MovieService movieService
+            = (MovieService) injector.getInstance(MovieService.class);
+    private static final CinemaHallService cinemaHallService
+            = (CinemaHallService) injector.getInstance(CinemaHallService.class);
+    private static final MovieSessionService movieSessionService
+            = (MovieSessionService) injector.getInstance(MovieSessionService.class);
+    private static final AuthenticationService authenticationService
+            = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
     public static void main(String[] args) {
-        MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -27,7 +41,6 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,12 +57,60 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+        User user;
+        try {
+            System.out.println("Registration ...");
+            authenticationService.register("sss@i.com", "12345");
+            System.out.println("Registration complete");
+        } catch (RegistrationException e) {
+            System.out.println(e);
+        } finally {
+            System.out.println();
+        }
+
+        try {
+            System.out.println("Authentication ...");
+            user = authenticationService.login("sss@i.com", "12345");
+            System.out.println("Authentication complete");
+        } catch (AuthenticationException e) {
+            System.out.println(e);
+        } finally {
+            System.out.println();
+        }
+        try {
+            //errors in pass
+            System.out.println("Incorrect pass ...");
+            user = authenticationService.login("sss@i.com", "123456");
+        } catch (AuthenticationException e) {
+            System.out.println(e);
+        } finally {
+            System.out.println();
+        }
+
+        try {
+            //errors in login
+            System.out.println("Incorrect login ...");
+            user = authenticationService.login("sss2@i.com", "123456");
+        } catch (AuthenticationException e) {
+            System.out.println(e);
+        } finally {
+            System.out.println();
+        }
+
+        try {
+            //error. user is already in DB
+            System.out.println("Incorrect registration ...");
+            authenticationService.register("sss@i.com", "12345");
+        } catch (RegistrationException e) {
+            System.out.println(e);
+        } finally {
+            System.out.println();
+        }
     }
 }
