@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -17,20 +16,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> byEmail = userService.findByEmail(email);
-        if (byEmail.isEmpty() || !byEmail.get().getPassword()
-                .equals(HashUtil.hashPassword(password, byEmail.get().getSalt()))) {
-            throw new AuthenticationException("Username or password was incorrect");
+        User byEmail = userService.findByEmail(email).orElseThrow(() ->
+                new AuthenticationException("User with : <" + email + "> and <"
+                        + password + "> don't passed authentication process"));
+        if (!byEmail.getPassword()
+                .equals(HashUtil.hashPassword(password, byEmail.getSalt()))) {
+            throw new AuthenticationException(" For User with ID <" + byEmail.getId()
+                    + "> password was inputting incorrectly");
         }
-        return byEmail.get();
+        return byEmail;
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
-            throw new RegistrationException("Email and password should be not null");
+            throw new RegistrationException("Email and password should be not null or empty");
         }
-        if (!userService.findByEmail(email).isEmpty()) {
+        if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with this email already exist");
         }
         User user = new User(email, password);
