@@ -8,6 +8,7 @@ import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
+import org.apache.commons.lang3.StringUtils;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -29,13 +30,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
+        if (StringUtils.isEmpty(email) || StringUtils.isEmpty(password)) {
             throw new RegistrationException("Email and password should be not null or empty");
         }
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with this email already exist");
         }
         User user = new User(email, password);
+        byte[] salt = HashUtil.getSalt();
+        user.setSalt(salt);
+        user.setPassword(HashUtil.hashPassword(user.getPassword(), salt));
         return userService.add(user);
     }
 }
