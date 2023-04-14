@@ -21,21 +21,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userFromDbOptional.get();
         if (userFromDbOptional.isEmpty()
                 || !HashUtil.hashPassword(password, user.getSalt()).equals(user.getPassword())) {
-            throw new AuthenticationException("Can`t authenticate user. We don`t have this user.");
+            throw new AuthenticationException("Can`t authenticate user. Check email or password.");
         }
         return user;
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
+            throw new RegistrationException("Email or password is incorrect, check please.");
+        }
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("User is already registered. Email: " + email);
+        }
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
         userService.save(user);
-        Optional<User> userByEmail = userService.findByEmail(email);
-        if (userByEmail.isEmpty()) {
-            throw new RegistrationException("Can`t save user");
-        }
         return user;
     }
 }
