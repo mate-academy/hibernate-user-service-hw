@@ -17,10 +17,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> user = userService.findByEmail(email);
         if (email == null || password == null || email.isEmpty()
-                || password.isEmpty() || user.isEmpty()
-                || !user.get().getPassword()
+                || password.isEmpty()) {
+            throw new AuthenticationException("Email or password shouldn't be null or empty");
+        }
+        Optional<User> user = userService.findByEmail(email);
+        if ( user.isEmpty() || !user.get().getPassword()
                 .equals(HashUtil.hashPassword(password, user.get().getSalt()))) {
             throw new AuthenticationException("Email or password is invalid");
         }
