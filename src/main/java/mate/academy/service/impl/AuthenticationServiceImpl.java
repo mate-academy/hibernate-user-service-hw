@@ -20,7 +20,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userOptional = userService.findByEmail(email);
         User user = userOptional.orElseThrow();
         if (!user.getPassword()
-                .equals(HashUtil.hashPassword(password, userOptional.orElseThrow().getSalt()))) {
+                .equals(HashUtil.hashPassword(password, user.getSalt()))) {
             throw new AuthenticationException("Can't login with email: " + email);
         }
         return user;
