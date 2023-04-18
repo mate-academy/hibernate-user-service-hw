@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -20,22 +21,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (isNullOrEmpty(email, password)) {
             throw new AuthenticationException("Email or password shouldn't be null or empty");
         }
-
-        if (authenticate(email, password)) {
+        Optional<User> user = userService.findByEmail(email);
+        if (authenticate(user, password)) {
             throw new AuthenticationException("Email or password is invalid");
         }
-        return userService.findByEmail(email).get();
+        return userService.findByEmail(email).orElseThrow(() ->
+                new NoSuchElementException("Can't get user by email: " + email));
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email == null || email.isEmpty()) {
-            throw new RegistrationException("Email shouldn't be empty or null");
+        if (isNullOrEmpty(email, password)) {
+            throw new RegistrationException("You must fill all the fields");
         }
-        if (password == null || password.isEmpty()) {
-            throw new RegistrationException("Password shouldn't be empty or null");
-        }
-        if (!userService.findByEmail(email).isEmpty()) {
+        if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with such an email already exists");
         }
         User user = new User(email, password);
@@ -47,8 +46,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 || password.isEmpty();
     }
 
-    private boolean authenticate(String email, String password) {
-        Optional<User> user = userService.findByEmail(email);
+    private boolean authenticate(Optional<User> user, String password) {
         return user.isEmpty() || !user.get().getPassword()
                 .equals(HashUtil.hashPassword(password, user.get().getSalt()));
     }

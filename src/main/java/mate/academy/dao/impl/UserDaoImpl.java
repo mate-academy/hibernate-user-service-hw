@@ -7,20 +7,17 @@ import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-    private final SessionFactory factory = HibernateUtil.getSessionFactory();
-
     @Override
     public User add(User user) {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = factory.openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
@@ -39,7 +36,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        try (Session session = factory.openSession()) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<User> getUserByEmailQuery =
                     session.createQuery("from User u where u.email = :email", User.class);
             getUserByEmailQuery.setParameter("email", email);
