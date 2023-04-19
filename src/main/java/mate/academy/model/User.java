@@ -1,6 +1,5 @@
 package mate.academy.model;
 
-import java.util.Arrays;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,8 +56,6 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", email='" + email + '\''
-                + ", password='" + password + '\''
-                + ", salt=" + Arrays.toString(salt)
                 + '}';
     }
 }

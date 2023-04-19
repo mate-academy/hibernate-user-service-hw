@@ -13,7 +13,6 @@ import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
-import mate.academy.service.UserService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
@@ -25,10 +24,8 @@ public class Main {
             = (MovieSessionService) injector.getInstance(MovieSessionService.class);
     private static final AuthenticationService authenticationService
             = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-    private static final UserService userService
-            = (UserService) injector.getInstance(UserService.class);
 
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+    public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -66,11 +63,17 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        User user = new User();
-        user.setEmail("test@gmail.com");
-        user.setPassword("12345678qwerty");
-        authenticationService.register(user.getEmail(), user.getPassword());
-        authenticationService.login(user.getEmail(), user.getPassword());
-        System.out.println(userService.findByEmail(user.getEmail()));
+        try {
+            authenticationService.register("test@gmail.com", "123456");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register user ", e);
+        }
+        User user;
+        try {
+            user = authenticationService.login("test@gmail.com", "1234");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Username or password was incorrect", e);
+        }
+        System.out.println(user);
     }
 }
