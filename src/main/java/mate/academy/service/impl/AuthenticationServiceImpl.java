@@ -1,12 +1,12 @@
-package mate.academy.security.impl;
+package mate.academy.service.impl;
 
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
-import mate.academy.security.AuthenticationService;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
@@ -28,13 +28,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String login, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(login);
-        if (userFromDbOptional.isEmpty()
-                || !userFromDbOptional.get().getPassword()
-                .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
+        User userFromDb = userService.findByEmail(login).orElseThrow(() ->
+                new NoSuchElementException("Can't find user by email: " + login + " from DB"));
+        if (!userFromDb.getPassword()
+                .equals(HashUtil.hashPassword(password, userFromDb.getSalt()))) {
             throw new AuthenticationException("Can't authenticate user with login: "
-                    + login + " and password: ");
+                    + login + " and password: + " + password);
         }
-        return userFromDbOptional.get();
+        return userFromDb;
     }
 }

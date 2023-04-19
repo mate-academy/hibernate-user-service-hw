@@ -34,18 +34,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User get(Long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(User.class, id);
-        }
-    }
-
-    @Override
     public Optional<User> findByLogin(String login) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("from User u where u.login = :login", User.class)
                     .setParameter("login", login)
                     .uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't find user by login: " + login
+                    + " from DB ", e);
         }
     }
 }

@@ -8,7 +8,7 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.security.AuthenticationService;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -70,18 +70,6 @@ public class Main {
         System.out.println("Successfully login");
         try {
             authenticationService.login("bobik", "1111");
-        } catch (AuthenticationException e) {
-            System.out.println(e.getMessage());
-        }
-        System.out.println("Unsuccessfully register");
-        try {
-            authenticationService.register("bobik", "1212");
-        } catch (RegistrationException e) {
-            System.out.println(e.getMessage());
-        }
-        System.out.println("Unsuccessfully login");
-        try {
-            authenticationService.login("bobik", "2222");
         } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
         }

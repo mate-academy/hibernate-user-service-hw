@@ -6,7 +6,5 @@ import mate.academy.model.User;
 public interface UserDao {
     User save(User user);
 
-    User get(Long id);
-
     Optional<User> findByLogin(String login);
 }
