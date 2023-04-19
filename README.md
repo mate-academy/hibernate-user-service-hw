@@ -35,7 +35,7 @@ Your task is to implement the following steps:
             User register(String email, String password) throws RegistrationException;
         }
         ````
-    - Create your own checked `RegistrationException` and `AuthenticationException` to use it in `register()` and `email()` methods respectively
+    - Create your own checked `RegistrationException` and `AuthenticationException` to use it in `register()` and `login()` methods respectively
 
     - Please don’t forget to use salt and password hashing
 - In the `mate/academy/Main.main()` method create instance of AuthenticationService using injector and test all methods from it.
