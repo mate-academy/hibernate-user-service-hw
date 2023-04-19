@@ -20,8 +20,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         AuthenticationException exception =
                 new AuthenticationException("Login or password is incorrect");
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isPresent() &&
-                userOptional.get().getPassword().equals(HashUtil.hashPassword(password, userOptional.get().getSalt()))) {
+        if (userOptional.isPresent()
+                && userOptional.get().getPassword()
+                        .equals(HashUtil.hashPassword(password, userOptional.get().getSalt()))) {
             return userOptional.get();
         }
         throw exception;
