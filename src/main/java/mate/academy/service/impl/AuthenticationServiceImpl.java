@@ -32,7 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userOptional.isPresent()) {
             throw new RegistrationException("A user with this email " + email + " already exists");
         }
-        if (email.isEmpty() || password.isEmpty()) {
+        if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
             throw new RegistrationException("Password or email is incorrect");
         }
         User user = new User();
