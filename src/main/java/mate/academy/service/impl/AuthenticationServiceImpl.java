@@ -15,7 +15,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String email, String password) {
+    public User login(String email, String password) throws AuthenticationException {
         User user = userService.findByEmail(email).orElseThrow(() ->
                 new AuthenticationException("Password or login doesn't match"));
         if (HashingUtil.checkPassword(password, user.getPassword())) {
@@ -26,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (password == null && email == null && password.isEmpty() && password.isEmpty()) {
+        if (password == null && email == null && email.isEmpty() && password.isEmpty()) {
             throw new RegistrationException("Invalid login or password ");
         }
         if (userService.findByEmail(email).isPresent()) {

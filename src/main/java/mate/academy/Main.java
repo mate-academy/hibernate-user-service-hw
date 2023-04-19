@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -61,7 +63,15 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        authenticationService.register("user","3543634634");
-        authenticationService.login("user", "3543634634");
+        try {
+            authenticationService.register("user","3543634634");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register user", e);
+        }
+        try {
+            authenticationService.login("user", "3543634634");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Invalid credentials", e);
+        }
     }
 }
