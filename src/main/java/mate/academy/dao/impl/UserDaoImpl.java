@@ -52,16 +52,4 @@ public class UserDaoImpl implements UserDao {
             return Optional.empty();
         }
     }
-
-    @Override
-    public List<User> getAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder()
-                    .createQuery(User.class);
-            criteriaQuery.from(User.class);
-            return session.createQuery(criteriaQuery).getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get all users ", e);
-        }
-    }
 }

@@ -14,9 +14,18 @@ import mate.academy.service.MovieSessionService;
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) {
-        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
+    private static final MovieService movieService =
+            (MovieService) injector.getInstance(MovieService.class);
+    private static final CinemaHallService cinemaHallService =
+            (CinemaHallService) injector.getInstance(CinemaHallService.class);
 
+    private static final MovieSessionService movieSessionService =
+            (MovieSessionService) injector.getInstance(MovieSessionService.class);
+
+    private static final AuthenticationService authenticationService =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
+    public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -31,8 +40,6 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService =
-                (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -49,8 +56,6 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService =
-                (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
@@ -58,8 +63,6 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        AuthenticationService authenticationService =
-                (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             authenticationService.register("DeleF", "amd");
         } catch (Exception e) {
