@@ -27,7 +27,13 @@ public class Main {
     private static final AuthenticationService authenticationService =
             (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+    private static final String BOB_EMAIL = "bob12@gmail.com";
+    private static final String BOB_PASSWORD = "qwerty11";
+    private static final String WRONG_BOB_PASSWORD = "afasfqf";
+    private static final String ALICE_EMAIL = "alice7@gmail.com";
+    private static final String ALICE_PASSWORD = "123456";
+
+    public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -65,10 +71,23 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        authenticationService.register("bob12@gmail.com", "qwerty11");
-        authenticationService.register("alice7@gmail.com", "123456");
-        authenticationService.login("bob12@gmail.com", "qwerty11");
-        authenticationService.login("alice7@gmail.com", "123456");
+        try {
+            authenticationService.register(BOB_EMAIL, BOB_PASSWORD);
+            authenticationService.register(ALICE_EMAIL, ALICE_PASSWORD);
+            // Error case
+            authenticationService.register(BOB_EMAIL, BOB_PASSWORD);
+        } catch (RegistrationException e) {
+            System.out.println("Registration failed! " + e.getMessage());
+        }
+
+        try {
+            authenticationService.login(BOB_EMAIL, BOB_PASSWORD);
+            authenticationService.login(ALICE_EMAIL, ALICE_PASSWORD);
+            // Error case
+            authenticationService.login(BOB_EMAIL, WRONG_BOB_PASSWORD);
+        } catch (AuthenticationException e) {
+            System.out.println("Login failed! " + e.getMessage());
+        }
 
         System.out.println(userService.findByEmail("bob12@gmail.com"));
         System.out.println(userService.findByEmail("alice7@gmail.com"));

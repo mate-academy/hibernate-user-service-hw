@@ -32,11 +32,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         Optional<User> user = userService.findByEmail(email);
-        if (user.isPresent() || email.isEmpty()) {
-            throw new RegistrationException("Please use another login");
+        if (user.isPresent()) {
+            throw new RegistrationException("This email is already taken " + email);
         }
-        if (password.isEmpty()) {
-            throw new RegistrationException("Please use another, non-empty password");
+        if (email == null || email.isEmpty()
+            || password == null || password.isEmpty()) {
+            throw new RegistrationException("Please use correct email and password");
         }
         return userService.add(new User(email, password));
     }
