@@ -29,13 +29,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         Optional<User> userFromDB = userService.findByEmail(email);
-        if (userFromDB.isEmpty()) {
+        if (email == null || userFromDB.isPresent() || email.isEmpty()) {
+            throw new RegistrationException("Please use another login");
+        }
+        if (password == null || password.isEmpty()) {
+            throw new RegistrationException("Please use another password");
+        }
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
             userService.add(user);
             return user;
-        }
-        throw new RegistrationException("This user is already registered");
     }
 }
