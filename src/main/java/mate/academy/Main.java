@@ -76,10 +76,17 @@ public class Main {
         User user = new User();
         user.setEmail("user@gmail.com");
         user.setPassword("1111111");
-        authenticationService.register(user.getEmail(), user.getPassword());
-        authenticationService.login(user.getEmail(), user.getPassword());
-        System.out.println(COLOR_ANSI_BEGIN + userService.findByEmail(user.getEmail())
-                + COLOR_ANSI_END);
+        try {
+            authenticationService.register(user.getEmail(), user.getPassword());
+            authenticationService.login(user.getEmail(), user.getPassword());
+            System.out.println(COLOR_ANSI_BEGIN + userService.findByEmail(user.getEmail())
+                    + COLOR_ANSI_END);
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't Authenticat", e);
+        }
+
         try {
             authenticationService.register(user.getEmail(), user.getPassword());
         } catch (RegistrationException e) {
