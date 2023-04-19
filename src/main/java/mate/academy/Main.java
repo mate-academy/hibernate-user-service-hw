@@ -60,10 +60,20 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        authenticationService.register("DeleF", "amd");
-        authenticationService.register("Runner", "intel");
-        authenticationService.register("Titon", "nvidia");
-
-        System.out.println(authenticationService.login("DeleF", "amd"));
+        try {
+            authenticationService.register("DeleF", "amd");
+        } catch (Exception e) {
+            System.out.println("Couldn't register all users");
+        }
+        try {
+            System.out.println(authenticationService.login("DeleF", "amd"));
+        } catch (Exception e) {
+            System.out.println("Couldn't login existing user");
+        }
+        try {
+            System.out.println(authenticationService.login("Runner", "intel"));
+        } catch (Exception e) {
+            System.out.println("Couldn't login non existing user");
+        }
     }
 }

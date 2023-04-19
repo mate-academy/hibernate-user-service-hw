@@ -1,22 +1,24 @@
 package mate.academy.service.impl;
 
-import java.util.Random;
-import mate.academy.dao.UserDao;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
+import mate.academy.service.UserService;
 import mate.academy.util.SaltUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
-    private UserDao userDao;
+    private UserService userService;
 
     @Override
-    public User login(String email, String password) {
-        RuntimeException exception = new RuntimeException();
-        User fondUser = userDao.findByEmail(email).orElseThrow(() -> exception);
+    public User login(String email, String password) throws AuthenticationException {
+        AuthenticationException exception =
+                new AuthenticationException("Login or password is incorrect");
+        User fondUser = userService.findByEmail(email).orElseThrow(() -> exception);
         if (fondUser.getPassword().equals(SaltUtil.getSalt(password, fondUser.getSalt()))) {
             return fondUser;
         }
@@ -24,21 +26,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User register(String email, String password) {
-        RuntimeException exception = new RuntimeException();
-        if (userDao.findByEmail(email).isPresent()) {
-            throw exception;
+    public User register(String email, String password) throws RegistrationException {
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("User with this email already exists");
         }
-        Random random = new Random();
         byte[] salt = new byte[2];
-        salt[0] = 12;//(byte) random.nextInt(0,12);
-        salt[1] = 12;//(byte) random.nextInt(0,12);
+        salt[0] = 6;
+        salt[1] = 12;
         User toAdd = new User(
                 email,
                 SaltUtil.getSalt(password,salt),
                 salt
         );
-        userDao.add(toAdd);
+        userService.add(toAdd);
         return toAdd;
     }
 }
