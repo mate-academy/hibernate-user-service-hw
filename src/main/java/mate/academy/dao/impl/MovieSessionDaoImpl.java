@@ -19,8 +19,6 @@ import org.hibernate.query.Query;
 
 @Dao
 public class MovieSessionDaoImpl implements MovieSessionDao {
-    private static final LocalTime END_OF_DAY = LocalTime.of(23, 59, 59);
-
     @Override
     public MovieSession add(MovieSession movieSession) {
         Transaction transaction = null;
@@ -28,7 +26,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.save(movieSession);
+            session.persist(movieSession);
             transaction.commit();
             return movieSession;
         } catch (Exception e) {
@@ -52,7 +50,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             Root<MovieSession> root = criteriaQuery.from(MovieSession.class);
             Predicate moviePredicate = criteriaBuilder.equal(root.get("movie"), movieId);
             Predicate datePredicate = criteriaBuilder.between(root.get("showTime"),
-                    date.atStartOfDay(), date.atTime(END_OF_DAY));
+                    date.atStartOfDay(), date.atTime(LocalTime.MAX));
             Predicate allConditions = criteriaBuilder.and(moviePredicate, datePredicate);
             criteriaQuery.select(root).where(allConditions);
             root.fetch("movie");
