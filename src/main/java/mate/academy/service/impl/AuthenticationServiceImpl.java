@@ -36,7 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("This email is already taken " + email);
         }
         if (email == null || email.isEmpty()
-            || password == null || password.isEmpty()) {
+                || password == null || password.isEmpty()) {
             throw new RegistrationException("Please use correct email and password");
         }
         return userService.add(new User(email, password));
