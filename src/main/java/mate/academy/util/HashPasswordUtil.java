@@ -5,6 +5,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashPasswordUtil {
+
+    private HashPasswordUtil() {
+
+    }
+
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[16];

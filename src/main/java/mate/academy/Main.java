@@ -23,6 +23,8 @@ public class Main {
             = (MovieSessionService) injector.getInstance(MovieSessionService.class);
     private static final AuthenticationService authenticationService
             = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+    private static final String EMAIL = "hmv.fermats@gmail.com";
+    private static final String PASSWORD = "1029";
 
     public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -62,20 +64,17 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        String email = "hmv.fermats@gmail.com";
-        String password = "1029";
         try {
             System.out.println("User successfully registered: "
-                    + authenticationService.register(email, password));
-
+                    + authenticationService.register(EMAIL, PASSWORD));
         } catch (RegistrationException e) {
-            throw new RuntimeException("Can't register user with email " + email
-                    + " and password " + password, e);
+            throw new RuntimeException("Can't register user with email " + EMAIL
+                    + " and password " + PASSWORD, e);
         }
 
         try {
             System.out.println("Success login for user: "
-                    + authenticationService.login(email, password));
+                    + authenticationService.login(EMAIL, PASSWORD));
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't login user", e);
         }
