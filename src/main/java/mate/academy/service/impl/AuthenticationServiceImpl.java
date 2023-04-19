@@ -21,9 +21,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;
-        } else {
-            throw new AuthenticationException("Email or password are wrong!");
         }
+        throw new AuthenticationException("Email or password are wrong!");
     }
 
     @Override
@@ -32,9 +31,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("A user with this email address already exists!");
         } else {
             User user = new User();
-            user.setSalt(HashUtil.getSalt());
-            user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
             user.setEmail(email);
+            user.setPassword(password);
             userService.add(user);
             return user;
         }

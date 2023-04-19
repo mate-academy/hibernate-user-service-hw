@@ -25,9 +25,6 @@ public class Main {
             = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
-        authenticationService.register("dominskyj@gmail.com", "qwerty12");
-        authenticationService.login("dominskyj@gmail.com", "qwerty12");
-
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -57,6 +54,9 @@ public class Main {
         yesterdayMovieSession.setCinemaHall(firstCinemaHall);
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
+
+        authenticationService.register("dominskyj@gmail.com", "qwerty12");
+        authenticationService.login("dominskyj@gmail.com", "qwerty12");
 
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
