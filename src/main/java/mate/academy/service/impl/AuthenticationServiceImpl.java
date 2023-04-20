@@ -18,17 +18,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDB = userService.findByEmail(email);
-        if (userFromDB.isPresent()) {
-            User user = userFromDB.get();
-            if (user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()))) {
-                return user;
-            }
+        if (userFromDB.isPresent() && userFromDB.get().getPassword()
+                .equals(HashUtil.hashPassword(password, userFromDB.get().getSalt()))) {
+            return userFromDB.get();
         }
         throw new AuthenticationException("Login or password is not correct");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        if (email == null || password == null) {
+            throw new RegistrationException("Email or password can't be null");
+        }
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with the same name already registered");
         }
