@@ -18,6 +18,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
+        if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
+            throw new AuthenticationException("Can't authenticate user with email: " + email);
+        }
         Optional<User> userOptional = userService.findByEmail(email);
         if (userOptional.isEmpty()) {
             throw new AuthenticationException("Can't authenticate user with email: " + email);
@@ -32,6 +35,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
+            throw new RegistrationException("email " + email + " or password is invalid");
+        }
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with email: " + email + "already exists");
         }
