@@ -1,16 +1,50 @@
 package mate.academy;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import mate.academy.model.CinemaHall;
-import mate.academy.model.Movie;
-import mate.academy.model.MovieSession;
-import mate.academy.service.CinemaHallService;
-import mate.academy.service.MovieService;
-import mate.academy.service.MovieSessionService;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
+import mate.academy.service.AuthenticationService;
+import mate.academy.service.UserService;
 
 public class Main {
+    private static final String VALID_EMAIL = "user@com";
+    private static final String INVALID_EMAIL = "null@com";
+    private static final String PASS = "12345678";
+    private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final AuthenticationService authServ =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
+    private static final UserService userService =
+            (UserService) injector.getInstance(UserService.class);
+
     public static void main(String[] args) {
+        try {
+            authServ.register(VALID_EMAIL, PASS);
+            System.out.println("User " + userService.findByEmail(VALID_EMAIL).get()
+                    + " registered");
+        } catch (RegistrationException e) {
+            System.out.println("Couldn't register user");
+        }
+
+        try {
+            authServ.login(VALID_EMAIL, PASS);
+            System.out.println("User " + userService.findByEmail(VALID_EMAIL).get()
+                    + " logged");
+        } catch (AuthenticationException e) {
+            System.out.println("Couldn't login user");
+        }
+
+        try {
+            authServ.register(VALID_EMAIL, PASS);
+        } catch (RegistrationException e) {
+            System.out.println("Couldn't register user");
+        }
+
+        try {
+            authServ.login(INVALID_EMAIL, PASS);
+        } catch (AuthenticationException e) {
+            System.out.println("Couldn't login user");
+        }
+        /*
         MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -50,6 +84,7 @@ public class Main {
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
-                        fastAndFurious.getId(), LocalDate.now()));
+        fastAndFurious.getId(), LocalDate.now()));
+        */
     }
 }
