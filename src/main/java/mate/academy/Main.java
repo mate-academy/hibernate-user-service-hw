@@ -80,5 +80,11 @@ public class Main {
             throw new RuntimeException("Can't login user", e);
         }
         System.out.println(login);
+
+        try {
+            login = authenticationService.login("kyrylh@testmail.com", "6365");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't login user", e);
+        }
     }
 }
