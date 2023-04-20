@@ -30,7 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email == null || password == null) {
+        if (email == null || password == null || email.isBlank() || password.isBlank()) {
             throw new RegistrationException("Email or password are incorrect");
         }
         if (userService.findByEmail(email).isPresent()) {

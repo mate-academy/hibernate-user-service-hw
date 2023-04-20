@@ -34,10 +34,27 @@ public class Main {
         } catch (RegistrationException | AuthenticationException e) {
             throw new RuntimeException("Wrong password or email", e);
         }
-
+        // Email null
         try {
             authenticationService.register(null, PASSWORD);
+        } catch (RegistrationException e) {
+            System.out.println("Wrong password or email");
+        }
+        // Email blank
+        try {
+            authenticationService.register("", PASSWORD);
+        } catch (RegistrationException e) {
+            System.out.println("Wrong password or email");
+        }
+        // Password null
+        try {
             authenticationService.register(EMAIL, null);
+        } catch (RegistrationException e) {
+            System.out.println("Wrong password or email");
+        }
+        // Password blank
+        try {
+            authenticationService.register(EMAIL, "   ");
         } catch (RegistrationException e) {
             System.out.println("Wrong password or email");
         }
