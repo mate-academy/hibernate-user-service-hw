@@ -16,6 +16,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private static final int MIN_LOGIN_LENGTH = 8;
     @Inject
     private UserService userService;
+
     @Override
     public User login(String login, String password) throws AuthenticationException {
         User user = userService.findByLogin(login)
