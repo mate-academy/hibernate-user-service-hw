@@ -19,8 +19,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty() || !HashUtil.hashPassword(password,
-                userFromDbOptional.get().getSalt())
+        if (userFromDbOptional.isEmpty() || email == null || password == null
+                || email.isEmpty() || password.isEmpty()
+                || !HashUtil.hashPassword(password, userFromDbOptional.get().getSalt())
                 .equals(userFromDbOptional.get().getPassword())) {
             throw new AuthenticationException("Can't login with input data. Email: " + email);
         }
@@ -32,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (email == null || email.isEmpty()) {
             throw new RegistrationException("Email should be at least 4 symbols");
         }
-        if (password.length() < MIN_PASSWORD_LENGTH) {
+        if (password == null || password.isEmpty() || password.length() < MIN_PASSWORD_LENGTH) {
             throw new RegistrationException("Password should be at least 6 symbols");
         }
         Optional<User> userFromDbOptional = userService.findByEmail(email);
