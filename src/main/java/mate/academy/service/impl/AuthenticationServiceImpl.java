@@ -19,10 +19,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty() || email == null || password == null
-                || email.isEmpty() || password.isEmpty()
-                || !HashUtil.hashPassword(password, userFromDbOptional.get().getSalt())
-                .equals(userFromDbOptional.get().getPassword())) {
+        User user = userFromDbOptional.orElseThrow(() ->
+                new AuthenticationException("No user with email: " + email));
+        if (email == null || password == null
+                || !HashUtil.hashPassword(password, user.getSalt())
+                .equals(user.getPassword())) {
             throw new AuthenticationException("Can't login with input data. Email: " + email);
         }
         return userFromDbOptional.get();
