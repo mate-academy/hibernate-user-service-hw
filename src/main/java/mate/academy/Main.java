@@ -63,21 +63,21 @@ public class Main {
 
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User register;
+        User registeredUser;
 
         try {
-            register = authenticationService.register("kyrylh@testmail.com", "2134");
+            registeredUser = authenticationService.register("kyrylh@testmail.com", "2134");
         } catch (RegistrationException e) {
             throw new RuntimeException("Can't register user", e);
         }
 
-        System.out.println("Registered user: " + register);
-        User login;
+        System.out.println("Registered user: " + registeredUser);
+        User loggedUser;
 
         try {
-            login = authenticationService.login("kyrylh@testmail.com", "2134");
-            System.out.println(login);
-            login = authenticationService.login("kyrylh@testmail.com", "6365");
+            loggedUser = authenticationService.login("kyrylh@testmail.com", "2134");
+            System.out.println(loggedUser);
+            loggedUser = authenticationService.login("kyrylh@testmail.com", "6365");
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't login user", e);
         }

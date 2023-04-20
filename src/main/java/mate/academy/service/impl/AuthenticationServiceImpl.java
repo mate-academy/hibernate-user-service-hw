@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -16,13 +17,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email)
-                .orElseThrow(() -> new AuthenticationException("User not found"));
+        Optional<User> user = userService.findByEmail(email);
         if (password.isEmpty()
-                || !HashUtil.hashPassword(password, user.getSalt()).equals(user.getPassword())) {
+                || !HashUtil.hashPassword(password,
+                user.get().getSalt()).equals(user.get().getPassword())) {
             throw new AuthenticationException("Email or password are incorrect");
         }
-        return user;
+        return user.get();
     }
 
     @Override
@@ -30,7 +31,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
             throw new RegistrationException("Email or password can't be null");
         }
-        if (!userService.findByEmail(email).isEmpty()) {
+        if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User already exists");
         }
         User user = new User();
