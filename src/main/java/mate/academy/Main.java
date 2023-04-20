@@ -8,6 +8,7 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -64,10 +65,12 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+        User user = new User();
+        User loginUser = new User();
 
         try {
-            authService.register(DEFAULT_EMAIL, CORRECT_PASSWORD);
-            authService.login(DEFAULT_EMAIL, CORRECT_PASSWORD);
+            user = authService.register(DEFAULT_EMAIL, CORRECT_PASSWORD);
+            loginUser = authService.login(DEFAULT_EMAIL, CORRECT_PASSWORD);
             System.out.println("Correct user login and password");
         } catch (AuthenticationException | RegistrationException e) {
             System.out.println(e.getMessage());
