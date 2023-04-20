@@ -12,7 +12,6 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-    private static final Integer MIN_EMAIL_LENGTH = 4;
     private static final Integer MIN_PASSWORD_LENGTH = 6;
     @Inject
     private UserService userService;
@@ -30,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email.length() < MIN_EMAIL_LENGTH) {
+        if (email == null || email.isEmpty()) {
             throw new RegistrationException("Email should be at least 4 symbols");
         }
         if (password.length() < MIN_PASSWORD_LENGTH) {
