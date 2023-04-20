@@ -76,10 +76,10 @@ public class Main {
 
         try {
             login = authenticationService.login("kyrylh@testmail.com", "2134");
+            System.out.println(login);
             login = authenticationService.login("kyrylh@testmail.com", "6365");
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't login user", e);
         }
-        System.out.println(login);
     }
 }
