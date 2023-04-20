@@ -5,7 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashUtil {
-    public static final String HASH_ALGO = "SHA-512";
+    private static final String HASH_ALGO = "SHA-512";
+    private static final String STRING_FORMAT = "%02x";
 
     private HashUtil() {
     }
@@ -17,10 +18,11 @@ public class HashUtil {
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
             for (byte b : digest) {
-                hashedPassword.append(String.format("%02x", b));
+                hashedPassword.append(String.format(STRING_FORMAT, b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Can`t hash password using SHA-512 Algorythm");
+            throw new IllegalStateException("Can`t hash password using "
+                    + HASH_ALGO + " Algorythm");
         }
         return hashedPassword.toString();
     }

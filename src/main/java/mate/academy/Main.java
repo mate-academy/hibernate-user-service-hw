@@ -13,6 +13,7 @@ import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.UserService;
 
 public class Main {
     private static final String CORRECT_PASSWORD = "12345";
@@ -27,6 +28,8 @@ public class Main {
             = (CinemaHallService) injector.getInstance(CinemaHallService.class);
     private static final AuthenticationService authService
             = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+    private static final UserService userService
+            = (UserService) injector.getInstance(UserService.class);
 
     public static void main(String[] args) {
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -82,5 +85,6 @@ public class Main {
         } catch (AuthenticationException e) {
             System.out.println("Can't login user with incorrect credentials");
         }
+        System.out.println(userService.findByEmail(DEFAULT_EMAIL));
     }
 }
