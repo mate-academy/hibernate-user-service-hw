@@ -19,13 +19,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User add(String email, String password) {
+    public User add(User user) {
         byte[] salt = HashUtil.getSalt();
-        User toAdd = new User(
-                email,
-                HashUtil.hashPassword(password,salt),
-                salt
-        );
-        return userDao.add(toAdd);
+        user.setPassword(HashUtil.hashPassword(user.getPassword(),salt));
+        user.setSalt(salt);
+        return userDao.add(user);
     }
 }

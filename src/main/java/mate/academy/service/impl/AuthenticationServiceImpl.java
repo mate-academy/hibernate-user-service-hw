@@ -32,12 +32,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException(
                     "An internal error has occurred, email or password values are null");
         }
-        if (email.equals("") || password.equals("")) {
+        if (email.isEmpty() || password.isEmpty()) {
             throw new RegistrationException("Neither password nor email cannot be empty");
         }
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with this email already exists");
         }
-        return userService.add(email, password);
+        User toAdd = new User(
+                email,
+                password
+        );
+        return userService.add(toAdd);
     }
 }
