@@ -71,7 +71,6 @@ public class Main {
         } catch (RegistrationException e) {
             System.out.println("Can't register user " + anton);
         }
-
         try {
             authenticationService.login(anton.getEmail(), anton.getPassword());
         } catch (AuthenticationException e) {
