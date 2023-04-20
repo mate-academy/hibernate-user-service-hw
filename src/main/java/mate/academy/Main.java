@@ -2,16 +2,30 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+    private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final MovieService movieService = (MovieService)
+            injector.getInstance(MovieService.class);
+    private static final CinemaHallService cinemaHallService =
+            (CinemaHallService) injector.getInstance(CinemaHallService.class);
+    private static final MovieSessionService movieSessionService =
+            (MovieSessionService) injector.getInstance(MovieSessionService.class);
+    private static final AuthenticationService authenticationService =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
     public static void main(String[] args) {
-        MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -27,7 +41,6 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,12 +57,57 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        User userWithValidData = new User();
+        userWithValidData.setEmail("email");
+        userWithValidData.setPassword("password");
+        try {
+            authenticationService.register(userWithValidData.getEmail(),
+                    userWithValidData.getPassword());
+            System.out.println("Registration OK");
+        } catch (RegistrationException e) {
+            System.out.println("Can't register user " + userWithValidData);
+        }
+
+        User userWithInvalidEmail = new User();
+        userWithInvalidEmail.setEmail("ema");
+        userWithInvalidEmail.setPassword("password");
+        try {
+            authenticationService.register(userWithInvalidEmail.getEmail(),
+                    userWithInvalidEmail.getPassword());
+        } catch (RegistrationException e) {
+            System.out.println("User with invalid email " + userWithInvalidEmail.getEmail());
+        }
+
+        User userWithInvalidPassword = new User();
+        userWithInvalidPassword.setEmail("email");
+        userWithInvalidPassword.setPassword("pass");
+        try {
+            authenticationService.register(userWithInvalidPassword.getEmail(),
+                    userWithInvalidPassword.getPassword());
+        } catch (RegistrationException e) {
+            System.out.println("User with invalid password "
+                    + userWithInvalidPassword.getPassword());
+        }
+
+        try {
+            authenticationService.login("email", "password");
+            System.out.println("Login OK");
+        } catch (AuthenticationException e) {
+            System.out.println("Can't login user");
+        }
+
+        try {
+            authenticationService.login("123456", "1234567");
+            System.out.println("Login OK");
+        } catch (AuthenticationException e) {
+            System.out.println("Can't login user");
+        }
     }
 }
