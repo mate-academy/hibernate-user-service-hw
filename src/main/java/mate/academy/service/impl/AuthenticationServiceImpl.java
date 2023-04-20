@@ -18,10 +18,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password)
             throws AuthenticationException {
         User user = userService.findByEmail(email).orElseThrow(() ->
-                new AuthenticationException("Email of password are invalid"));
+                new AuthenticationException("Email or password are invalid"));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (!user.getPassword().equals(hashedPassword)) {
-            throw new AuthenticationException("Email of password are invalid");
+            throw new AuthenticationException("Email or password are invalid");
         }
         return user;
     }
@@ -30,15 +30,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password)
             throws RegistrationException {
         if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
-            throw new RegistrationException("Email of password are invalid");
+            throw new RegistrationException("Email or password are invalid");
         }
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User already exists with this email = " + email);
         }
-        byte[] salt = HashUtil.getSalt();
-        String hashedPassword = HashUtil.hashPassword(password, salt);
-        User newUser = new User(email, hashedPassword);
-        newUser.setSalt(salt);
-        return userService.add(newUser);
+        return userService.add(new User(email, password));
     }
 }
