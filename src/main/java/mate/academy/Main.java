@@ -35,6 +35,13 @@ public class Main {
             throw new RuntimeException("Wrong password or email", e);
         }
 
+        try {
+            authenticationService.register(null, PASSWORD);
+            authenticationService.register(EMAIL, null);
+        } catch (RegistrationException e) {
+            System.out.println("Wrong password or email");
+        }
+
         // Movie
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
