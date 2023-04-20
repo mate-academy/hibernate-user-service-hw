@@ -27,7 +27,7 @@ public class Main {
             (MovieService) injector.getInstance(MovieService.class);
     private static final CinemaHallService cinemaHallService =
             (CinemaHallService) injector.getInstance(CinemaHallService.class);
-    private  static final MovieSessionService movieSessionService =
+    private static final MovieSessionService movieSessionService =
             (MovieSessionService) injector.getInstance(MovieSessionService.class);
 
     public static void main(String[] args) {
@@ -93,7 +93,7 @@ public class Main {
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-        System.out.println(movieSessionService.findAvailableSessions(
-        fastAndFurious.getId(), LocalDate.now()));
+        System.out.println(movieSessionService.findAvailableSessions(fastAndFurious
+                .getId(), LocalDate.now()));
     }
 }
