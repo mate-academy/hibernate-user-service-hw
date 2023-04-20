@@ -66,7 +66,7 @@ public class Main {
 
         User lory = new User();
         lory.setEmail("lory.cat@gmail.com");
-        lory.setPassword("3lwznmds7vfdgpfg[yekbfrrjhltjyljlegb");
+        lory.setPassword("3lwznmds7vfdgpfg[yekbfrrjjyljlegb");
         try {
             System.out.println(authenticationService.register(lory.getEmail(), lory.getPassword()));
         } catch (RegistrationException e) {
