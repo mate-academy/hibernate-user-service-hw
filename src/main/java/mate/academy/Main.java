@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -69,11 +70,14 @@ public class Main {
                         fastAndFurious.getId(), LocalDate.now()));
 
         User user = new User(USER_EMAIL, USER_PASSWORD);
-        System.out.println("Before registration: " + user.toString());
+        System.out.println("Before registration: " + user.toString()
+                + " password: " + user.getPassword() + " salt: " + Arrays.toString(user.getSalt()));
 
         try {
             user = authenticationService.register(user.getEmail(), user.getPassword());
-            System.out.println("After registration: " + user.toString());
+            System.out.println("After registration: " + user.toString()
+                    + " password: " + user.getPassword()
+                    + " salt: " + Arrays.toString(user.getSalt()));
         } catch (RegistrationException e) {
             throw new RuntimeException("Can't register user", e);
         }
