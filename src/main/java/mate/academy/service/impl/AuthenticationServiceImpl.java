@@ -26,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .equals(user.getPassword())) {
             throw new AuthenticationException("Can't login with input data. Email: " + email);
         }
-        return userFromDbOptional.get();
+        return user;
     }
 
     @Override
