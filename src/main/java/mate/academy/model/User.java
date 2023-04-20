@@ -1,11 +1,7 @@
 package mate.academy.model;
 
 import java.util.Arrays;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -13,7 +9,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String login;
+    @Column(unique = true)
+    private String email;
     private String password;
     private byte [] salt;
 
@@ -21,7 +18,7 @@ public class User {
     }
 
     public User(String login, String password) {
-        this.login = login;
+        this.email = login;
         this.password = password;
     }
 
@@ -34,11 +31,11 @@ public class User {
     }
 
     public String getLogin() {
-        return login;
+        return email;
     }
 
     public void setLogin(String login) {
-        this.login = login;
+        this.email = login;
     }
 
     public String getPassword() {
@@ -61,9 +58,7 @@ public class User {
     public String toString() {
         return "User{"
                 + "id=" + id
-                + ", login='" + login + '\''
-                + ", password='" + password + '\''
-                + ", salt=" + Arrays.toString(salt)
+                + ", email='" + email + '\''
                 + '}';
     }
 }

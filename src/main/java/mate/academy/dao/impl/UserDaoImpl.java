@@ -12,13 +12,13 @@ import org.hibernate.Transaction;
 @Dao
 public class UserDaoImpl implements UserDao {
     @Override
-    public Optional<User> findByLogin(String login) {
+    public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM User u WHERE u.login = :login", User.class)
-                    .setParameter("login", login)
+            return session.createQuery("FROM User u WHERE u.email = :email", User.class)
+                    .setParameter("email", email)
                     .uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't find a user by login " + login, e);
+            throw new DataProcessingException("Can't find a user by email " + email, e);
         }
     }
 

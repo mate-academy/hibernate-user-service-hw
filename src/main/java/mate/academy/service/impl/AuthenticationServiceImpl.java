@@ -13,35 +13,35 @@ import mate.academy.util.HashUtil;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final int MIN_PASSWORD_LENGTH = 8;
-    private static final int MIN_LOGIN_LENGTH = 8;
+    private static final int MIN_EMAIL_LENGTH = 8;
     @Inject
     private UserService userService;
 
     @Override
-    public User login(String login, String password) throws AuthenticationException {
-        User user = userService.findByLogin(login)
+    public User login(String email, String password) throws AuthenticationException {
+        User user = userService.findByEmail(email)
                 .orElseThrow(() ->
-                        new AuthenticationException("Password or login is incorrect"));
+                        new AuthenticationException("Password or email is incorrect"));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (hashedPassword.equals(user.getPassword())) {
             return user;
         }
-        throw new AuthenticationException("Password or login is incorrect");
+        throw new AuthenticationException("Password or email is incorrect");
     }
 
     @Override
-    public User register(String login, String password) throws RegistrationException {
-        if (login == null || password == null
-                || login.length() < MIN_LOGIN_LENGTH
+    public User register(String email, String password) throws RegistrationException {
+        if (email == null || password == null
+                || email.length() < MIN_EMAIL_LENGTH
                 || password.length() < MIN_PASSWORD_LENGTH) {
-            throw new RegistrationException("Password or login is incorrect");
+            throw new RegistrationException("Password or email is incorrect");
         }
-        if (userService.findByLogin(login).isPresent()) {
+        if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Such user already exists");
         }
         byte[] salt = HashUtil.getSalt();
         String hashedPassword = HashUtil.hashPassword(password, salt);
-        User newUser = new User(login, hashedPassword);
+        User newUser = new User(email, hashedPassword);
         newUser.setSalt(salt);
         return userService.add(newUser);
     }
