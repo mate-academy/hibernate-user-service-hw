@@ -14,6 +14,12 @@ import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+
+    private static final String EMAIL_1 = "1";
+    private static final String EMAIL_2 = "2";
+    private static final String PASSWORD_1 = "1";
+    private static final String PASSWORD_2 = "2";
+
     public static void main(String[] args) {
         final Injector injector = Injector.getInstance("mate.academy");
         final MovieService movieService
@@ -26,37 +32,35 @@ public class Main {
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
         try {
-            authenticationService.register("1", null);
-        } catch (RegistrationException e) {
-            System.out.println("failed as expected");
-            ;
-        }
-
-        try {
-            authenticationService.register("1", "");
+            authenticationService.register(EMAIL_1, null);
         } catch (RegistrationException e) {
             System.out.println("failed as expected");
         }
 
         try {
-            authenticationService.register("1", "1");
-            authenticationService.login("1", "1");
-            authenticationService.register("2", "1");
+            authenticationService.register(EMAIL_1, "");
+        } catch (RegistrationException e) {
+            System.out.println("failed as expected");
+        }
+
+        try {
+            authenticationService.register(EMAIL_1, PASSWORD_1);
+            authenticationService.login(EMAIL_1, PASSWORD_1);
+            authenticationService.register(EMAIL_2, PASSWORD_1);
         } catch (RegistrationException | AuthenticationException e) {
             throw new RuntimeException("Supposed to work without throwing an exception");
         }
 
         try {
 
-            authenticationService.register("1", "1");
+            authenticationService.register(EMAIL_1, PASSWORD_1);
         } catch (RegistrationException e) {
             System.out.println("failed as expected");
         }
         try {
-            authenticationService.login("1", "2");
+            authenticationService.login(EMAIL_1, PASSWORD_2);
         } catch (AuthenticationException e) {
             System.out.println("failed as expected");
-            ;
         }
 
         initializeMovies(movieService);
