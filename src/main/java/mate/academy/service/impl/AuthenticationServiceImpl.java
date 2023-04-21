@@ -11,7 +11,6 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-
     private static final int MIN_PASSWORD_LENGTH = 8;
     private static final int MIN_EMAIL_LENGTH = 8;
     @Inject
