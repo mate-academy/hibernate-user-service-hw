@@ -71,8 +71,7 @@ public class Main {
         try {
             System.out.println(authenticationService.login("Login#1@gmail.com", "1"));
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Email or password are invalid",e);
+            throw new RuntimeException("Email or password are invalid", e);
         }
-
     }
 }
