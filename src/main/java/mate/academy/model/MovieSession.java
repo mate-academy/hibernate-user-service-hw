@@ -57,7 +57,11 @@ public class MovieSession {
 
     @Override
     public String toString() {
-        return "MovieSession{" + "id=" + id + ", movie id=" + movie.getId()
-                + ", cinemaHall id =" + cinemaHall.getId() + ", showTime=" + showTime + '}';
+        return "MovieSession{"
+                + "id=" + id
+                + ", movie id=" + movie.getId()
+                + ", cinemaHall id =" + cinemaHall.getId()
+                + ", showTime=" + showTime
+                + '}';
     }
 }

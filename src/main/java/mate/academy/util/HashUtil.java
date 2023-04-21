@@ -27,15 +27,14 @@ public class HashUtil {
     }
 
     public String hash(String password, byte[] salt) {
-        final MessageDigest messageDigest;
+        MessageDigest messageDigest;
         try {
             messageDigest = MessageDigest.getInstance(ALGORITHM);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Could not find algorithm for hash creation: "
                     + ALGORITHM, e);
         }
-        messageDigest.update(password.getBytes());
         messageDigest.update(salt);
-        return Base64.getEncoder().encodeToString(messageDigest.digest());
+        return Base64.getEncoder().encodeToString(messageDigest.digest(password.getBytes()));
     }
 }

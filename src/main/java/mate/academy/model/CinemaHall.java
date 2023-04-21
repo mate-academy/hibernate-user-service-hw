@@ -41,4 +41,12 @@ public class CinemaHall {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "CinemaHall{" + "id=" + id
+                + ", capacity=" + capacity
+                + ", description='" + description
+                + "'}";
+    }
 }

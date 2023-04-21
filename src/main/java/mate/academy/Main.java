@@ -14,23 +14,22 @@ import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
-
     private static final String EMAIL_1 = "1";
     private static final String EMAIL_2 = "2";
     private static final String PASSWORD_1 = "1";
     private static final String PASSWORD_2 = "2";
+    private static final Injector injector
+            = Injector.getInstance("mate.academy");
+    private static final MovieService movieService
+            = (MovieService) injector.getInstance(MovieService.class);
+    private static final CinemaHallService cinemaHallService
+            = (CinemaHallService) injector.getInstance(CinemaHallService.class);
+    private static final MovieSessionService movieSessionService
+            = (MovieSessionService) injector.getInstance(MovieSessionService.class);
+    private static final AuthenticationService authenticationService
+            = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
     public static void main(String[] args) {
-        final Injector injector = Injector.getInstance("mate.academy");
-        final MovieService movieService
-                = (MovieService) injector.getInstance(MovieService.class);
-        final CinemaHallService cinemaHallService
-                = (CinemaHallService) injector.getInstance(CinemaHallService.class);
-        final MovieSessionService movieSessionService
-                = (MovieSessionService) injector.getInstance(MovieSessionService.class);
-        final AuthenticationService authenticationService
-                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-
         try {
             authenticationService.register(EMAIL_1, null);
         } catch (RegistrationException e) {
@@ -52,7 +51,6 @@ public class Main {
         }
 
         try {
-
             authenticationService.register(EMAIL_1, PASSWORD_1);
         } catch (RegistrationException e) {
             System.out.println("failed as expected");
@@ -71,28 +69,28 @@ public class Main {
     }
 
     private static void initializeMovies(MovieService movieService) {
-        final Movie fastAndFurious = new Movie("Fast and Furious");
+        Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
 
-        final Movie fastAndFurious2 = new Movie("Fast and Furious2");
+        Movie fastAndFurious2 = new Movie("Fast and Furious2");
         fastAndFurious.setDescription("An action film about more street racing,"
                 + " heists, and spies.");
         movieService.add(fastAndFurious2);
 
-        final Movie fastAndFurious3 = new Movie("Fast and Furious3");
+        Movie fastAndFurious3 = new Movie("Fast and Furious3");
         fastAndFurious.setDescription("An action film about more street racing,"
                 + " more heists, and spies.");
         movieService.add(fastAndFurious3);
     }
 
     private static void initializeCinemaHalls(CinemaHallService cinemaHallService) {
-        final CinemaHall normalHall = new CinemaHall();
+        CinemaHall normalHall = new CinemaHall();
         normalHall.setCapacity(100);
         normalHall.setDescription("regular hall");
         cinemaHallService.add(normalHall);
 
-        final CinemaHall vipHall = new CinemaHall();
+        CinemaHall vipHall = new CinemaHall();
         vipHall.setCapacity(20);
         vipHall.setDescription("VIP hall");
         cinemaHallService.add(vipHall);
@@ -114,11 +112,11 @@ public class Main {
         regularShowingPart2.setShowTime(LocalDateTime.now());
         movieSessionService.add(regularShowingPart2);
 
-        MovieSession vipShowingPart2 = new MovieSession();
-        vipShowingPart2.setCinemaHall(cinemaHallService.get(2L));
-        vipShowingPart2.setMovie(movieService.get(2L));
-        vipShowingPart2.setShowTime(LocalDateTime.now().plusHours(3));
-        movieSessionService.add(vipShowingPart2);
+        MovieSession vipShowingPart3 = new MovieSession();
+        vipShowingPart3.setCinemaHall(cinemaHallService.get(2L));
+        vipShowingPart3.setMovie(movieService.get(2L));
+        vipShowingPart3.setShowTime(LocalDateTime.now().plusHours(3));
+        movieSessionService.add(vipShowingPart3);
 
         MovieSession futureShowingPart2 = new MovieSession();
         futureShowingPart2.setCinemaHall(cinemaHallService.get(2L));
@@ -126,10 +124,10 @@ public class Main {
         futureShowingPart2.setShowTime(LocalDateTime.now().plusDays(1));
         movieSessionService.add(futureShowingPart2);
 
-        MovieSession futureVipShowingPart3 = new MovieSession();
-        futureVipShowingPart3.setCinemaHall(cinemaHallService.get(2L));
-        futureVipShowingPart3.setMovie(movieService.get(1L));
-        futureVipShowingPart3.setShowTime(LocalDateTime.now().plusDays(1));
-        movieSessionService.add(futureVipShowingPart3);
+        MovieSession futureVipShowingPart2 = new MovieSession();
+        futureVipShowingPart2.setCinemaHall(cinemaHallService.get(2L));
+        futureVipShowingPart2.setMovie(movieService.get(1L));
+        futureVipShowingPart2.setShowTime(LocalDateTime.now().plusDays(1));
+        movieSessionService.add(futureVipShowingPart2);
     }
 }

@@ -17,7 +17,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        final Optional<User> user = userService.findByEmail(email);
+        Optional<User> user = userService.findByEmail(email);
         if (password == null
                 || password.isEmpty()
                 || user.isEmpty()
@@ -37,13 +37,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private void validateEmail(String email) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Registration exception has occurred.");
+            throw new RegistrationException("Email " + email + " is already registered.");
         }
     }
 
     private void validatePassword(String password) throws RegistrationException {
         if (password == null || password.isEmpty()) {
-            throw new RegistrationException("Registration exception has occurred.");
+            throw new RegistrationException("Entered password is null or empty.");
         }
     }
 }
