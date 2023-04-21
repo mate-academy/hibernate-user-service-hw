@@ -9,7 +9,7 @@ public class HashUtil {
     private static final String HEX_FORMAT = "%02x";
     private static final SecureRandom secureRandom = new SecureRandom();
 
-    private HashUtil(){
+    private HashUtil() {
     }
 
     public static byte[] getSalt() {
