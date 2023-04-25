@@ -1,19 +1,23 @@
 package mate.academy.model;
 
+import java.util.Arrays;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Objects;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
     private String password;
-    private String salt;
+    private byte[] salt;
 
     public Long getId() {
         return id;
@@ -39,25 +43,31 @@ public class User {
         this.password = password;
     }
 
-    public String getSalt() {
+    public byte[] getSalt() {
         return salt;
     }
 
-    public void setSalt(String salt) {
+    public void setSalt(byte[] salt) {
         this.salt = salt;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(salt, user.salt);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email)
+                && Objects.equals(password, user.password)
+                && Objects.equals(salt, user.salt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, salt);
+        return Objects.hash(id, email, password, Arrays.hashCode(salt));
     }
 
     @Override
@@ -65,8 +75,6 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", email='" + email + '\''
-                + ", password='" + password + '\''
-                + ", salt='" + salt + '\''
                 + '}';
     }
 }
