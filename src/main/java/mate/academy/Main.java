@@ -15,10 +15,14 @@ import mate.academy.service.MovieSessionService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final MovieService movieService
+            = (MovieService) injector.getInstance(MovieService.class);
+    private static final CinemaHallService cinemaHallService
+            = (CinemaHallService) injector.getInstance(CinemaHallService.class);
+    private static final AuthenticationService authenticationService
+            = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
     public static void main(String[] args) {
-        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
-
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -33,8 +37,6 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService
-                = (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -59,9 +61,6 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
-
-        AuthenticationService authenticationService
-                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
             System.out.println(authenticationService.register("example@gmail.com","12345"));
             System.out.println(authenticationService.login("example@gmail.com", "12345"));
