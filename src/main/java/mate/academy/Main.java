@@ -65,7 +65,7 @@ public class Main {
             System.out.println(authenticationService.register("example@gmail.com", "12345"));
             System.out.println(authenticationService.login("example@gmail.com", "12345"));
         } catch (RegistrationException | AuthenticationException e) {
-            throw new RuntimeException("Can't register or login user with email example@gmail.com", e);
+            throw new RuntimeException("Can't register/login user with email example@gmail.com", e);
         }
     }
 }
