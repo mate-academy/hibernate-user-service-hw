@@ -3,7 +3,6 @@ package mate.academy.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import mate.academy.exception.AuthenticationException;
 
 public class HashUtil {
     private static final String ALGORITHM_SHA = "SHA-512";
@@ -18,7 +17,7 @@ public class HashUtil {
         return salt;
     }
 
-    public static String hashPassword(String password, byte[] salt) throws AuthenticationException {
+    public static String hashPassword(String password, byte[] salt) {
         StringBuilder stringBuilder = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(ALGORITHM_SHA);

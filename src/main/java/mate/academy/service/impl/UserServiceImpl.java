@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
-import mate.academy.exception.AuthenticationException;
-import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -18,7 +16,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public User add(User user) throws RegistrationException, AuthenticationException {
+    public User add(User user) {
         user.setSalt(HashUtil.getSalt());
         user.setPassword(HashUtil
                 .hashPassword(user.getPassword(), user.getSalt()));
