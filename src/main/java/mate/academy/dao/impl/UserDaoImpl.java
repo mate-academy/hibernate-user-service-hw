@@ -12,7 +12,6 @@ import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-
     @Override
     public User add(User user) {
         Session session = null;
@@ -27,7 +26,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert cinema hall: " + user, e);
+            throw new DataProcessingException("Can't insert user: " + user, e);
         } finally {
             if (session != null) {
                 session.close();

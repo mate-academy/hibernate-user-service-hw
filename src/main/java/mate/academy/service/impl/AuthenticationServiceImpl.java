@@ -12,20 +12,18 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-
     @Inject
     private UserService userService;
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFindByEmail = userService.findByEmail(email);
-        if (userFindByEmail.isEmpty()) {
-            throw new AuthenticationException("Can`t authentication user");
-        }
-        User user = userFindByEmail.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
+        if (userFindByEmail.isPresent()) {
+            User user = userFindByEmail.get();
+            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+            if (user.getPassword().equals(hashedPassword)) {
+                return user;
+            }
         }
         throw new AuthenticationException("Can`t authentication user");
     }
