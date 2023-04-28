@@ -28,14 +28,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can't authenticate user: invalid email or password");
-        }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
+        Optional<User> optionalUserFromDb = userService.findByEmail(email);
+        if (optionalUserFromDb.isPresent()) {
+            User user = optionalUserFromDb.get();
+            String hashPassword = HashUtil.hashPassword(password, user.getSalt());
+            if (user.getPassword().equals(hashPassword)) {
+                return user;
+            }
         }
         throw new AuthenticationException("Can't authenticate user: invalid email or password");
     }
