@@ -18,7 +18,7 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) throws RegistrationException,
-             AuthenticationException {
+            AuthenticationException {
         AuthenticationService authenticationService = (AuthenticationService)
                 injector.getInstance(AuthenticationService.class);
         User user = authenticationService.register("email", "pass");

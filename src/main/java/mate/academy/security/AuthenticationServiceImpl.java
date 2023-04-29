@@ -16,19 +16,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        User user = new User();
-        Optional<User> findEmail = userService.findByEmail(email);
         if (password.isEmpty()) {
             throw new RegistrationException("Password can`t be empty");
         }
-        if (findEmail.isEmpty()) {
-            user.setEmail(email);
-            user.setPassword(password);
-            userService.save(user);
-            return user;
-        } else {
+        if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("this email has been registered");
         }
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        return userService.save(user);
     }
 
     @Override
