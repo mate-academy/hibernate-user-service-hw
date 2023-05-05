@@ -9,9 +9,6 @@ import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
-import mate.academy.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -20,29 +17,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDB = userService.findByEmail(email);
-        if (userFromDB.isEmpty() || !userFromDB.get().getPassword().equals(HashUtil
-                .hashPassword(password, userFromDB.get().getSalt()))) {
+        Optional<User> userFromDb = userService.findByEmail(email);
+        if (userFromDb.isPresent() && matchPasswords(password, userFromDb.get())) {
             throw new AuthenticationException("Incorrect login or password");
         }
-        return userFromDB.get();
+        return userFromDb.get();
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<User> getUserByEmailQuery
-                    = session.createQuery("from User where email=:email", User.class);
-            getUserByEmailQuery.setParameter("email", email);
-            if (getUserByEmailQuery.uniqueResultOptional().isPresent()) {
-                throw new RegistrationException(
-                        "Your email is already registered. Email: " + email);
-            }
+        if (userService.findByEmail(email).isEmpty()) {
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
+            userService.add(user);
+            return user;
         }
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        userService.add(user);
-        return user;
+        throw new RegistrationException(
+                "Your email is already registered. Email: " + email);
+    }
+
+    private boolean matchPasswords(String rawPassword, User userFromDb) {
+        String hashedPassword = HashUtil.hashPassword(rawPassword, userFromDb.getSalt());
+        return hashedPassword.equals(userFromDb.getPassword());
     }
 }
