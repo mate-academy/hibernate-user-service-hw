@@ -16,8 +16,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public void register(String email, String password) {
+    public void register(String email, String password) throws RegistrationException {
         Optional<User> userFomDbByLogin = userService.findByEmail(email);
+        if (password.length() <= 5) {
+            throw new RegistrationException("Password should be more then 5 symbols");
+        }
         if (userFomDbByLogin.isPresent()) {
             throw new RegistrationException("Can not register user with email: " + email);
         }
@@ -26,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User login(String email, String password) {
+    public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFomDbByLogin = userService.findByEmail(email);
         if (userFomDbByLogin.isEmpty()) {
             throw new AuthenticationException("Can not login by email: " + email);

@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 import mate.academy.dao.UserDao;
 import mate.academy.dao.impl.UserDaoImpl;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -70,7 +72,13 @@ public class Main {
 
         AuthenticationService authenticationService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
-        authenticationService.register("art@gmail.com", "awer");
-        authenticationService.login("art@gmail.com", "awer");
+        try {
+            authenticationService.register("art@gmail.com", "awer");
+            authenticationService.login("art@gmail.com", "awer");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Could not register user", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Could not login", e);
+        }
     }
 }
