@@ -71,10 +71,6 @@ public class Main {
         AuthenticationService authenticationService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
         authenticationService.register("art@gmail.com", "awer");
-        System.out.println("registered");
         authenticationService.login("art@gmail.com", "awer");
-        System.out.println("logged");
-
-
     }
 }
