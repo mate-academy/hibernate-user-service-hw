@@ -42,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return userService.add(user);
     }
 
-    void passwordValidation(String password) {
+    private void passwordValidation(String password) {
         if (password.length() < MIN_PASSWORD_LENGTH) {
             throw new RuntimeException(
                     "Password length must be equal to or greater than " + MIN_PASSWORD_LENGTH);
