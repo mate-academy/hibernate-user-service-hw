@@ -31,14 +31,14 @@ public class UserDaoImpl implements UserDao {
                 session.close();
             }
         }
-        return null;
+        return user;
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("from User u WHERE u.email = :email", User.class)
+            return session.createQuery("FROM User u WHERE u.email = :email", User.class)
                     .setParameter("email", email).uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get user with email: " + email, e);

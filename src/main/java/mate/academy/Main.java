@@ -8,7 +8,6 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -58,14 +57,10 @@ public class Main {
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
-        User userBob = new User();
-        userBob.setEmail("bob@gmail.com");
-        userBob.setPassword("qwerty");
-
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        authenticationService.register("bob1@gmail.com", "qwerty12345");
-        System.out.println(authenticationService.login("bob1@gmail.com", "qwerty12345"));
+        authenticationService.register("bob3@gmail.com", "qwerty12345");
+        System.out.println(authenticationService.login("bob3@gmail.com", "qwerty12345"));
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
