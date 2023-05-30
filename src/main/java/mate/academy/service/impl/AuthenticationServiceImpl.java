@@ -14,6 +14,8 @@ import mate.academy.util.HashUtil;
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
+    @Inject
+    private HashUtil hashUtil;
 
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> optionalUser = userService.findByEmail(email);
@@ -22,7 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     String.format("Can`t authenticate user - %s", email));
         }
         User user = optionalUser.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        String hashedPassword = hashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;
         }
