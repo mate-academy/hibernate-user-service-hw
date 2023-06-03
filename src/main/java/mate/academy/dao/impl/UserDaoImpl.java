@@ -56,6 +56,8 @@ public class UserDaoImpl implements UserDao {
             Predicate userPredicate = cb.equal(userRoot.get("email"), email);
             userQuery.where(userPredicate);
             return session.createQuery(userQuery).uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can not get user by email! " + email, e);
         }
     }
 
