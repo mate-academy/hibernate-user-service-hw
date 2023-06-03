@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -17,8 +19,7 @@ import mate.academy.util.HashUtil;
 public class Main {
     private static Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args)
-            throws RegistrationException {
+    public static void main(String[] args) {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -64,17 +65,24 @@ public class Main {
 
         User bob = new User();
         bob.setEmail("bobEmail");
-        bob.setSalt(HashUtil.getSalt());
-        bob.setPassword(HashUtil.hashPassword("bobPassword", bob.getSalt()));
+        bob.setPassword("bobPassword");
 
         User alice = new User();
         alice.setEmail("aliceEmail");
-        alice.setSalt(HashUtil.getSalt());
-        alice.setPassword(HashUtil.hashPassword("alicePassword", alice.getSalt()));
+        alice.setPassword("alicePassword");
 
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        authenticationService.register(bob.getEmail(), bob.getPassword());
-        authenticationService.register(alice.getEmail(), alice.getPassword());
+        try {
+            authenticationService.register(bob.getEmail(), bob.getPassword());
+            authenticationService.register(alice.getEmail(), alice.getPassword());
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can not register in Main method!", e);
+        }
+        try {
+            authenticationService.login("bobEmail", "bobPassword");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can not login in Main method!", e);
+        }
     }
 }

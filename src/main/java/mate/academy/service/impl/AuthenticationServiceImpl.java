@@ -7,6 +7,9 @@ import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
+import mate.academy.util.HashUtil;
+
+import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -16,20 +19,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password)
             throws AuthenticationException {
-        return userService.findByEmail(email).orElseThrow(()
-                -> new AuthenticationException("Your email or password is incorrect!"));
+        Optional<User> userFromDB = userService.findByEmail(email);
+        if (userFromDB.isEmpty()) {
+            throw new AuthenticationException("Email or password are incorrect!");
+        }
+        User newUser = userFromDB.get();
+        String hashedPassword = HashUtil.hashPassword(password, newUser.getSalt());
+        if (newUser.getPassword().equals(hashedPassword)) {
+            return newUser;
+        } else {
+            throw new AuthenticationException("Email or password are incorrect!");
+        }
     }
 
     @Override
     public User register(String email, String password)
             throws RegistrationException {
+        if (!userService.findByEmail(email).isEmpty()) {
+            throw new RegistrationException("User with current email exists! " + email);
+        } else if (password.isEmpty()) {
+            throw new RegistrationException("Password field can not be empty!");
+        }
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        User newUser = userService.add(user);
-        if (newUser == null) {
-            throw new RegistrationException("Can not register user!");
-        }
-        return newUser;
+        return userService.add(user);
     }
 }
