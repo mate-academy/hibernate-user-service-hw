@@ -31,6 +31,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("Account with email: " + email + " already exist");
+        }
         if (email.isEmpty() || password.isEmpty()) {
             throw new RegistrationException("Email and password can`t be empty");
         }
