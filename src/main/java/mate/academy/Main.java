@@ -64,8 +64,10 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        User authBob = authenticationService.register("bob@login", "coolbob");
+        User authBob = authenticationService.register("bob@login", "coolbob2");
         User loginBob = authenticationService.login("bob@login", "coolbob");
         System.out.println("Registered bob: " + authBob + "\n" + "Login Bob: " + loginBob);
+
+        authenticationService.register(loginBob.getEmail(), "coolbob2");
     }
 }

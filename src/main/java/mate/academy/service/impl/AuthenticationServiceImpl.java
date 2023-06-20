@@ -16,6 +16,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
+    public User register(String email, String password) throws RegistrationException {
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("Account with email: " + email + " already exist");
+        }
+        if (email.isEmpty() || password.isEmpty()) {
+            throw new RegistrationException("Email and password can`t be empty");
+        }
+        return userService.add(new User(email, password));
+    }
+
+    @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
         if (userOptional.isEmpty()) {
@@ -27,16 +38,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return user;
         }
         throw new AuthenticationException("Login or password is incorrect");
-    }
-
-    @Override
-    public User register(String email, String password) throws RegistrationException {
-        if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Account with email: " + email + " already exist");
-        }
-        if (email.isEmpty() || password.isEmpty()) {
-            throw new RegistrationException("Email and password can`t be empty");
-        }
-        return userService.add(new User(email, password));
     }
 }

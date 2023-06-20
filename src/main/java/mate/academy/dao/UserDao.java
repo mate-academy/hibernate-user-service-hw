@@ -6,5 +6,5 @@ import mate.academy.model.User;
 public interface UserDao {
     User add(User user);
 
-    Optional<User> findByEmail(String email); // we will use this `Optional` later
+    Optional<User> findByEmail(String email);
 }
