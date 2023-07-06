@@ -26,6 +26,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        if (email.isEmpty() && password.isEmpty() || isEmailRegistered(email)) {
+            throw new RegistrationException("Not valid data or User with this"
+                    + " email is already registered.");
+        }
         User newUser = new User(email, password);
         newUser.setSalt(HashUtil.getSalt());
         return userService.add(newUser);
@@ -34,5 +38,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private boolean passwordMatches(User user, String password) {
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         return user.getPassword().equals(hashedPassword);
+    }
+
+    private boolean isEmailRegistered(String email) {
+        Optional<User> userByEmail = userService.findByEmail(email);
+        return userByEmail.isPresent();
     }
 }
