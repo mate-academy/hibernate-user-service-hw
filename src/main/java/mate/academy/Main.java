@@ -19,19 +19,16 @@ public class Main {
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
         MovieService movieService = (MovieService) INJECTOR.getInstance(MovieService.class);
 
-        Movie fastAndFurious = new Movie("Fast and Furious");
-        fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
+        Movie fastAndFurious = new Movie("Fast and Furious",
+                "An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
         System.out.println(movieService.get(fastAndFurious.getId()));
         movieService.getAll().forEach(System.out::println);
 
-        CinemaHall firstCinemaHall = new CinemaHall();
-        firstCinemaHall.setCapacity(100);
-        firstCinemaHall.setDescription("first hall with capacity 100");
-
-        CinemaHall secondCinemaHall = new CinemaHall();
-        secondCinemaHall.setCapacity(200);
-        secondCinemaHall.setDescription("second hall with capacity 200");
+        CinemaHall firstCinemaHall =
+                new CinemaHall(100, "first hall with capacity 100");
+        CinemaHall secondCinemaHall =
+                new CinemaHall(200, "second hall with capacity 200");
 
         CinemaHallService cinemaHallService =
                 (CinemaHallService) INJECTOR.getInstance(CinemaHallService.class);
@@ -41,15 +38,11 @@ public class Main {
         System.out.println(cinemaHallService.getAll());
         System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
 
-        MovieSession tomorrowMovieSession = new MovieSession();
-        tomorrowMovieSession.setCinemaHall(firstCinemaHall);
-        tomorrowMovieSession.setMovie(fastAndFurious);
-        tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
+        MovieSession tomorrowMovieSession =
+                new MovieSession(fastAndFurious, firstCinemaHall, LocalDateTime.now().plusDays(1L));
 
-        MovieSession yesterdayMovieSession = new MovieSession();
-        yesterdayMovieSession.setCinemaHall(firstCinemaHall);
-        yesterdayMovieSession.setMovie(fastAndFurious);
-        yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
+        MovieSession yesterdayMovieSession = new MovieSession(
+                fastAndFurious, firstCinemaHall, LocalDateTime.now().minusDays(1L));
 
         MovieSessionService movieSessionService =
                 (MovieSessionService) INJECTOR.getInstance(MovieSessionService.class);
