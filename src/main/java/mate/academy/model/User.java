@@ -1,6 +1,5 @@
 package mate.academy.model;
 
-import java.util.Arrays;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
