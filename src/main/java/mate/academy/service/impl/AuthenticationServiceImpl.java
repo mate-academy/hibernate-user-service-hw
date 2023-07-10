@@ -19,7 +19,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isEmpty() || !passwordMatches(userFromDbOptional.get(), password)) {
-            throw new AuthenticationException("Can't authenticate this user.");
+            throw new AuthenticationException(("Invalid email or password."
+                    + " Please check your credentials."));
         }
         return userFromDbOptional.get();
     }
@@ -31,7 +32,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     + " email is already registered.");
         }
         User newUser = new User(email, password);
-        newUser.setSalt(HashUtil.getSalt());
         return userService.add(newUser);
     }
 
