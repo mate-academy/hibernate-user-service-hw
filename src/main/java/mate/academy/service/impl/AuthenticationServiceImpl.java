@@ -25,19 +25,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (password.isEmpty() || email.isEmpty()) {
-            throw new RegistrationException(
-                    "Can't registration new user because some field (password or email) is empty");
-        }
+        checkEmailPasswordNotNull(email, password);
+        checkExistingUser(email);
+        return userService.add(new User(email, password));
+    }
+
+    private void checkExistingUser(String email) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Can't register new user with existing email: "
                     + email);
         }
-        User user = userService.add(new User(email, password));
-        if (user == null) {
-            throw new RegistrationException("Can't register new user with email: " + email);
+    }
+
+    private static void checkEmailPasswordNotNull(String email, String password)
+            throws RegistrationException {
+        if (password.isEmpty() || email.isEmpty()) {
+            throw new RegistrationException(
+                    "Can't register new user because some field (password or email) is empty");
         }
-        return user;
     }
 
     private static Predicate<User> getHashedPasswordCheckPredicate(String password) {
