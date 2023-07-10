@@ -25,7 +25,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (isEmailRegistered(email)) {
+        Optional<User> userFromDb = userService.findByEmail(email);
+        if (userFromDb.isPresent()) {
             throw new RegistrationException("User with email: " + email + " already exists");
         }
         User user = new User();
@@ -34,10 +35,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userService.add(user);
         return user;
 
-    }
-
-    private boolean isEmailRegistered(String email) {
-        Optional<User> userByEmail = userService.findByEmail(email);
-        return userByEmail.isPresent();
     }
 }
