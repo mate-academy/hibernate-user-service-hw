@@ -69,7 +69,7 @@ public class Main {
 
         System.out.println(userService.findByEmail("bob@gmail.com").get());
 
-        System.out.println("Authentication section ==============================================");
+        System.out.println("Authentication section ============================================");
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
@@ -77,7 +77,7 @@ public class Main {
                     "qwerty");
             System.out.println(loggedUser);
         } catch (AuthenticationException e) {
-            System.out.println("Email or password was incorrect");
+            System.out.println(e.getMessage());
         }
 
         System.out.println("Registration section ==============================================");
@@ -86,7 +86,7 @@ public class Main {
                     "qwertys");
             System.out.println(registeredUser);
         } catch (RegistrationException e) {
-            System.out.println("User with such an email already exists");
+            System.out.println(e.getMessage());
         }
     }
 }

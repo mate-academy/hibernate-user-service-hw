@@ -16,26 +16,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User register(String email, String password) throws RegistrationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (!userFromDbOptional.isEmpty()) {
-            throw new RegistrationException("Can't register user");
-        }
-        User user = new User(email, password);
-        return userService.add(user);
-    }
-
-    @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can't authenticate user");
+            throw new AuthenticationException("Email or password was incorrect");
         }
         User user = userFromDbOptional.get();
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;
         }
-        throw new AuthenticationException("Can't authenticate user");
+        throw new AuthenticationException("Email or password was incorrect");
+    }
+
+    @Override
+    public User register(String email, String password) throws RegistrationException {
+        if (email.isEmpty() || password.isEmpty()) {
+            throw new RegistrationException("The fields shouldn't be empty");
+        }
+        Optional<User> userFromDbOptional = userService.findByEmail(email);
+        if (userFromDbOptional.isPresent()) {
+            throw new RegistrationException("User with such an email already exists");
+        }
+        User user = new User(email, password);
+        return userService.add(user);
     }
 }
