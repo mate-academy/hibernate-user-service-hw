@@ -61,7 +61,7 @@ public class Main {
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
         MovieSessionService movieSessionService = (MovieSessionService) injector.getInstance(
-                MovieSession.class);
+                MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
