@@ -2,6 +2,7 @@ package mate.academy.dao.impl;
 
 import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
@@ -25,7 +26,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't registration",e);
+            throw new DataProcessingException("Can't registration new user :" + user,e);
         } finally {
             if (session != null) {
                 session.close();
@@ -48,6 +49,8 @@ public class UserDaoImpl implements UserDao {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from User u where u.login = :login", User.class)
                     .setParameter("login", login).uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't find user by login: " + login, e);
         }
     }
 }
