@@ -28,7 +28,8 @@ public class HashUtil {
             }
             return hashedPassword.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Can't create hash using SHA-521 algorithm", e);
+            throw new IllegalStateException("Can't create a hash using the algorithm: "
+                    + CRYPTO_ALGORITHM, e);
         }
     }
 }
