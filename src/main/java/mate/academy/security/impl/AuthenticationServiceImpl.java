@@ -1,11 +1,12 @@
-package mate.academy.service.impl;
+package mate.academy.security.impl;
 
-import mate.academy.exception.AuthenticationException;
-import mate.academy.exception.RegistrationException;
+import java.util.Optional;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
-import mate.academy.service.AuthenticationService;
+import mate.academy.model.exception.AuthenticationException;
+import mate.academy.model.exception.RegistrationException;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
@@ -16,10 +17,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        return userService.findByEmail(email)
-                .filter(user -> user.getPassword()
-                        .equals(HashUtil.hashPassword(password, user.getSalt())))
-                .orElseThrow(() -> new AuthenticationException("Can't login user"));
+        Optional<User> userFromDbOptional = userService.findByEmail(email);
+         User user = userFromDbOptional.orElseThrow(() ->
+                new AuthenticationException("Wrong login or password"));
+        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        if (user.getPassword().equals(hashedPassword)) {
+            return user;
+        }
+        throw new AuthenticationException("Can't login user");
     }
 
     @Override
@@ -30,9 +35,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Account with email: " + email + " already exist");
         }
+        User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        user.setSalt(HashUtil.getSalt());
         userService.add(user);
     }
 }
