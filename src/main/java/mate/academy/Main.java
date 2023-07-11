@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -77,6 +78,15 @@ public class Main {
             System.out.println(loggedUser);
         } catch (AuthenticationException e) {
             System.out.println("Email or password was incorrect");
+        }
+
+        System.out.println("Registration section ==============================================");
+        try {
+            User registeredUser = authenticationService.register("bob1@gmail.com",
+                    "qwertys");
+            System.out.println(registeredUser);
+        } catch (RegistrationException e) {
+            System.out.println("User with such an email already exists");
         }
     }
 }
