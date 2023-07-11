@@ -23,7 +23,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public void register(String email, String password) throws RegistrationException {
+    public User register(String email, String password) throws RegistrationException {
         if (email.isEmpty() || password.isEmpty()) {
             throw new RegistrationException("Email or password cannot be empty");
         }
@@ -32,5 +32,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = new User(email, password);
         userService.add(user);
+        return userService.add(user);
     }
 }

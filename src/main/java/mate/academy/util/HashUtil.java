@@ -9,7 +9,7 @@ public class HashUtil {
     private static final String HEX_FORMAT = "%02x";
     private static final int DEFAULT_CAPACITY = 16;
 
-    public HashUtil() {
+    private HashUtil() {
     }
 
     public static byte[] getSalt() {
