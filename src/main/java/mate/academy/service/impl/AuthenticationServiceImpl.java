@@ -19,13 +19,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return userService.findByEmail(email)
                 .filter(u -> u.getPassword()
                         .equals(HashUtil.hashPassword(password, u.getSalt())))
-                .orElseThrow(() -> new AuthenticationException("Email or password are incorrect"));
+                .orElseThrow(() -> new AuthenticationException("Email or password is incorrect"));
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent() || password.isEmpty() || email.isEmpty()) {
-            throw new RegistrationException("Can't register user");
+            throw new RegistrationException("Can't register user, "
+                                            + "check email and password you entered!");
         }
         return userService.add(new User(password, email));
     }
