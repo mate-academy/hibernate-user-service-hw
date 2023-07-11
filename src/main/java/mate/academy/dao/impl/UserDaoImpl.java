@@ -26,7 +26,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert movie " + user, e);
+            throw new DataProcessingException("Cant add user to DB " + user, e);
         } finally {
             if (session != null) {
                 session.close();
