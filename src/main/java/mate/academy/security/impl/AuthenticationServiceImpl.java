@@ -1,12 +1,11 @@
 package mate.academy.security.impl;
 
-import java.util.Optional;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
-import mate.academy.model.exception.AuthenticationException;
-import mate.academy.model.exception.RegistrationException;
-import mate.academy.security.AuthenticationService;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
@@ -17,20 +16,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        User user = userFromDbOptional.orElseThrow(() ->
-                new AuthenticationException("Wrong login or password"));
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("Wrong login or password");
+       return userService.findByEmail(email)
+                .filter(user -> user.getPassword()
+                        .equals(HashUtil.hashPassword(password, user.getSalt())))
+                .orElseThrow(() -> new AuthenticationException("Can't login user"));
     }
 
     @Override
     public void register(String email, String password) throws RegistrationException {
+        if (email.isEmpty() || password.isEmpty()) {
+            throw new RegistrationException("Email or password can`t be empty");
+        }
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Wrong login or password");
+            throw new RegistrationException("Account with email: " + email + " already exist");
         }
         User user = new User();
         user.setEmail(email);
