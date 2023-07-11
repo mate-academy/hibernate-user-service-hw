@@ -1,4 +1,4 @@
-package mate.academy.security.impl;
+package mate.academy.service.impl;
 
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -16,7 +16,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-       return userService.findByEmail(email)
+        return userService.findByEmail(email)
                 .filter(user -> user.getPassword()
                         .equals(HashUtil.hashPassword(password, user.getSalt())))
                 .orElseThrow(() -> new AuthenticationException("Can't login user"));
@@ -30,9 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Account with email: " + email + " already exist");
         }
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
+        User user = new User(email, password);
         userService.add(user);
     }
 }
