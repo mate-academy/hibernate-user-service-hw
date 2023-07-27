@@ -33,14 +33,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isPresent() || password.isEmpty()) {
             throw new RegistrationException(exceptionText);
         }
-        try {
-            User user = new User();
-            user.setPassword(password);
-            user.setEmail(email);
-            return userService.add(user);
-        } catch (Exception e) {
-            throw new RegistrationException(exceptionText, e);
-        }
-
+        User user = new User();
+        user.setPassword(password);
+        user.setEmail(email);
+        return userService.add(user);
     }
 }
