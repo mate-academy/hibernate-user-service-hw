@@ -2,10 +2,13 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.dao.UserDao;
+import mate.academy.dao.impl.UserDaoImpl;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -55,5 +58,14 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now().plusDays(1L)));
+
+        User bob = new User();
+        bob.setName("Bob");
+        bob.setEmail("bobby@gmail.com");
+        bob.setPassword("1234");
+
+        UserDao userDao = new UserDaoImpl();
+        userDao.add(bob);
+        System.out.println(userDao.findByEmail("bobby@gmail.com").get());
     }
 }
