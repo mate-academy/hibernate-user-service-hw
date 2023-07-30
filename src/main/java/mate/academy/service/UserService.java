@@ -7,6 +7,4 @@ public interface UserService {
     User add(User user);
 
     Optional<User> findByLogin(String login);
-
-    Optional<User> findByEmail(String email); // we will use this `Optional` later
 }

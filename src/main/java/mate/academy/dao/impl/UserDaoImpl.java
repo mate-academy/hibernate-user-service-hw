@@ -52,9 +52,4 @@ public class UserDaoImpl implements UserDao {
             throw new DataProcessingException("Can't get a movie by login: " + login, e);
         }
     }
-
-    @Override
-    public Optional<User> findByEmail(String email) {
-        return Optional.empty();
-    }
 }
