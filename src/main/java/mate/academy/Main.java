@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -58,19 +60,35 @@ public class Main {
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
-                        fastAndFurious.getId(), LocalDate.now()));
+                fastAndFurious.getId(), LocalDate.now()));
 
         // Register user (Sarah Conor)
         String loginSarahConor = "userSarahConor@gmail.com";
         String passwordSarahConor = "NoFate";
-        authenticationService.register(loginSarahConor, passwordSarahConor);
+        try {
+            authenticationService.register(loginSarahConor, passwordSarahConor);
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
         // Find and show user (Sarah Conor)
-        System.out.println(authenticationService.login(loginSarahConor, passwordSarahConor));
+        try {
+            System.out.println(authenticationService.login(loginSarahConor, passwordSarahConor));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e);
+        }
         // Register user (John Conor)
         String loginJohnConor = "userJohnConor@gmail.com";
         String passwordJohnConor = "AstaLaVista";
-        authenticationService.register(loginJohnConor, passwordJohnConor);
+        try {
+            authenticationService.register(loginJohnConor, passwordJohnConor);
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
         // Find and show user (John Conor)
-        System.out.println(authenticationService.login(loginJohnConor, passwordJohnConor));
+        try {
+            System.out.println(authenticationService.login(loginJohnConor, passwordJohnConor));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
