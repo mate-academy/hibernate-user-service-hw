@@ -2,11 +2,14 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -66,5 +69,24 @@ public class Main {
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.add(bob);
         System.out.println(userService.findByEmail("bobby@gmail.com").get());
+
+        AuthenticationService authService = (AuthenticationService)
+                    injector.getInstance(AuthenticationService.class);
+        try {
+            User alice = authService.register("alice777@gmail.com", "alice777");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("User wasn't registered", e);
+        }
+
+        try {
+            User authenticatedUserBob = authService.login("bobby@gmail.com", "1234");
+            User authenticatedUserAlice = authService.login("alice777@gmail.com", "alice777");
+            authenticatedUserAlice.setName("Alice");
+            System.out.println("Authenticated user Bob: " + authenticatedUserBob);
+            System.out.println("Authenticated user Alice: " + authenticatedUserAlice);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("User wasn't authenticated", e);
+        }
+
     }
 }
