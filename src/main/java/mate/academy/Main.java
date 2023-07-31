@@ -2,8 +2,6 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import mate.academy.dao.UserDao;
-import mate.academy.dao.impl.UserDaoImpl;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -12,6 +10,7 @@ import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.UserService;
 
 public class Main {
     public static void main(String[] args) {
@@ -64,8 +63,8 @@ public class Main {
         bob.setEmail("bobby@gmail.com");
         bob.setPassword("1234");
 
-        UserDao userDao = new UserDaoImpl();
-        userDao.add(bob);
-        System.out.println(userDao.findByEmail("bobby@gmail.com").get());
+        UserService userService = (UserService) injector.getInstance(UserService.class);
+        userService.add(bob);
+        System.out.println(userService.findByEmail("bobby@gmail.com").get());
     }
 }
