@@ -15,9 +15,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String email, String password)
-            throws AuthenticationException, NoSuchFieldException {
-        if (userService.findByEmail(email).isPresent() && !(password.isEmpty())) {
+    public User login(String email, String password) throws AuthenticationException{
             try {
                 User user = userService.findByEmail(email).get();
                 user.getPassword().equals(HashUtil.hasPassword(password, user.getSalt()));
@@ -25,14 +23,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             } catch (Exception e) {
                 throw new AuthenticationException("The password or login is invalid", e);
             }
-        }
-        throw new NoSuchFieldException("Enter your login and password");
     }
 
     @Override
-    public User register(String email, String password)
-            throws RegistrationException, NoSuchFieldException {
-        if (!(email.isEmpty() && password.isEmpty())) {
+    public User register(String email, String password) throws RegistrationException {
             try {
                 userService.findByEmail(email).isEmpty();
                 User user = new User(email, password);
@@ -41,7 +35,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             } catch (Exception e) {
                 throw new RegistrationException("User already exists", e);
             }
-        }
-        throw new NoSuchFieldException("Enter your login and password");
     }
 }
