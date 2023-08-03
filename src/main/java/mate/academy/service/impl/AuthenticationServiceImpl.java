@@ -15,25 +15,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String email, String password) throws AuthenticationException{
-            try {
-                User user = userService.findByEmail(email).get();
-                user.getPassword().equals(HashUtil.hasPassword(password, user.getSalt()));
-                return user;
-            } catch (Exception e) {
-                throw new AuthenticationException("The password or login is invalid", e);
-            }
+    public User login(String email, String password) throws AuthenticationException {
+        try {
+            User user = userService.findByEmail(email).get();
+            user.getPassword().equals(HashUtil.hasPassword(password, user.getSalt()));
+            return user;
+        } catch (Exception e) {
+            throw new AuthenticationException("The password or login is invalid", e);
+        }
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-            try {
-                userService.findByEmail(email).isEmpty();
-                User user = new User(email, password);
-                userService.add(user);
-                return user;
-            } catch (Exception e) {
-                throw new RegistrationException("User already exists", e);
-            }
+        try {
+            userService.findByEmail(email).isEmpty();
+            User user = new User(email, password);
+            userService.add(user);
+            return user;
+        } catch (Exception e) {
+            throw new RegistrationException("User already exists", e);
+        }
     }
 }

@@ -33,7 +33,7 @@ public class Main {
             = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
     public static void main(String[] args)
-            throws AuthenticationException, NoSuchFieldException, RegistrationException {
+            throws AuthenticationException, RegistrationException {
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
