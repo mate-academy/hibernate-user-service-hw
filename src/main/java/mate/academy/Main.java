@@ -1,6 +1,7 @@
 package mate.academy;
 
 import mate.academy.lib.Injector;
+import mate.academy.model.User;
 import mate.academy.security.AuthentificationService;
 
 public class Main {
@@ -17,16 +18,23 @@ public class Main {
                 .getInstance(AuthentificationService.class);
 
         initUsers();
-
-        System.out.println("User successfully authorized:"
-                + authentificationService.login(USER_1[EMAIL_INDEX],USER_1[PASSWORD_INDEX]));
-
-        authentificationService.register(USER_3[EMAIL_INDEX], USER_3[PASSWORD_INDEX]);
+        try {
+            User loginnedUser = authentificationService
+                    .login(USER_1[EMAIL_INDEX], USER_1[PASSWORD_INDEX]);
+            System.out.println("User successfully authorized: " + loginnedUser);
+        } catch (Exception e) {
+            System.out.println("User not authorized: " + e);
+        }
     }
 
     private static void initUsers() {
-        authentificationService.register(USER_1[EMAIL_INDEX],USER_1[PASSWORD_INDEX]);
-        authentificationService.register(USER_2[EMAIL_INDEX],USER_1[PASSWORD_INDEX]);
-        authentificationService.register(USER_3[EMAIL_INDEX],USER_1[PASSWORD_INDEX]);
+        try {
+            authentificationService.register(USER_1[EMAIL_INDEX], USER_1[PASSWORD_INDEX]);
+            authentificationService.register(USER_2[EMAIL_INDEX], USER_2[PASSWORD_INDEX]);
+            authentificationService.register(USER_3[EMAIL_INDEX], USER_3[PASSWORD_INDEX]);
+            authentificationService.register(USER_3[EMAIL_INDEX], USER_3[PASSWORD_INDEX]);
+        } catch (Exception e) {
+            System.out.println("Can't add user " + e);;
+        }
     }
 }

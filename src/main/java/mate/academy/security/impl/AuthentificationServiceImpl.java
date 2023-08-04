@@ -16,7 +16,7 @@ public class AuthentificationServiceImpl implements AuthentificationService {
     private UserService userService;
 
     @Override
-    public void register(String email, String password) {
+    public void register(String email, String password) throws RegistrationException {
         if (email.isEmpty() || password.isEmpty()) {
             throw new RegistrationException("Email or password is empty");
         }
@@ -28,7 +28,7 @@ public class AuthentificationServiceImpl implements AuthentificationService {
     }
 
     @Override
-    public User login(String email, String password) {
+    public User login(String email, String password) throws AuthenticationException {
         User user = userService.findByEmail(email).orElseThrow(
                 () -> new AuthenticationException(ERROR_MESSAGE + email));
         if (!user.getPassword().equals(
