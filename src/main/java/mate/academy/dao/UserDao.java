@@ -7,7 +7,7 @@ public interface UserDao {
 
     User save(User user);
 
-    User get(Long id);
+    Optional<User> get(Long id);
 
     Optional<User> findByEmail(String email);
 }

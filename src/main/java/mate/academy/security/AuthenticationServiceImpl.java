@@ -16,11 +16,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void register(String email, String password) throws RegistrationException {
-        User user = new User(email, password);
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with this email already exists: " + email);
         }
-        userService.add(user);
+        userService.add(new User(email, password));
     }
 
     @Override
