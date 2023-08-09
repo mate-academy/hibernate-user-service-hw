@@ -22,7 +22,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -36,7 +35,6 @@ public class Main {
         CinemaHall secondCinemaHall = new CinemaHall();
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
-
 
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
@@ -53,7 +51,6 @@ public class Main {
         yesterdayMovieSession.setCinemaHall(firstCinemaHall);
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
-
 
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
