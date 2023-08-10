@@ -62,18 +62,18 @@ public class Main {
                         fastAndFurious.getId(), LocalDate.now()));
 
         User user = new User();
-        user.setLogin("romakuch79@gmail.com");
+        user.setEmail("romakuch79@gmail.com");
         user.setPassword("qwerty1234");
 
         AuthenticationService authenticationService = (AuthenticationService)
                 INJECTOR.getInstance(AuthenticationService.class);
         try {
-            authenticationService.register(user.getLogin(), user.getPassword());
-            authenticationService.login(user.getLogin(), user.getPassword());
+            authenticationService.register(user.getEmail(), user.getPassword());
+            authenticationService.login(user.getEmail(), user.getPassword());
         } catch (RegistrationException e) {
-            throw new RuntimeException("Can't register user with login: " + user.getLogin(), e);
+            throw new RuntimeException("Can't register user with email: " + user.getEmail(), e);
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Can't login user with login: " + user.getLogin(), e);
+            throw new RuntimeException("Can't login user with email: " + user.getEmail(), e);
         }
 
     }
