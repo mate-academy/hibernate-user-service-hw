@@ -26,7 +26,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert user: " + user, e);
+            throw new DataProcessingException("Can't create user: " + user, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -38,7 +38,7 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<User> findByEmailQuery =
-                    session.createQuery("FROM User where email = :value", User.class);
+                    session.createQuery("FROM User WHERE email = :value", User.class);
             findByEmailQuery.setParameter("value", email);
             return findByEmailQuery.uniqueResultOptional();
         } catch (Exception e) {
