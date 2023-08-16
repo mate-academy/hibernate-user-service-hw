@@ -21,12 +21,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RuntimeException("Neither email nor password can be null");
         }
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isPresent() && userFromDbOptional.get().getPassword()
+        if (userFromDbOptional.isEmpty() || !userFromDbOptional.get().getPassword()
                 .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
-            return userFromDbOptional.get();
+            throw new AuthenticationException(
+                    "Can't authenticate user! Email or password is incorrect");
         }
-        throw new AuthenticationException(
-                "Can't authenticate user! Email or password is incorrect");
+        return userFromDbOptional.get();
     }
 
     @Override

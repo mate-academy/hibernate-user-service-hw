@@ -26,7 +26,7 @@ public class Main {
         }
 
         try {
-            User userEntered = authenticationService.login(null, alice.getPassword());
+            User userEntered = authenticationService.login(alice.getEmail(), bob.getPassword());
             System.out.println(userEntered);
             userEntered = authenticationService.login(bob.getEmail(), bob.getPassword());
             System.out.println(userEntered);
