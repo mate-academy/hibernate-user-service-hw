@@ -2,54 +2,82 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+    private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final MovieService movieService =
+            (MovieService) injector.getInstance(MovieService.class);
+    private static final CinemaHallService hallService =
+            (CinemaHallService) injector.getInstance(CinemaHallService.class);
+    private static final MovieSessionService sessionService =
+            (MovieSessionService) injector.getInstance(MovieSessionService.class);
+    private static final AuthenticationService authenticationService =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
     public static void main(String[] args) {
-        MovieService movieService = null;
+        Movie dune = new Movie("Dune");
+        dune.setDescription("Spice must flow...");
+        movieService.add(dune);
+        Movie highlander = new Movie("Highlander");
+        highlander.setDescription("In the end, there can be only one...");
+        movieService.add(highlander);
+        Movie matrix = new Movie("Matrix");
+        matrix.setDescription("Follow the white rabbit...");
+        movieService.add(matrix);
 
-        Movie fastAndFurious = new Movie("Fast and Furious");
-        fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
-        movieService.add(fastAndFurious);
-        System.out.println(movieService.get(fastAndFurious.getId()));
-        movieService.getAll().forEach(System.out::println);
+        System.out.println(movieService.get(dune.getId()));
+        System.out.println(movieService.get(matrix.getId()));
+        System.out.println(movieService.getAll());
 
-        CinemaHall firstCinemaHall = new CinemaHall();
-        firstCinemaHall.setCapacity(100);
-        firstCinemaHall.setDescription("first hall with capacity 100");
+        CinemaHall smallHall = new CinemaHall(200, "Small hall");
+        hallService.add(smallHall);
+        CinemaHall middleHall = new CinemaHall(300, "Middle hall");
+        hallService.add(middleHall);
+        CinemaHall largeHall = new CinemaHall(500, "Large hall");
+        hallService.add(largeHall);
 
-        CinemaHall secondCinemaHall = new CinemaHall();
-        secondCinemaHall.setCapacity(200);
-        secondCinemaHall.setDescription("second hall with capacity 200");
+        System.out.println(hallService.get(smallHall.getId()));
+        System.out.println(hallService.get(middleHall.getId()));
+        System.out.println(hallService.getAll());
 
-        CinemaHallService cinemaHallService = null;
-        cinemaHallService.add(firstCinemaHall);
-        cinemaHallService.add(secondCinemaHall);
+        MovieSession sessionOne = new MovieSession(matrix, smallHall, LocalDateTime.now());
+        sessionService.add(sessionOne);
+        MovieSession sessionTwo = new MovieSession(dune, largeHall, LocalDateTime.now());
+        sessionService.add(sessionTwo);
+        MovieSession sessionThree =
+                new MovieSession(highlander, middleHall, LocalDateTime.now().plusDays(2));
+        sessionService.add(sessionThree);
+        MovieSession sessionFour =
+                new MovieSession(matrix, largeHall, LocalDateTime.now().plusDays(1));
+        sessionService.add(sessionFour);
+        MovieSession sessionFive =
+                new MovieSession(highlander, largeHall, LocalDateTime.now().plusDays(2));
+        sessionService.add(sessionFive);
 
-        System.out.println(cinemaHallService.getAll());
-        System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
+        System.out.println(sessionService.get(sessionOne.getId()));
+        System.out.println(sessionService.get(sessionThree.getId()));
+        System.out.println(sessionService.get(sessionFive.getId()));
 
-        MovieSession tomorrowMovieSession = new MovieSession();
-        tomorrowMovieSession.setCinemaHall(firstCinemaHall);
-        tomorrowMovieSession.setMovie(fastAndFurious);
-        tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
+        System.out.println(sessionService.findAvailableSessions(matrix.getId(), LocalDate.now()));
+        System.out.println(sessionService.findAvailableSessions(highlander.getId(),
+                LocalDate.now().plusDays(2)));
+        System.out.println(sessionService.findAvailableSessions(dune.getId(),
+                LocalDate.now().minusDays(2)));
 
-        MovieSession yesterdayMovieSession = new MovieSession();
-        yesterdayMovieSession.setCinemaHall(firstCinemaHall);
-        yesterdayMovieSession.setMovie(fastAndFurious);
-        yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
+        authenticationService.register("bob@gmail.com", "hardPassword");
+        System.out.println(authenticationService.login("bob@gmail.com", "hardPassword"));
+        authenticationService.register("jack@gmail.com", "Password");
+        System.out.println(authenticationService.login("jack@gmail.com", "Password"));
 
-        MovieSessionService movieSessionService = null;
-        movieSessionService.add(tomorrowMovieSession);
-        movieSessionService.add(yesterdayMovieSession);
-
-        System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-        System.out.println(movieSessionService.findAvailableSessions(
-                        fastAndFurious.getId(), LocalDate.now()));
+        authenticationService.register("bob@gmail.com", "hardPassword");
+        authenticationService.login("wrongLogin", "wrongPassword");
     }
 }
