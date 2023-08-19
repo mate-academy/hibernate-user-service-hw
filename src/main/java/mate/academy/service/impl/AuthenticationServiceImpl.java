@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -7,8 +8,6 @@ import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
-
-import java.util.Optional;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
@@ -36,7 +35,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> byEmail = userService.findByEmail(email);
 
         if (byEmail.isPresent()) {
-            throw new RegistrationException("This email address is already registered. Email: " + email);
+            throw new RegistrationException(
+                    "This email address is already registered. Email: " + email);
         }
         User user = new User();
         user.setEmail(email);
