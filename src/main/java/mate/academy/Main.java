@@ -65,8 +65,7 @@ public class Main {
             authenticationService.register(user.getEmail(), user.getPassword());
             authenticationService.login(user.getEmail(), user.getPassword());
         } catch (RegistrationException e) {
-            throw new RuntimeException("Can't register user with email:" + user.getEmail()
-            + "and password: " + user.getPassword(), e);
+            throw new RuntimeException("Can't register user with email: " + user.getEmail(), e);
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't authorised user with email: " + user.getEmail(), e);
         }
