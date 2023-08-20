@@ -17,9 +17,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> byEmail = userService.findByEmail(email);
 
-        if (byEmail.isEmpty()
-                || HashUtil.hashPassword(password, byEmail.get().getSalt())
-                .equals(byEmail.get().getPassword())) {
+        if (byEmail.isEmpty() || !passwordValidation(byEmail.get(), password)) {
             throw new AuthenticationException("Could not authenticate user by email:" + email);
         }
 
@@ -39,5 +37,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setPassword(password);
 
         return userService.add(user);
+    }
+
+    private boolean passwordValidation(User user, String password) {
+        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        return hashedPassword.equals(user.getPassword());
     }
 }
