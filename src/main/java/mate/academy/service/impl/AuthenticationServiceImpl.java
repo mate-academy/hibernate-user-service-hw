@@ -32,10 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("Can't register user with email '" + email
                                             + "'. Email has been already registered");
         }
-        User userToRegister = new User();
-        userToRegister.setEmail(email);
-        userToRegister.setPassword(password);
-        return userService.add(userToRegister);
+        return userService.add(new User(email, password));
     }
 
     private boolean isValidPassword(User user, String inputPassword) {
