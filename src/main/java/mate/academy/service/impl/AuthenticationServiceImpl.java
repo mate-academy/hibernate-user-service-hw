@@ -9,6 +9,8 @@ import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
+import java.util.Optional;
+
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
@@ -16,16 +18,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        try {
-            User user = userService.findByEmail(email).get();
-            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-            if (!hashedPassword.equals(user.getPassword())) {
-                throw new RuntimeException();
-            }
-            return user;
-        } catch (Exception e) {
-            throw new AuthenticationException(("Can't authenticate user with email " + email));
+        Optional<User> userFromDb = userService.findByEmail(email);
+        if (userFromDb.isEmpty()
+                || !isEqualPasswords(password, userFromDb.get())) {
+            throw new AuthenticationException("Can't authenticate user by email:  " + email
+                    + "Invalid email or password!");
         }
+        return userFromDb.get();
     }
 
     @Override
@@ -38,5 +37,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setPassword(password);
         user.setEmail(email);
         return userService.add(user);
+    }
+
+    private boolean isEqualPasswords(String password, User userFromDb) {
+        return HashUtil.hashPassword(password, userFromDb.getSalt()).equals(userFromDb.getPassword());
     }
 }
