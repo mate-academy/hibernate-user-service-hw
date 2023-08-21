@@ -11,6 +11,8 @@ import org.hibernate.Transaction;
 
 @Dao
 public class UserDaoImpl implements UserDao {
+    private static final String EMAIL_PARAMETER = "email";
+
     @Override
     public User add(User user) {
         Transaction transaction = null;
@@ -25,7 +27,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert user " + user, e);
+            throw new DataProcessingException("Can't insert user: " + user, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -37,11 +39,11 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM User u "
-                            + "WHERE u.email = :email ", User.class)
-                            .setParameter("email", email)
+                            + "WHERE u.email = :" + EMAIL_PARAMETER, User.class)
+                            .setParameter(EMAIL_PARAMETER, email)
                             .uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get a user by email: " + email, e);
+            throw new DataProcessingException("Can't find a user by email: " + email, e);
         }
     }
 }
