@@ -13,6 +13,7 @@ import org.hibernate.Transaction;
 @Dao
 public class UserDaoImpl implements UserDao {
     private static final String USER_EMAIL = "email";
+
     @Override
     public User add(User user) {
         Session session = null;
