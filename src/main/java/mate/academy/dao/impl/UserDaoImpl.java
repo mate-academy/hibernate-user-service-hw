@@ -8,6 +8,7 @@ import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
@@ -38,10 +39,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM User u "
-                            + "WHERE u.email = :" + EMAIL_PARAMETER, User.class)
-                            .setParameter(EMAIL_PARAMETER, email)
-                            .uniqueResultOptional();
+            String hqlQuery = "FROM User u "
+                    + "WHERE u.email = :" + EMAIL_PARAMETER;
+            Query<User> userQuery = session.createQuery(hqlQuery, User.class);
+            userQuery.setParameter(EMAIL_PARAMETER, email);
+            return userQuery.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find a user by email: " + email, e);
         }
