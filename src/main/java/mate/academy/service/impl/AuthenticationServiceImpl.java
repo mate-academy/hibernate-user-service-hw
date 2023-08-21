@@ -17,11 +17,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can't authenticate user with email " + email);
-        }
-        User user = userFromDbOptional.get();
+        User user = userService.findByEmail(email).orElseThrow(()
+                -> new AuthenticationException("Can't authenticate user with email " + email
+                + ". There isn't in DB"));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (!user.getPassword().equals(hashedPassword)) {
             throw new AuthenticationException("Can't authenticate user with email, " + email
