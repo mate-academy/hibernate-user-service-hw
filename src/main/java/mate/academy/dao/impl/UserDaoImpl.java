@@ -14,7 +14,7 @@ public class UserDaoImpl implements UserDao {
     private static final String EMAIL_PARAMETER = "email";
 
     @Override
-    public User create(User user) throws DataProcessingException {
+    public User create(User user) {
         Transaction transaction = null;
         Session session = null;
         try {
@@ -36,7 +36,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) throws DataProcessingException {
+    public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session
                     .createQuery("from User u where u.email = :" + EMAIL_PARAMETER, User.class)
