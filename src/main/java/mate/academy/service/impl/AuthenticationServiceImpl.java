@@ -19,9 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isEmpty()
-                || password.equals(HashUtil.hashPassword(
-                        userOptional.get().getPassword(), userOptional.get().getSalt()))) {
+        if (userOptional.isEmpty() || !isPasswordCorrect(userOptional.get(), password)) {
             throw new AuthenticationException(
                     "Can't authenticate user with email " + email, new Exception());
         }
@@ -36,5 +34,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     "User with email " + email + " already exists in DB!", new Exception());
         }
         return userService.add(new User(email, password));
+    }
+
+    private boolean isPasswordCorrect(User user, String password) {
+        String hashedPassword = HashUtil.hashPassword(
+                user.getPassword(), user.getSalt());
+        return user.getPassword().equals(hashedPassword);
     }
 }
