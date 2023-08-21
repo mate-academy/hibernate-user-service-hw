@@ -9,6 +9,8 @@ import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
+import java.util.Optional;
+
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
@@ -16,9 +18,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User userByEmail = userService.findByEmail(email).orElse(null);
-        if (userByEmail != null && isUserPasswordValid(password, userByEmail)) {
-            return userByEmail;
+        Optional<User> userByEmail = userService.findByEmail(email);
+        if (userByEmail.isPresent() && isUserPasswordValid(password, userByEmail.get())) {
+            return userByEmail.get();
         }
         throw new AuthenticationException("Can't authenticate user by email: " + email
                 + " or incorrect password input");

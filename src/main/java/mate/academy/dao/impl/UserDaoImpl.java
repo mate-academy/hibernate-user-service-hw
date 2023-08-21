@@ -12,6 +12,7 @@ import org.hibernate.Transaction;
 
 @Dao
 public class UserDaoImpl implements UserDao {
+    private static final String USER_EMAIL = "email";
     @Override
     public User add(User user) {
         Session session = null;
@@ -41,7 +42,7 @@ public class UserDaoImpl implements UserDao {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("FROM User "
                             + "WHERE email = :email", User.class)
-                    .setParameter("email", email)
+                    .setParameter(USER_EMAIL, email)
                     .uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find user by provided email: "
