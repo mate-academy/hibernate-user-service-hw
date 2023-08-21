@@ -14,3 +14,4 @@
         <mapping class="mate.academy.model.User"/>
     </session-factory>
 </hibernate-configuration>
+
