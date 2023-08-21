@@ -5,6 +5,7 @@ import mate.academy.dao.UserDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
+import mate.academy.util.PasswordHashUtil;
 
 @Service
 public class UserServiceImpl implements mate.academy.service.UserService {
@@ -13,6 +14,8 @@ public class UserServiceImpl implements mate.academy.service.UserService {
 
     @Override
     public User add(User user) {
+        user.setSalt(PasswordHashUtil.generateSalt());
+        user.setPassword(PasswordHashUtil.hashPassword(user.getPassword(), user.getSalt()));
         return userDao.add(user);
     }
 
