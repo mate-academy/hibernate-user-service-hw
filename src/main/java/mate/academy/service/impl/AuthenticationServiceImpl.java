@@ -16,15 +16,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email).orElseThrow(()
-                -> new AuthenticationException("Can't authenticate user with email " + email
-                + ". There isn't in DB"));
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (!user.getPassword().equals(hashedPassword)) {
-            throw new AuthenticationException("Can't authenticate user with email, " + email
-                    + ". The password is incorrect ");
+        try {
+            User user = userService.findByEmail(email).get();
+            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+            if (!hashedPassword.equals(user.getPassword())) {
+                throw new RuntimeException();
+            }
+            return user;
+        } catch (Exception e) {
+            throw new AuthenticationException(("Can't authenticate user with email " + email));
         }
-        return user;
     }
 
     @Override
