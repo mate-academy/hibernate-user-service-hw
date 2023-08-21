@@ -18,7 +18,7 @@ public class HashUtil {
             }
             return hashedPassword.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Wrong hash algorithm chosen" , e);
+            throw new IllegalStateException("Wrong hash algorithm chosen", e);
         }
     }
 

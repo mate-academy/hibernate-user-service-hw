@@ -53,11 +53,10 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", salt=" + Arrays.toString(salt) +
-                '}';
+        return "User{"
+                + "id=" + id
+                + ", password='" + password + '\''
+                + ", email='" + email + '\''
+                + ", salt=" + Arrays.toString(salt) + '}';
     }
 }
