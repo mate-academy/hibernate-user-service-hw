@@ -1,17 +1,14 @@
 package mate.academy;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import mate.academy.model.CinemaHall;
-import mate.academy.model.Movie;
-import mate.academy.model.MovieSession;
-import mate.academy.service.CinemaHallService;
-import mate.academy.service.MovieService;
-import mate.academy.service.MovieSessionService;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 
 public class Main {
     public static void main(String[] args) {
-        MovieService movieService = null;
+        /*MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -50,6 +47,26 @@ public class Main {
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
-                        fastAndFurious.getId(), LocalDate.now()));
+                        fastAndFurious.getId(), LocalDate.now()));*/
+
+        Injector injector = Injector.getInstance("mate.academy");
+        final AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
+        try {
+            User registeredUser = authenticationService
+                    .register("nikitazuber@gmail.com", "1234Qwerty");
+            System.out.println(registeredUser);
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        try {
+            User loginedUser = authenticationService
+                    .login("nikitazuber@gmail.com", "1234Qwerty");
+            System.out.println(loginedUser);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }
