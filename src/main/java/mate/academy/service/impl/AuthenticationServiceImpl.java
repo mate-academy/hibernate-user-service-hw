@@ -19,7 +19,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
         if (userOptional.isEmpty() || !checkPassword(userOptional.get(), password)) {
-            throw new AuthenticationException("Can't authenticate user with email: " + email);
+            throw new AuthenticationException(String.format(
+                    "Can't authenticate user with email: " + email + ", password: " + password));
         }
         return userOptional.get();
     }
@@ -27,8 +28,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (email.isEmpty() || password.isEmpty()) {
-            throw new RegistrationException(
-                    "Can't register a user with empty email or password, email: " + email);
+            throw new RegistrationException(String.format(
+                    "Can't register a user with empty email or password, email: " + email
+                            + ", password: " + password));
         }
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with same email already exists: " + email);
