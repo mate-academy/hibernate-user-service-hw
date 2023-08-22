@@ -16,6 +16,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
+        if (password.isEmpty()) {
+            throw new AuthenticationException("Empty password entered!");
+        }
+        if (email.isEmpty()) {
+            throw new AuthenticationException("Empty email entered!");
+        }
         User user = userService.findByEmail(email).orElseThrow(() ->
                 new AuthenticationException("Can`t find user with this email"));
         String acquiredHashedPassword = HashUtil.hashPassword(password, user.getSalt());
@@ -28,7 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Same email already registered!");
+            throw new RegistrationException("Same email already registered");
         }
         if (password.isEmpty()) {
             throw new RegistrationException("Empty password entered!");
