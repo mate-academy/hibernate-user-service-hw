@@ -11,6 +11,7 @@ import java.util.Optional;
 import mate.academy.dao.MovieSessionDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
+import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
@@ -50,7 +51,8 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             CriteriaQuery<MovieSession> criteriaQuery =
                     criteriaBuilder.createQuery(MovieSession.class);
             Root<MovieSession> root = criteriaQuery.from(MovieSession.class);
-            Predicate moviePredicate = criteriaBuilder.equal(root.get("movie"), movieId);
+            Predicate moviePredicate = criteriaBuilder.equal(root.get("movie"),
+                    session.get(Movie.class, movieId));
             Predicate datePredicate = criteriaBuilder.between(root.get("showTime"),
                     date.atStartOfDay(), date.atTime(END_OF_DAY));
             Predicate allConditions = criteriaBuilder.and(moviePredicate, datePredicate);
