@@ -57,6 +57,8 @@ public class Main {
             User registeredUser = authenticationService
                     .register("nikitazuber@gmail.com", "1234Qwerty");
             System.out.println(registeredUser);
+            User registeredUserAgain = authenticationService
+                    .register("nikitazuber@gmail.com", "1234Qwerty");
         } catch (RegistrationException e) {
             throw new RuntimeException(e.getMessage());
         }
