@@ -45,22 +45,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> findByLogin(String login) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM User u where u.login = :login", User.class)
-                    .setParameter("login", login)
-                    .uniqueResultOptional();
-        }
-    }
-
-    @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM User u WHERE u.email = :email", User.class)
                     .setParameter("email", email)
                     .uniqueResultOptional();
         } catch (SQLGrammarException e) {
-            return Optional.empty();
+            throw new DataProcessingException("Email doesn't exist in system!");
         }
     }
 }

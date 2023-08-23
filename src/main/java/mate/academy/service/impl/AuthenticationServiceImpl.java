@@ -19,9 +19,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         validateData(email, password);
-        Optional<User> userFromDbOption = userService.findByEmail(email);
-        if (userFromDbOption.isPresent()) {
-            User user = userFromDbOption.get();
+        Optional<User> userFromDbOptional = userService.findByEmail(email);
+        if (userFromDbOptional.isPresent()) {
+            User user = userFromDbOptional.get();
             String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
             if (user.getPassword().equals(hashedPassword)) {
                 return user;
@@ -41,21 +41,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private void validateData(String email, String password) {
-        try {
-            if (email == null) {
-                throw new RuntimeException("Email can't be null");
-            }
-            if (password == null) {
-                throw new RuntimeException("Password can't be null");
-            }
-            if (email.isEmpty()) {
-                throw new RuntimeException("Email can't be empty");
-            }
-            if (password.isEmpty()) {
-                throw new RuntimeException("Password can't be empty");
-            }
-        } catch (RuntimeException e) {
-            throw new DataProcessingException("Data is not correct", e);
+        if (email == null) {
+            throw new DataProcessingException("Email can't be null");
+        }
+        if (password == null) {
+            throw new DataProcessingException("Password can't be null");
+        }
+        if (email.isEmpty()) {
+            throw new DataProcessingException("Email can't be empty");
+        }
+        if (password.isEmpty()) {
+            throw new DataProcessingException("Password can't be empty");
         }
     }
 }
