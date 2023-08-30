@@ -58,7 +58,7 @@ public class Main {
                 AuthenticationService.class);
         User user = null;
         try {
-            user = authenticationService.register("anton@net", "123456");
+            user = authenticationService.register("arsen@gmail.com", "123456");
         } catch (RegistrationException e) {
             throw new RuntimeException("Can not register user because of email or password", e);
         }
