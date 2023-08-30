@@ -20,34 +20,41 @@ public class Main {
 
     public static void main(String[] args) {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
+
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
         System.out.println(movieService.get(fastAndFurious.getId()));
         movieService.getAll().forEach(System.out::println);
+
         CinemaHall firstCinemaHall = new CinemaHall();
         firstCinemaHall.setCapacity(100);
         firstCinemaHall.setDescription("first hall with capacity 100");
+
         CinemaHall secondCinemaHall = new CinemaHall();
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
-        CinemaHallService cinemaHallService = (CinemaHallService) injector.getInstance(
-                CinemaHallService.class);
+
+        CinemaHallService cinemaHallService = (CinemaHallService) injector
+                .getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
         System.out.println(cinemaHallService.getAll());
         System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
+
         MovieSession tomorrowMovieSession = new MovieSession();
         tomorrowMovieSession.setCinemaHall(firstCinemaHall);
         tomorrowMovieSession.setMovie(fastAndFurious);
         tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
+
         MovieSession yesterdayMovieSession = new MovieSession();
         yesterdayMovieSession.setCinemaHall(firstCinemaHall);
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
-        MovieSessionService movieSessionService =
-                (MovieSessionService) injector.getInstance(MovieSessionService.class);
+
+        MovieSessionService movieSessionService = (MovieSessionService) injector
+                .getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
@@ -56,7 +63,7 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
         AuthenticationService authenticationService = (AuthenticationService) injector.getInstance(
                 AuthenticationService.class);
-        User user = null;
+        User user;
         try {
             user = authenticationService.register("arsen@gmail.com", "123456");
         } catch (RegistrationException e) {
@@ -64,18 +71,12 @@ public class Main {
         }
         UserService userService = (UserService) injector.getInstance(UserService.class);
         userService.add(user);
-        User userAfterLogin = null;
+        User userAfterLogin;
         try {
             userAfterLogin = authenticationService.login("arsen@gmail.com", "123456");
             System.out.println(user.equals(userAfterLogin));
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can not login user because of email or password", e);
-        }
-
-        try {
-            authenticationService.register("arsen@gmail.com", "qwerty");
-        } catch (RegistrationException e) {
-            throw new RuntimeException("Can not register user because of email or password", e);
         }
     }
 }
