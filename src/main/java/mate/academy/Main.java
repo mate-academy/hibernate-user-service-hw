@@ -61,6 +61,8 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
+
+        UserService userService = (UserService) injector.getInstance(UserService.class);
         AuthenticationService authenticationService = (AuthenticationService) injector.getInstance(
                 AuthenticationService.class);
         User user;
@@ -69,14 +71,18 @@ public class Main {
         } catch (RegistrationException e) {
             throw new RuntimeException("Can not register user because of email or password", e);
         }
-        UserService userService = (UserService) injector.getInstance(UserService.class);
-        userService.add(user);
+        System.out.println(userService.findByEmail(user.getEmail()));
         User userAfterLogin;
         try {
             userAfterLogin = authenticationService.login("arsen@gmail.com", "123456");
-            System.out.println(user.equals(userAfterLogin));
+            System.out.println(userAfterLogin);
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can not login user because of email or password", e);
+        }
+        try {
+            authenticationService.register("arsen@gmail.com", "qwerty");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can not register user because of email or password", e);
         }
     }
 }
