@@ -18,22 +18,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userByEmail = userService.findByEmail(email);
-        if (userByEmail.isPresent()) {
-            User userFound = userByEmail.get();
-            if (HashUtil.hashPassword(
-                    password, userFound.getSalt()).equals(userFound.getPassword())) {
-                return userFound;
-            }
+        if (userByEmail.isPresent() && matchPasswords(password, userByEmail.get())) {
+            return userByEmail.get();
         }
         throw new AuthenticationException("Username or password not found");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        User user = new User(email, password);
+        User user = new User(password, email);
         if (userService.findByEmail(email).isEmpty()) {
             return userService.add(user);
         }
         throw new RegistrationException("Can`t register user with email: " + email);
+    }
+
+    private boolean matchPasswords(String rawPassword, User userFromDb) {
+        String hashedPassword = HashUtil.hashPassword(rawPassword, userFromDb.getSalt());
+        return hashedPassword.equals(userFromDb.getPassword());
     }
 }

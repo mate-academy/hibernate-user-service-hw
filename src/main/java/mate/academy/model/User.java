@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Arrays;
 
 @Entity
 @Table(name = "users")
@@ -14,14 +13,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String login;
     private byte[] salt;
     private String password;
     @Column(unique = true)
     private String email;
 
     public User() {
-
     }
 
     public User(String password, String email) {
@@ -35,14 +32,6 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public byte[] getSalt() {
@@ -74,11 +63,7 @@ public class User {
         return "User{"
                 + "id="
                 + id
-                + ", login='"
-                + login
                 + '\''
-                + ", salt="
-                + Arrays.toString(salt)
                 + ", email='"
                 + email
                 + '\''
