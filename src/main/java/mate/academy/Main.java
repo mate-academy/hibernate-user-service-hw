@@ -82,13 +82,11 @@ public class Main {
         } catch (RegistrationException e) {
             throw new RuntimeException("Can't register current user");
         }
-
         try {
             System.out.println(authenticationService.login(alice.getEmail(), alice.getPassword()));
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't login current user");
         }
-
         // Checks with invalid data
         try {
             authenticationService.register(john.getEmail(), john.getPassword());

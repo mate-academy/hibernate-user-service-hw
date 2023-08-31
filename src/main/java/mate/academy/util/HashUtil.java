@@ -8,7 +8,7 @@ import mate.academy.exception.DataProcessingException;
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
 
-    public HashUtil() {
+    private HashUtil() {
     }
 
     public static byte[] getSalt() {
@@ -28,7 +28,8 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new DataProcessingException("Couldn't create hash using SHA-512 algorithm", e);
+            throw new DataProcessingException("Couldn't create hash using "
+                    + CRYPTO_ALGORITHM + " algorithm", e);
         }
         return hashedPassword.toString();
     }
