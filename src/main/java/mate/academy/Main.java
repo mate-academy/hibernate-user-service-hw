@@ -94,7 +94,6 @@ public class Main {
         } catch (RegistrationException e) {
             throw new RuntimeException("Can't register current user");
         }
-
         try {
             authenticationService.login(bob.getEmail(), alice.getPassword());
         } catch (AuthenticationException e) {
