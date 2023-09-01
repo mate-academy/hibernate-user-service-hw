@@ -2,16 +2,24 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+    private static final Injector injector = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
-        MovieService movieService = null;
+        MovieService movieService
+                = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -27,7 +35,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService
+                = (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,12 +53,41 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService
+                = (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        AuthenticationService authenticationService
+                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        List<String> logins = List.of("qwerty", "a", "", "bbbab");
+        List<String> passwords = List.of("1234", "1", "", "0000s0");
+        List<String> invalidPasswords = List.of("333", "", "", "gggg");
+        for (int i = 0; i < logins.size(); i++) {
+            try {
+                System.out.println(authenticationService.register(logins.get(i), passwords.get(i)));
+            } catch (RegistrationException e) {
+                System.out.println("can't create user with email " + logins.get(i));
+            }
+        }
+        for (int i = 0; i < logins.size(); i++) {
+            try {
+                System.out.println(authenticationService.login(logins.get(i), passwords.get(i)));
+            } catch (AuthenticationException e) {
+                System.out.println("can't login user with password " + passwords.get(i));
+            }
+        }
+        for (int i = 0; i < logins.size(); i++) {
+            try {
+                System.out.println(authenticationService.login(logins.get(i),
+                        invalidPasswords.get(i)));
+            } catch (AuthenticationException e) {
+                System.out.println("can't login user with password " + passwords.get(i));
+            }
+        }
     }
 }
