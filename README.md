@@ -38,6 +38,5 @@ Your task is to implement the following steps:
     - Create your own checked `RegistrationException` and `AuthenticationException` to use it in `register()` and `login()` methods respectively
 
     - Please don’t forget to use salt and password hashing
-- In the `mate/academy/Main.main()` method create instance of AuthenticationService using injector and test all methods from it.
 
 [Try to avoid these common mistakes, while solving task](https://mate-academy.github.io/jv-program-common-mistakes/hibernate/add-user-service/add-user-service-checklist)
