@@ -16,11 +16,11 @@ import mate.academy.service.MovieSessionService;
 import mate.academy.service.UserService;
 
 public class Main {
-    private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final Injector INJECTOR = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) {
         MovieService movieService = (MovieService)
-                injector.getInstance(MovieService.class);
+                INJECTOR.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -37,7 +37,7 @@ public class Main {
         secondCinemaHall.setDescription("second hall with capacity 200");
 
         CinemaHallService cinemaHallService = (CinemaHallService)
-                injector.getInstance(CinemaHallService.class);
+                INJECTOR.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -55,7 +55,7 @@ public class Main {
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
         MovieSessionService movieSessionService = (MovieSessionService)
-                injector.getInstance(MovieSessionService.class);
+                INJECTOR.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
@@ -69,12 +69,12 @@ public class Main {
         User john = new User("john_deep@gmail.com","");
         User kate = new User("alice_jackson@gmail.com", "123456");
 
-        UserService userService = (UserService) injector.getInstance(UserService.class);
+        UserService userService = (UserService) INJECTOR.getInstance(UserService.class);
         userService.add(bob);
         userService.add(alice);
 
         AuthenticationService authenticationService = (AuthenticationService)
-                injector.getInstance(AuthenticationService.class);
+                INJECTOR.getInstance(AuthenticationService.class);
         // Checks with valid data
         try {
             System.out.println(authenticationService.register(
