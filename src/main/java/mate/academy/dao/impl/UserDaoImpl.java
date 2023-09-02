@@ -15,7 +15,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
@@ -25,6 +27,10 @@ public class UserDaoImpl implements UserDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't save user " + user + " to DB , ", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 

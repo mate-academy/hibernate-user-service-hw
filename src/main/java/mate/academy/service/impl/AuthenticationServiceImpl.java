@@ -31,13 +31,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            User user = new User();
-            user.setEmail(email);
-            user.setPassword(password);
-            userService.add(user);
-            return user;
+        if (userFromDbOptional.isPresent()) {
+            throw new RegistrationException("Can't register user from email: " + email);
         }
-        throw new RegistrationException("Can't register user from email: " + email);
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        userService.add(user);
+        return user;
     }
 }
