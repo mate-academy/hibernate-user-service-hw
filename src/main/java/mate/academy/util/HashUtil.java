@@ -4,8 +4,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class HashUtil {
+public final class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
+
+    private HashUtil() {
+    }
 
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
