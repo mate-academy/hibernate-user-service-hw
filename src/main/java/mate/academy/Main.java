@@ -77,7 +77,7 @@ public class Main {
         User bobRegister = authenticationService.register("bob@Gmail.com", "1234");
         System.out.println(bobRegister);
 
-        User bobLogin = authenticationService.login("bob@Gmail.com", "1234");
-        System.out.println(bobLogin);
+        User aliceLogin = authenticationService.login("alice@Gmail.com", "lol");
+        System.out.println(aliceLogin);
     }
 }
