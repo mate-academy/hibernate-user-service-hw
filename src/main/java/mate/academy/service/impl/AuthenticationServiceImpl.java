@@ -18,16 +18,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = USER_SERVICE.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("User not found");
+        Optional<User> userFromDb = USER_SERVICE.findByEmail(email);
+        if (userFromDb.isPresent() && matchPasswords(password, userFromDb.get())) {
+            return userFromDb.get();
         }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (email.equals(user.getEmail()) && user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("User login or password wrong");
+        throw new AuthenticationException("Incorrect email or password!");
     }
 
     @Override
@@ -48,5 +43,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("Can't registered user:" + user);
         }
         return null;
+    }
+
+    private boolean matchPasswords(String password, User userFromDb) {
+        String hashedPassword = HashUtil.hashPassword(password, userFromDb.getSalt());
+        return hashedPassword.equals(userFromDb.getPassword());
     }
 }
