@@ -65,27 +65,24 @@ public class Main {
 
         User bob = new User("bob_jeferson@gmail.com", "qwerty");
         User alice = new User("alice_jackson@gmail.com","abc");
+
         User daniel = new User("danial@gmail.com", "qwerty");
         User john = new User("john_deep@gmail.com","");
         User kate = new User("alice_jackson@gmail.com", "123456");
 
         UserService userService = (UserService) INJECTOR.getInstance(UserService.class);
         userService.add(bob);
-        userService.add(alice);
 
         AuthenticationService authenticationService = (AuthenticationService)
                 INJECTOR.getInstance(AuthenticationService.class);
         // Checks with valid data
         try {
-            System.out.println(authenticationService.register(
-                    daniel.getEmail(), daniel.getPassword()));
-        } catch (RegistrationException e) {
+            authenticationService.register(alice.getEmail(), alice.getPassword());
+            alice = authenticationService.login(alice.getEmail(), alice.getPassword());
+            authenticationService.register(daniel.getEmail(), daniel.getPassword());
+            daniel = authenticationService.login(daniel.getEmail(), daniel.getPassword());
+        } catch (RegistrationException | AuthenticationException e) {
             throw new RuntimeException("Can't register current user");
-        }
-        try {
-            System.out.println(authenticationService.login(alice.getEmail(), alice.getPassword()));
-        } catch (AuthenticationException e) {
-            throw new RuntimeException("Can't login current user");
         }
         // Checks with invalid data
         try {

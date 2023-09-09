@@ -19,7 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
         User user = userFromDb.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        String hashedPassword = HashUtil.hashPassword(password, userFromDb.get().getSalt());
         if (userFromDb.isPresent() && user.getPassword().equals(hashedPassword)) {
             return user;
         }
@@ -32,10 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (email.isEmpty() || password.isEmpty() || userFromBb.isPresent()) {
             throw new RegistrationException("Invalid password or email");
         }
-        User newUser = new User();
-        newUser.setEmail(email);
-        newUser.setSalt(HashUtil.getSalt());
-        newUser.setPassword(HashUtil.hashPassword(password, newUser.getSalt()));
+        User newUser = new User(email, password);
         return userService.add(newUser);
     }
 }
