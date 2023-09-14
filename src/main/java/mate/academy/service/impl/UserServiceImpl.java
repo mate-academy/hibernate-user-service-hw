@@ -13,10 +13,6 @@ public class UserServiceImpl implements UserService {
     @Inject
     private UserDao userDao;
 
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
     @Override
     public User add(User user) {
         user.setSalt(HashUtil.getSalt());
