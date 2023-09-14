@@ -77,13 +77,11 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         User bob = new User();
-        bob.setLogin("Bob");
         bob.setSalt(HashUtil.getSalt());
         bob.setPassword("123456");
         bob.setEmail("bob@com.ua");
 
         User jane = new User();
-        jane.setLogin("Jane");
         jane.setSalt(HashUtil.getSalt());
         jane.setPassword("789012");
         jane.setEmail("jane@com.ua");

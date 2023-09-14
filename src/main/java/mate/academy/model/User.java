@@ -1,11 +1,11 @@
 package mate.academy.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
@@ -14,8 +14,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String login;
     private String password;
+    @Column(unique = true)
     private String email;
     private byte[] salt;
 
@@ -25,14 +25,6 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getPassword() {
@@ -68,17 +60,13 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(getId(),
-             user.getId()) && Objects.equals(getLogin(), user.getLogin())
-               && Objects.equals(getPassword(), user.getPassword())
-               && Objects.equals(getEmail(), user.getEmail())
-               && Arrays.equals(getSalt(), user.getSalt());
+        return Objects.equals(getEmail(), user.getEmail());
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(getId(), getLogin(), getPassword(), getEmail());
-        result = 31 * result + Arrays.hashCode(getSalt());
+        int result = Objects.hash(getId(), getEmail());
+        result = 31 * result;
         return result;
     }
 
@@ -86,10 +74,7 @@ public class User {
     public String toString() {
         return "User{"
                 + "id=" + id
-                + ", login='" + login + '\''
-                + ", password='" + password + '\''
                 + ", email='" + email + '\''
-                + ", salt=" + Arrays.toString(salt)
                 + '}';
     }
 }
