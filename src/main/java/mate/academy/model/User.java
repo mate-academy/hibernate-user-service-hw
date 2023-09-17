@@ -14,7 +14,7 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
-    private Byte[] salt = new Byte[16];
+    private byte[] salt = new byte[16];
 
     public Long getId() {
         return id;
@@ -40,11 +40,11 @@ public class User {
         this.password = password;
     }
 
-    public Byte[] getSalt() {
+    public byte[] getSalt() {
         return salt;
     }
 
-    public void setSalt(Byte[] salt) {
+    public void setSalt(byte[] salt) {
         this.salt = salt;
     }
 }
