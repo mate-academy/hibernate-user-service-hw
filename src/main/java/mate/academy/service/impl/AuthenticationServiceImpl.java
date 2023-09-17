@@ -22,7 +22,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new AuthenticationException("Unable to authentificate user. Please, check"
                     + " given email " + email);
         }
-        User user = userByEmailOptional.get();
+        User user = userService.findByEmail(email)
+                .orElseThrow(() -> new AuthenticationException("Cant find email " + email));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;
