@@ -20,8 +20,7 @@ public class HashUtil {
             md.update(salt);
             byte[] digest = md.digest(password.getBytes());
             StringBuilder passwordBuilder = new StringBuilder();
-            for(int i=0; i< digest.length ;i++)
-            {
+            for (int i = 0; i < digest.length; i++) {
                 passwordBuilder.append(Integer.toHexString(0xFF & digest[i]));
             }
             return passwordBuilder.toString();
