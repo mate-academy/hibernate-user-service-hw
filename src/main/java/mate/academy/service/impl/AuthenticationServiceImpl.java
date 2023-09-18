@@ -16,18 +16,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String email, String password) {
+    public User login(String email, String password) throws AuthenticationException {
         Optional<User> optionalUser = userService.findByEmail(email);
-        if (optionalUser.isEmpty()) {
-            throw new AuthenticationException("There is no user with such an email");
+        boolean correctPassword = false;
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            String receivedPassword = HashUtil.hashPassword(password, user.getSalt());
+            correctPassword = receivedPassword.equals(user.getPassword());
         }
-        User user = optionalUser.get();
-        String receivedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (receivedPassword.equals(user.getPassword())) {
-            return user;
-        } else {
-            throw new AuthenticationException("Wrong password!");
+        if (optionalUser.isEmpty() || !correctPassword) {
+            throw new AuthenticationException("There "
+                    + "is no user with such an email or wrong password!");
         }
+        return optionalUser.get();
     }
 
     @Override
@@ -36,9 +37,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("User with such email already present");
         }
         User user = new User();
-        user.setSalt(HashUtil.getSalt());
-        String newPassword = HashUtil.hashPassword(password, user.getSalt());
-        user.setPassword(newPassword);
+        user.setPassword(password);
+        user.setEmail(email);
         return userService.add(user);
     }
 }
