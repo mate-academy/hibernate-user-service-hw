@@ -28,7 +28,8 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Can t generate hashPassword", e);
+            throw new RuntimeException("Can t generate hashPassword with using "
+                    + CRYPTO_ALGORITHM + " algorithm", e);
         }
         return hashedPassword.toString();
     }

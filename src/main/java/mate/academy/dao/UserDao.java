@@ -1,9 +1,9 @@
-package mate.academy.service;
+package mate.academy.dao;
 
 import java.util.Optional;
 import mate.academy.model.User;
 
-public interface UserService {
+public interface UserDao {
     User add(User user);
 
     Optional<User> findByEmail(String email);
