@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -73,15 +74,30 @@ public class Main {
         try {
             System.out.println(authenticationService.register(firstUser.getEmail(),
                     firstUser.getPassword()));
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Can't register the user: "
+                    + firstUser, e);
+        }
+        try {
             System.out.println(authenticationService.register(secondUser.getEmail(),
                     secondUser.getPassword()));
         } catch (RegistrationException e) {
-            throw new RuntimeException("Can't register the users: "
-                    + firstUser + ", " + secondUser, e);
+            throw new RuntimeException("Can't register the user: "
+                    + secondUser, e);
         }
-        System.out.println(authenticationService.login(firstUser.getEmail(),
-                firstUser.getPassword()));
-        System.out.println(authenticationService.login(secondUser.getEmail(),
-                secondUser.getPassword()));
+        try {
+            System.out.println(authenticationService.login(firstUser.getEmail(),
+                    firstUser.getPassword()));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't login using email: "
+                    + firstUser.getEmail(), e);
+        }
+        try {
+            System.out.println(authenticationService.login(secondUser.getEmail(),
+                    secondUser.getPassword()));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't login using emails: "
+                    + secondUser.getEmail(), e);
+        }
     }
 }

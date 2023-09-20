@@ -7,6 +7,10 @@ import java.security.SecureRandom;
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
 
+    private HashUtil() {
+
+    }
+
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
         int lengthOfSalt = 16;
@@ -25,7 +29,8 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Could not create hash using SHA-512 algorithm", e);
+            throw new IllegalStateException("Could not create hash using "
+                    + CRYPTO_ALGORITHM, e);
         }
         return hashedPassword.toString();
     }
