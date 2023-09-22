@@ -22,7 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = userFromDbOptional.get();
         String hashPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashPassword)) {
+        if (user.getPassword().equals(hashPassword) && userFromDbOptional.isPresent()) {
             return user;
         } else {
             throw new AuthenticationException("Wrong password");
