@@ -15,22 +15,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String email, String password) {
+    public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can`t authenticate user with email: " + email);
-        }
         User user = userFromDbOptional.get();
         String hashPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashPassword) && userFromDbOptional.isPresent()) {
             return user;
         } else {
-            throw new AuthenticationException("Wrong password");
+            throw new AuthenticationException("Can`t authenticate user with email: " + email);
         }
     }
 
     @Override
-    public User register(String email, String password) {
+    public User register(String email, String password) throws RegistrationException {
         if (email.isEmpty() || password.isEmpty()) {
             throw new RegistrationException(
                     "Can`t authenticate user, because email are password is empty");
