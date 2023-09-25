@@ -26,17 +26,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
         }
         throw new AuthenticationException("Can't authenticate user");
-
-        /*Optional<User> userFromDBOptional = userService.findByEmail(email);
-        if (userFromDBOptional.isEmpty()) {
-            throw new AuthenticationException("Can't authenticate user" );
-        }
-        User user = userFromDBOptional.get();
-        String hashPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("Can't authenticate user");*/
     }
 
     @Override
