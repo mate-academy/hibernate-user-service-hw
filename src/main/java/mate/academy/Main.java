@@ -71,8 +71,5 @@ public class Main {
 
         System.out.println(authenticationService.register(bob.getEmail(), bob.getPassword()));
         System.out.println(authenticationService.login(bob.getEmail(), bob.getPassword()));
-
-        //authenticationService.register(secondBob.getEmail(), secondBob.getPassword());
-        //authenticationService.login(secondBob.getEmail(), secondBob.getPassword());
     }
 }
