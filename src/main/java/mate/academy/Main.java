@@ -64,7 +64,6 @@ public class Main {
                         fastAndFurious.getId(), LocalDate.now()));
 
         User bob = new User("bob@gmail.com", "1234");
-        User secondBob = new User("bob@gmail.com", "4321");
 
         AuthenticationService authenticationService = (AuthenticationService)
                 INJECTOR.getInstance(AuthenticationService.class);
