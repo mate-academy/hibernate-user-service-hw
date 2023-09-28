@@ -28,12 +28,16 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User add(User user) {
+        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
+            transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
             return user;
         } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
             throw new DataProcessingException("Can't insert user " + user, e);
         }
     }
