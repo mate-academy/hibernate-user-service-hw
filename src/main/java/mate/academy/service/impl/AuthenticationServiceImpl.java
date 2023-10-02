@@ -27,14 +27,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isEmpty()) {
-            byte[] salt = HashUtil.getSalt();
-            User newUser = new User(email, HashUtil.hashPassword(password, salt));
-            newUser.setSalt(salt);
-            return userService.add(newUser);
-        } else {
-            throw new RegistrationException("A user with this email: "
-                    + email + " already exists");
+            return userService.add(new User(email, password, HashUtil.getSalt()));
         }
+        throw new RegistrationException("A user with this email: "
+                + email + " already exists");
     }
 
     private boolean matchPasswords(String rawPassword, User userFromDb) {

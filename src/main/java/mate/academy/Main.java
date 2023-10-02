@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -59,8 +61,16 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) instance.getInstance(AuthenticationService.class);
-        authenticationService.register("1235@gmail.com","1235");
-        System.out.println(authenticationService.login("1235@gmail.com", "1235"));
+        try {
+            authenticationService.register("1235@gmail.com","1235");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("A user with this email already exists", e);
+        }
+        try {
+            System.out.println(authenticationService.login("1235@gmail.com", "1235"));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Invalid email or password", e);
+        }
 
     }
 }

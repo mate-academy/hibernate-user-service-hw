@@ -37,7 +37,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> get(String email) {
+    public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> queryGetUser = cb.createQuery(User.class);
