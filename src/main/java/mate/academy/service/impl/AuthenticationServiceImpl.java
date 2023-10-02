@@ -1,8 +1,7 @@
 package mate.academy.service.impl;
 
-import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
-import mate.academy.exception.RegisterException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -17,29 +16,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isPresent() && checkPassword(password, userFromDbOptional)) {
-            return userFromDbOptional.get();
-        }
-        throw new AuthenticationException("Email or password is invalid: " + email);
+        User user = userService.findByEmail(email).orElseThrow(
+                () -> new AuthenticationException("Can't find user by email: " + email));
+        checkPassword(password, user);
+        return user;
     }
     
     @Override
-    public void register(String email, String password) throws RegisterException {
+    public void register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegisterException("User with email is already register. Email: " + email);
+            throw new RegistrationException("User with email is already register. Email: " + email);
         }
         User user = new User(email, password);
         userService.add(user);
     }
     
-    private boolean checkPassword(String password, Optional<User> userFromDbOptional) {
-        if (userFromDbOptional.isEmpty()) {
-            return false;
-        }
-        User user = userFromDbOptional.get();
+    private void checkPassword(String password, User user) throws AuthenticationException {
         String hashedPassword = HashUtil.hashPassword(
                 password, user.getSalt());
-        return hashedPassword.equals(user.getPassword());
+        if (!hashedPassword.equals(user.getPassword())) {
+            throw new AuthenticationException("Email or password is invalid.");
+        }
     }
 }
