@@ -14,11 +14,10 @@ import org.hibernate.Transaction;
 public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = null;
         Transaction transaction = null;
         try {
-            session = sessionFactory.openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.persist(user);
             return user;

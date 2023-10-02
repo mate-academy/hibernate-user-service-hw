@@ -39,11 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         newUser.setEmail(email);
         newUser.setPassword(password);
-        try {
-            return userService.add(newUser);
-        } catch (Exception e) {
-            throw new RegistrationException("Cant create user with email: " + email, e);
-        }
+        return userService.add(newUser);
     }
 
     private boolean validateEmail(String email) {
