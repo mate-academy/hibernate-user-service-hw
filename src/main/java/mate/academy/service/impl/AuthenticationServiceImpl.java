@@ -25,6 +25,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+            throw new RegistrationException("Email or password are invalid!");
+        }
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException(
                     "Can't register user, email has already been used: " + email);
@@ -39,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String hashedPassword = HashUtil.hashPassword(
                 password, user.getSalt());
         if (!hashedPassword.equals(password)) {
-            throw new AuthenticationException("Email or password are incorrect!");
+            throw new AuthenticationException("Password is incorrect, try again!");
         }
     }
 }
