@@ -18,23 +18,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can't register user with email: " + email);
-        }
         User user = userFromDbOptional.get();
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
+        if (!user.getPassword().equals(hashedPassword) || userFromDbOptional.isEmpty()) {
+            throw new AuthenticationException("Email or password are correct!");
         }
-        throw new AuthenticationException("Passwords are not equal for email: " + email);
+        return user;
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException(
-                    "Can't register user with, email has already been used: " + email);
+                    "Can't register user, email has already been used: " + email);
         }
+        if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+            throw new RegistrationException("Email or password are incorrect!");
+        }
+
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
