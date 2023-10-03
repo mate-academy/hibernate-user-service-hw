@@ -62,7 +62,9 @@ public class Main {
 
         AuthenticationService authenticationService
                 = (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
-        System.out.println(authenticationService.register("pespatron@dsns.com", "woofwoof"));
-        System.out.println(authenticationService.login("pespatron@dsns.com", "woofwoof"));
+        String email = "pespatron@dsns.com";
+        String password = "woofwoof";
+        System.out.println(authenticationService.register(email, password));
+        System.out.println(authenticationService.login(email, password));
     }
 }

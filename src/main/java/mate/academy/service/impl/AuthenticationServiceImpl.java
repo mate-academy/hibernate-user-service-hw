@@ -17,13 +17,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()
-                || !userFromDbOptional.get().getPassword()
-                .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isEmpty()
+                || !comparePassword(user.get(), password)) {
             throw new AuthenticationException("Email or password are incorrect");
         }
-        return userFromDbOptional.get();
+        return user.get();
     }
 
     @Override
@@ -31,12 +30,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (email == null || email.isEmpty() || email.isBlank()) {
             throw new RegistrationException("Email can't be empty");
         }
-        if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException(String.format("Email %s already used", email));
-        }
         if (password == null || password.isEmpty() || password.isBlank()) {
             throw new RegistrationException("Password can't be empty");
         }
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException(String.format("Email %s already used", email));
+        }
         return userService.add(new User(email, password));
+    }
+
+    private boolean comparePassword(User user, String password) {
+        return user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()));
     }
 }
