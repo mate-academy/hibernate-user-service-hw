@@ -17,11 +17,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> fromDb = userService.findByEmail(email);
-        if (fromDb.isEmpty() || !isValidPassword(fromDb.get(), password)) {
-            throw new AuthenticationException("Authentication failed");
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isEmpty() || !isValidPassword(user.get(), password)) {
+            throw new AuthenticationException(
+                    "Authentication failed for user with email: " + email);
         }
-        return fromDb.get();
+        return user.get();
     }
 
     @Override
