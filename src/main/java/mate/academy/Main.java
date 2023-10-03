@@ -13,7 +13,6 @@ import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
-import mate.academy.util.HashUtil;
 
 public class Main {
     private static final Injector injector =
@@ -66,8 +65,7 @@ public class Main {
 
         User charlie = new User();
         charlie.setEmail("double@gmail.com");
-        charlie.setSalt(HashUtil.getSalt());
-        charlie.setPassword(HashUtil.hashPassword("123456", charlie.getSalt()));
+        charlie.setPassword("123456");
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
