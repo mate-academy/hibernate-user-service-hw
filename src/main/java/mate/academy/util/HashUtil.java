@@ -5,10 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashUtil {
-    public static final String CRYPTO_ALGORITHM = "Sha-512";
-
-    public HashUtil() {
-    }
+    private static final String CRYPTO_ALGORITHM = "Sha-512";
 
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
@@ -27,7 +24,8 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", bytes));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("Can't accept or process this password: "
+                    + password, e);
         }
         return hashedPassword.toString();
     }
