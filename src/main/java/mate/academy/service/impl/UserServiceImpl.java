@@ -28,6 +28,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByEmail(String email) {
         return userDao.getAll().stream().filter(user -> user.getEMail().equals(email)).findFirst();
-
     }
 }
