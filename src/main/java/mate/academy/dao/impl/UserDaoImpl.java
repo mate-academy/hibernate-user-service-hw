@@ -34,9 +34,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User get(Long id) {
+    public Optional<User> get(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return Optional.ofNullable(session.get(User.class, id)).get();
+            return Optional.ofNullable(session.get(User.class, id));
         } catch (RuntimeException e) {
             throw new DataProcessingException("Can't find user by email - " + id, e);
         }

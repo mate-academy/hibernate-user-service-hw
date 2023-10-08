@@ -73,7 +73,7 @@ public class Main {
         System.out.println(authenticationService.login("Oleh@gmail.com", "password"));
 
         //login user by incorrect data. We will get exception
-        System.out.println(authenticationService.login("Oleh@gmail.cm", "password"));
+        //System.out.println(authenticationService.login("wrongEmail@gmail.cm", "password"));
 
     }
 }

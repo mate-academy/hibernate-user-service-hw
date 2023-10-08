@@ -56,20 +56,18 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email)
-                && Objects.equals(password, user.password);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password);
+        return Objects.hash(id, email);
     }
 
     @Override
     public String toString() {
         return "User{" + "id=" + id
                 + ", email='" + email + '\''
-                + ", password='" + password + '\''
                 + '}';
     }
 }
