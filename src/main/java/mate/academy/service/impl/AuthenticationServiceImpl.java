@@ -21,7 +21,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userFromDbOptional.isEmpty()) {
             throw new AuthenticationException("User with this login doesn`t exist: " + email);
         }
-        User user = userFromDbOptional.get();
+        User user = userFromDbOptional.orElseThrow(() ->
+                new RuntimeException("Can`t get user for DB"));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;

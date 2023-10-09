@@ -2,6 +2,7 @@ package mate.academy.dao.impl;
 
 import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
@@ -10,7 +11,6 @@ import org.hibernate.Transaction;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-
     @Override
     public User add(User user) {
         Transaction transaction = null;
@@ -25,7 +25,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can`t save user to DB" + user.toString(), e);
+            throw new DataProcessingException("Can`t save user to DB" + user, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -41,7 +41,7 @@ public class UserDaoImpl implements UserDao {
                     .uniqueResult();
             return Optional.ofNullable(user);
         } catch (Exception e) {
-            throw new RuntimeException("Can`t get user from Db with mail: " + email, e);
+            throw new DataProcessingException("Can`t get user from Db with mail: " + email, e);
         }
     }
 }
