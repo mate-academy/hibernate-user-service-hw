@@ -2,16 +2,26 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.UserService;
 
 public class Main {
+    private static final Injector injector = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
-        MovieService movieService = null;
+        MovieService movieService =
+                (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -27,7 +37,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService =
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,12 +55,81 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        UserService userService =
+                (UserService) injector.getInstance(UserService.class);
+
+        String email = "user1@gmail.com";
+        User user1 = null;
+        try {
+            user1 = authenticationService.register(email, "qwerty");
+            userService.add(user1);
+        } catch (RegistrationException e) {
+            System.out.println("Cannot register a user with email: " + email
+                    + ". " + e.getMessage());
+        }
+
+        email = "user2@gmail.com";
+        User user2 = null;
+        try {
+            user2 = authenticationService.register(email, "poiuyt");
+            userService.add(user2);
+        } catch (RegistrationException e) {
+            System.out.println("Cannot register a user with email: " + email
+                    + ". " + e.getMessage());
+        }
+
+        email = "user3@gmail.com";
+        User user3 = null;
+        try {
+            user3 = authenticationService.register(email, "user3");
+            userService.add(user3);
+        } catch (RegistrationException e) {
+            System.out.println("Cannot register a user with email: " + email
+                    + ". " + e.getMessage());
+        }
+
+        email = "user4@gmail.com";
+        User user4 = null;
+        try {
+            user4 = authenticationService.register(email, "");
+            userService.add(user4);
+        } catch (RegistrationException e) {
+            System.out.println("Cannot register a user with email: " + email
+                    + ". " + e.getMessage());
+        }
+
+        System.out.println(userService.findByEmail(user2.getEmail()).get());
+        System.out.println(userService.findByEmail(user1.getEmail()).get());
+        System.out.println("Expected: false. Actual: "
+                + userService.findByEmail(email).isPresent());
+
+        User user5 = null;
+        try {
+            user5 = authenticationService.register(user2.getEmail(), "y0bgxfv");
+            userService.add(user5);
+        } catch (RegistrationException e) {
+            System.out.println("Cannot register a user with email: " + email
+                    + ". " + e.getMessage());
+        }
+
+        email = "user3@gmail.com";
+        try {
+            User userFromDb = authenticationService.login(email, "user3");
+            System.out.println("userFromDb = " + userFromDb);
+        } catch (AuthenticationException e) {
+            System.out.println("Cannot login a user with email: " + email
+                    + ". " + e.getMessage());
+        }
     }
 }
