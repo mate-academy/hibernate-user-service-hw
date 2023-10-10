@@ -16,14 +16,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-
         User user = userService.findByEmail(email).orElseThrow();
-        if (user.getEMail().equals(email) && user.getPassword().equals(HashUtil
-                .hashPassword(password, user.getSalt()))) {
-            return user;
-        } else {
-            throw new AuthenticationException();
+        if (!(user.getEMail().equals(email) && user.getPassword().equals(HashUtil
+                .hashPassword(password, user.getSalt())))) {
+            throw new AuthenticationException("Wrong login or password, can`t login");
         }
+        return user;
     }
 
     @Override
@@ -31,10 +29,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setEMail(email);
         user.setPassword(password);
-        if (userService.findByEmail(email).isEmpty()) {
-            return userService.add(user);
-        } else {
-            throw new RegistrationException();
+        if (!userService.findByEmail(email).isEmpty()) {
+            throw new RegistrationException("User already exist!");
         }
+        return userService.add(user);
     }
 }

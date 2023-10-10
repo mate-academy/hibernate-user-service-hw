@@ -22,11 +22,11 @@ public class HashUtil {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(pwd.getBytes());
-            for (byte b: digest) {
+            for (byte b : digest) {
                 hashedPwd.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new AuthenticationException();
+            throw new AuthenticationException("Can`t hash password");
         }
         return hashedPwd.toString();
     }
