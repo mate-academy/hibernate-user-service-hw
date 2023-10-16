@@ -19,8 +19,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
 
-        if (userFromDbOptional.isEmpty() ||
-                !userFromDbOptional.map(user -> user.getPassword()
+        if (userFromDbOptional.isEmpty()
+                || !userFromDbOptional.map(user -> user.getPassword()
                                 .equals(HashUtil.hashPassword(password, user.getSalt())))
                         .orElse(false)) {
             throw new AuthenticationException("Can't authenticate user");
