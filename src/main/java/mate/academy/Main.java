@@ -63,13 +63,13 @@ public class Main {
         AuthenticationService authenticationService =
                 (AuthenticationService) instance.getInstance(AuthenticationService.class);
         try {
-            authenticationService.register("qwerty3@gmail.com","123456");
+            authenticationService.register("qwerty4@gmail.com","123456");
         } catch (RegistrationException e) {
             throw new RuntimeException("A user with this email already exists", e);
         }
 
         try {
-            System.out.println(authenticationService.login("qwerty3@gmail.com", "123456"));
+            System.out.println(authenticationService.login("qwerty4@gmail.com", "123456"));
         } catch (AuthenticationException e) {
             throw new RuntimeException("Invalid email or password", e);
         }
