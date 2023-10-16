@@ -14,6 +14,7 @@ import mate.academy.util.HashUtil;
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
+
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);

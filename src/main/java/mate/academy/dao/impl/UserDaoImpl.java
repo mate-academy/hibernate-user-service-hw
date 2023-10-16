@@ -12,6 +12,7 @@ import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 
+
 @Dao
 public class UserDaoImpl implements UserDao {
     @Override
