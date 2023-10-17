@@ -1,4 +1,4 @@
-# Hibernate - create User service
+# Hibernate - Create user service
 
 We will continue working on our Cinema project.
 
@@ -27,7 +27,7 @@ Your task is to implement the following steps:
             User login(String email, String password) throws AuthenticationException;
 
             /**
-            * We should register a new user. New user entity will contains the email and password
+            * We should register a new user. The new user entity will contain the email and password
             * @param email - user email. should be unique for each user
             * @param password - user password
             * @return new user instance
@@ -35,9 +35,9 @@ Your task is to implement the following steps:
             User register(String email, String password) throws RegistrationException;
         }
         ````
-    - Create your own checked `RegistrationException` and `AuthenticationException` to use it in `register()` and `login()` methods respectively
+    - Create your own checked `RegistrationException` and `AuthenticationException` to use in `register()` and `login()` methods respectively
 
-    - Please don’t forget to use salt and password hashing
-- In the `mate/academy/Main.main()` method create instance of AuthenticationService using injector and test all methods from it.
+    - Please don’t forget to use salt and password-hashing
+- In the `mate/academy/Main.main()` method create an instance of AuthenticationService using injector and test all methods from it.
 
-[Try to avoid these common mistakes, while solving task](https://mate-academy.github.io/jv-program-common-mistakes/hibernate/add-user-service/add-user-service-checklist)
+[Try to avoid these common mistakes, while solving task](./checklist.md)
