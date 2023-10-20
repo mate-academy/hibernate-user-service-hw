@@ -5,7 +5,6 @@ import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
-import mate.academy.util.HashUtil;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -15,8 +14,6 @@ import org.hibernate.query.Query;
 public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
-        user.setSalt(HashUtil.getSalt());
-        user.setPassword(HashUtil.hashPassword(user.getPassword(), user.getSalt()));
         Transaction transaction = null;
         Session session = null;
         try {
