@@ -35,10 +35,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     + ". It has already been used for registration");
         }
 
-        if (password.length() <= 6) {
-            throw new RegistrationException("The password must be 6 or more characters.");
-        }
-
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
