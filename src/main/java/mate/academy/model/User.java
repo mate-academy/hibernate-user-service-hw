@@ -56,10 +56,10 @@ public class User {
 
     @Override
     public String toString() {
-        return "mate.academy.model.User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", passsword='" + password + '\'' +
-                '}';
+        return "mate.academy.model.User{"
+                + "id=" + id
+                + ", email='" + email + '\''
+                + ", passsword='" + password + '\''
+                + '}';
     }
 }

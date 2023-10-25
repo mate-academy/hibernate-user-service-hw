@@ -6,11 +6,11 @@ import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
+import java.util.List;
+import java.util.Optional;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import java.util.List;
-import java.util.Optional;
 
 @Dao
 public class UserDaoImpl implements UserDao {
