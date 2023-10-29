@@ -2,15 +2,33 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
-    public static void main(String[] args) {
+    private static final Injector INJECTOR = Injector.getInstance("mate.academy");
+
+    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+        AuthenticationService authenticationService = (AuthenticationService) INJECTOR
+                .getInstance(AuthenticationService.class);
+        System.out.println(authenticationService.register("new_user1@ukr.net", "123456"));
+        System.out.println(authenticationService.register("new_user2@ukr.net", "qwerty"));
+        System.out.println(authenticationService.register("new_user3@ukr.net", "Ukraine"));
+        System.out.println(authenticationService.register("new_user1@ukr.net", "nonono"));
+
+        System.out.println(authenticationService.login("new_user1@ukr.net", "123456"));
+        System.out.println(authenticationService.login("new_user2@ukr.net", "qwerty"));
+        System.out.println(authenticationService.login("not_valid@ukr.net", "nonono"));
+        System.out.println(authenticationService.login("new_user1@ukr.net", "not_valid"));
+
         MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
