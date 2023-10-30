@@ -2,6 +2,7 @@ package mate.academy.dao.impl;
 
 import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
@@ -24,7 +25,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Can't save user " + user + " to DB.", e);
+            throw new DataProcessingException("Can't save user " + user + " to DB.", e);
         } finally {
             if (session != null) {
                 session.close();
@@ -38,7 +39,7 @@ public class UserDaoImpl implements UserDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.get(User.class, id);
         } catch (Exception e) {
-            throw new RuntimeException("Can't get user with id + " + id);
+            throw new DataProcessingException("Can't get user with id + " + id, e);
         }
     }
 
@@ -49,7 +50,7 @@ public class UserDaoImpl implements UserDao {
                     .setParameter("email", email)
                     .uniqueResultOptional();
         } catch (Exception e) {
-            throw new RuntimeException("Can't process finding by email ", e);
+            throw new DataProcessingException("Can't process finding by email ", e);
         }
     }
 }
