@@ -31,7 +31,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("Incorrect input params!"
                     + " Email or password can't be empty!");
         }
-        if (userService.findByEmail(email).orElse(null) != null) {
+        if (userService.findByEmail(email).isEmpty()) {
             throw new RegistrationException("User with email: "
                     + email + " is already registered");
         }
