@@ -64,12 +64,12 @@ public class Main {
             System.out.println(authenticationService.register("kos_natalya", "queue"));
             System.out.println(authenticationService.register("rostyk2006", "dell_laptop"));
         } catch (RegistrationException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't register user", e);
         }
         try {
             System.out.println(authenticationService.login("kos_natalya", "queue"));
         } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("User can't login", e);
         }
     }
 }
