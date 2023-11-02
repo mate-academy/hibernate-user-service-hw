@@ -15,20 +15,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User register(String email, String password) {
-        User newUser = new User();
-        newUser.setEmail(email);
-        newUser.setPassword(password);
+    public User register(String email, String password) throws RegistrationException {
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setPassword(password);
 
-        User registerUser = userService.add(newUser);
-        if (registerUser == null) {
-            throw new RegistrationException("Failed to register user");
+            User registerUser = userService.add(newUser);
+            if (registerUser == null) {
+                throw new RegistrationException("Failed to register user" + newUser);
+            }
+            return newUser;
         }
-        return newUser;
-    }
+
 
     @Override
-    public User login(String email, String password) {
+    public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isEmpty()) {
             throw new AuthenticationException("Can't authenticate user");

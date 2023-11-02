@@ -1,5 +1,6 @@
 package mate.academy;
 
+import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.User;
@@ -12,11 +13,12 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        authenticationService.register("user@example.com", "password123");
-        User loggedInUser = authenticationService.login("user@example.com", "password123");
-        if (loggedInUser == null) {
-            throw new RegistrationException("User is not registered");
+        try {
+            authenticationService.register("user@example.com", "password123");
+            User loggedInUser = authenticationService.login("user@example.com", "password123");
+            System.out.println("Successfully logged in: " + loggedInUser);
+        } catch (RegistrationException | AuthenticationException e) {
+            System.err.println("Error: " + e.getMessage());
         }
-        System.out.println("User successfully registered");
     }
 }
