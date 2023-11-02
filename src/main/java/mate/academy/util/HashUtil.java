@@ -8,6 +8,9 @@ public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
     private static final int SALT_LENGTH = 16;
 
+    private HashUtil() {
+    }
+
     public static byte[] generateSalt() {
         byte[] salt = new byte[SALT_LENGTH];
         SecureRandom random = new SecureRandom();

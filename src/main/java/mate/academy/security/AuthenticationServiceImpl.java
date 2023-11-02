@@ -14,16 +14,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
 
-    public AuthenticationServiceImpl() {
-
-    }
-
-    public AuthenticationServiceImpl(UserService userService) {
-        this.userService = userService;
-    }
-
     @Override
-    public void register(String email, String password) {
+    public User register(String email, String password) {
         User newUser = new User();
         newUser.setEmail(email);
         newUser.setPassword(password);
@@ -32,6 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (registerUser == null) {
             throw new RegistrationException("Failed to register user");
         }
+        return newUser;
     }
 
     @Override
