@@ -16,17 +16,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-            User newUser = new User();
-            newUser.setEmail(email);
-            newUser.setPassword(password);
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setPassword(password);
 
-            User registerUser = userService.add(newUser);
-            if (registerUser == null) {
-                throw new RegistrationException("Failed to register user" + newUser);
-            }
-            return newUser;
+        User registerUser = userService.add(newUser);
+        if (registerUser == null) {
+            throw new RegistrationException("Failed to register user" + newUser);
         }
-
+        return newUser;
+    }
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
