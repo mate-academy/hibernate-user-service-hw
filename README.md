@@ -41,3 +41,4 @@ Your task is to implement the following steps:
 - In the `mate/academy/Main.main()` method create an instance of AuthenticationService using injector and test all methods from it.
 
 [Try to avoid these common mistakes, while solving task](./checklist.md)
+    
