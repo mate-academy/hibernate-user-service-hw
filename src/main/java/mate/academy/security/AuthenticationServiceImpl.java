@@ -16,6 +16,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        Optional<User> existingUser = userService.findByEmail(email);
+        if (existingUser.isPresent()) {
+            throw new RegistrationException("User with this email already exists");
+        }
+
         User newUser = new User();
         newUser.setEmail(email);
         newUser.setPassword(password);
@@ -38,6 +43,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (user.getPassword().equals(hashedPassword)) {
             return user;
         }
-        throw new AuthenticationException("Passwords are not equal");
+        throw new AuthenticationException("Invalid email or password");
     }
 }
