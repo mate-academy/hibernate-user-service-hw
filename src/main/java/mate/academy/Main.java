@@ -2,7 +2,6 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -10,7 +9,11 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.service.*;
+import mate.academy.service.AuthenticationService;
+import mate.academy.service.CinemaHallService;
+import mate.academy.service.MovieService;
+import mate.academy.service.MovieSessionService;
+import mate.academy.service.UserService;
 import mate.academy.service.impl.AuthenticationServiceImpl;
 import mate.academy.service.impl.UserServiceImpl;
 
@@ -66,14 +69,11 @@ public class Main {
                         fastAndFurious.getId(), LocalDate.now()));
 
         try {
-            // Register a new user
             authService.register("test@example.com", "password123");
 
-            // Login with the registered user
             authService.login("test@example.com", "password123");
             System.out.println("Login successful.");
 
-            // Retrieve the user using UserService
             userService.findByEmail("test@example.com").ifPresent(user ->
                     System.out.println("User retrieved: " + user.getEmail()));
         } catch (RegistrationException e) {
