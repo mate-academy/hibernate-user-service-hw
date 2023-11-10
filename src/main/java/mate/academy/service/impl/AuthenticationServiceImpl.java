@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.Arrays;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -22,13 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .orElseThrow(() -> new AuthenticationException("Authentication failed."
                         + " User not found."));
 
-        byte[] storedSalt = HashUtil.generateSalt();
-        byte[] hashedPassword = HashUtil.hashPassword(password, storedSalt);
-
-        if (!Arrays.equals(hashedPassword, user.getPassword())) {
-            throw new AuthenticationException("Authentication failed. Incorrect password.");
-        }
-
+        HashUtil.verifyPassword(password, user.getPassword());
         return user;
     }
 
