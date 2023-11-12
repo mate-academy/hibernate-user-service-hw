@@ -58,17 +58,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> findByLogin(String login) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from User u where u.login = :login", User.class)
-                    .setParameter("login", login)
-                    .uniqueResultOptional();
-        } catch (Exception e) {
-            throw new DataProcessingException("Can not find a User with login :  " + login, e);
-        }
-    }
-
-    @Override
     public List<User> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder()

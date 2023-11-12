@@ -1,6 +1,7 @@
 package mate.academy.security.impl;
 
 import java.util.Optional;
+
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -16,28 +17,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String login, String password) throws AuthenticationException {
-        Optional<User> userFromDb = userService.findByLogin(login);
+    public User login(String email, String password) throws AuthenticationException {
+        Optional<User> userFromDb = userService.findByEmail(email);
         if (userFromDb.isEmpty()) {
-            throw new AuthenticationException("Can not login User with login: " + login);
+            throw new AuthenticationException("Can not login User with login: " + email);
         }
         User user = userFromDb.get();
         String hashPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashPassword)) {
             return user;
         }
-        throw new AuthenticationException("Can not login user with login" + login);
+        throw new AuthenticationException("Can not login user with login" + email);
     }
 
     @Override
-    public User register(String login, String password) throws RegistrationException {
-        User user = new User();
-        user.setLogin(login);
-        user.setPassword(password);
-        if (user.getLogin().isEmpty() || user.getPassword().isEmpty()) {
-            throw new RegistrationException("Can not register user with empty login or password");
+    public User register(String email, String password) throws RegistrationException {
+        if (userService.findByEmail(email).isEmpty()) {
+            User user = new User();
+            user.setEmail(email);
+            user.setPassword(password);
+            userService.add(user);
+            return user;
         }
-        return userService.add(user);
+        throw new RegistrationException("This user is already registered");
 
     }
 }

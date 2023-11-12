@@ -2,6 +2,7 @@ package mate.academy.service;
 
 import java.util.List;
 import java.util.Optional;
+
 import mate.academy.model.User;
 
 public interface UserService {
@@ -10,9 +11,7 @@ public interface UserService {
 
     User findById(Long id);
 
-    User findByEmail(String email);
-
-    Optional<User> findByLogin(String login);
+    Optional<User> findByEmail(String email);
 
     List<User> getAll();
 }
