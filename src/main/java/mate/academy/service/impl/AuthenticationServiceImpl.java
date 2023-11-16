@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.util.Arrays;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -19,29 +18,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can't find user with email " + email);
+        if (userFromDbOptional.isPresent() && checkPassword(password, userFromDbOptional.get())) {
+            return userFromDbOptional.get();
         }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password,user.getSalt());
-        System.out.println(Arrays.toString(user.getSalt()));
-        System.out.println(hashedPassword);
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("Password is not correct");
+        throw new AuthenticationException("Email or password not correct");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isPresent()) {
-            throw new RegistrationException("User with email " + email + " already exists");
+        if (userService.findByEmail(email).isEmpty()) {
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setPassword(password);
+            userService.add(newUser);
+            return newUser;
         }
-        User newUser = new User();
-        newUser.setEmail(email);
-        newUser.setPassword(password);
-        userService.add(newUser);
-        return newUser;
+        throw new RegistrationException("User with email " + email + " already exists");
+    }
+
+    private boolean checkPassword(String rawPassword, User userFromDb) {
+        String hashedPassword = HashUtil.hashPassword(rawPassword, userFromDb.getSalt());
+        return (userFromDb.getPassword().equals(hashedPassword));
     }
 }
