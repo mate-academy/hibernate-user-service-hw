@@ -39,6 +39,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("Can't register user by email: " + email
                     + ". Email is already in use.", new Exception());
         }
+        if (password.isEmpty()) {
+            throw new RegistrationException("Password can`t be empty", new Exception());
+        }
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
