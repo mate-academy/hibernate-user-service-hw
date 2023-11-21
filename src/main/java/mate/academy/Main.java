@@ -2,17 +2,47 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.util.HashUtil;
 
 public class Main {
-    public static void main(String[] args) {
-        MovieService movieService = null;
+    private static final Injector INJECTOR = Injector.getInstance("mate.academy");
 
+    public static void main(String[] args) {
+        AuthenticationService authenticationService = (AuthenticationService) INJECTOR
+                .getInstance(AuthenticationService.class);
+        User bob = new User();
+        bob.setEmail("Bob");
+        bob.setSalt(HashUtil.getSalt());
+        bob.setPassword(HashUtil.hashPassword("qwerty", bob.getSalt()));
+        User alice = new User();
+        alice.setEmail("Alice");
+        alice.setPassword("123456");
+        User john = new User();
+        john.setEmail("John");
+        john.setPassword("helloworld");
+        try {
+            authenticationService.register(bob.getEmail(), bob.getPassword());
+            authenticationService.register(alice.getEmail(), alice.getPassword());
+            authenticationService.register(john.getEmail(), john.getPassword());
+            authenticationService.login(bob.getEmail(), bob.getPassword());
+            authenticationService.login(alice.getEmail(), alice.getPassword());
+            authenticationService.login(john.getEmail(), john.getPassword());
+        } catch (RegistrationException | AuthenticationException e) {
+            throw new RuntimeException(e);
+        }
+
+        MovieService movieService = (MovieService) INJECTOR.getInstance(MovieService.class);
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
@@ -27,7 +57,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService = (CinemaHallService) INJECTOR
+                .getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,7 +75,8 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService = (MovieSessionService) INJECTOR
+                .getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
