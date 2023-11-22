@@ -10,12 +10,12 @@ public class HashUtil {
             "Could not create hash using SHA-512 algorithm";
     private static final String STRING_FORMAT = "%02x";
     private static final int DEFAULT_LENGTH = 16;
+    private static final SecureRandom secureRandom = new SecureRandom();
 
     private HashUtil() {
     }
 
     public static byte[] getSalt() {
-        SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[DEFAULT_LENGTH];
         secureRandom.nextBytes(salt);
         return salt;

@@ -22,10 +22,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isPresent()
-                && validatePasswords(password, userFromDbOptional.get())) {
-            return userFromDbOptional.get();
+        Optional<User> userFromDb = userService.findByEmail(email);
+        if (userFromDb.isPresent()
+                && validatePasswords(password, userFromDb.get())) {
+            return userFromDb.get();
         }
         throw new AuthenticationException(AUTH_ERROR_MSG);
     }
@@ -35,8 +35,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if ((email == null || email.isEmpty()) || (password == null || password.isEmpty())) {
             throw new RegistrationException(CREDENTIALS_ERR_MSG);
         }
-        Optional<User> userFromDBoptional = userService.findByEmail(email);
-        if (userFromDBoptional.isPresent()) {
+        Optional<User> userFromDb = userService.findByEmail(email);
+        if (userFromDb.isPresent()) {
             throw new RegistrationException(ALREADY_REGISTERED_USER_ERR_MSG + email);
         }
         User user = new User();
