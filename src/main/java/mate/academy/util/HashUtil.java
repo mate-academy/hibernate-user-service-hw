@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-256";
+    private static final String HEXADECIMAL_CONVERTER = "%02x";
 
     private HashUtil() {
     }
@@ -17,7 +18,7 @@ public class HashUtil {
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
             for (byte b : digest) {
-                hashPassword.append(String.format("%02x",b));
+                hashPassword.append(String.format(HEXADECIMAL_CONVERTER,b));
             }
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalArgumentException("Couldn't create hash using SHA-256 algorithm", e);

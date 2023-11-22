@@ -16,13 +16,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public User login(String email, String password) {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
+        if (userFromDbOptional.isPresent()) {
+            User user = userFromDbOptional.get();
+            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+            if (user.getPassword().equals(hashedPassword)) {
+                return user;
+            }
         }
-        throw new AuthenticationException("Wrong email: "
-                + email + " or password for authenticate user: " + password);
+        throw new AuthenticationException("Wrong email or password for user with email: " + email);
     }
 
     @Override
@@ -30,12 +31,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        try {
-            userService.add(user);
-            return user;
-        } catch (RuntimeException e) {
-            throw new RegistrationException("Can't register user with email: "
-                    + email + ", and password " + password, e);
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("User with such email: " + email + "presently exist");
         }
+        if (email.isEmpty() || password.isEmpty()) {
+            throw new RegistrationException("Can't register user with empty email or password ");
+        }
+        userService.add(user);
+        return user;
     }
 }
+
