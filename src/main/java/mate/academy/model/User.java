@@ -4,15 +4,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String email;
-    String password;
-    byte[] salt;
+    private Long id;
+    @NaturalId
+    private String email;
+    private String password;
+    private byte[] salt;
 
     public Long getId() {
         return id;
@@ -46,6 +50,12 @@ public class User {
         this.salt = salt;
     }
 
-
-
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("User{");
+        sb.append("id=").append(id);
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        return sb.toString();
+    }
 }
