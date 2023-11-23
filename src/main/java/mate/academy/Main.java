@@ -21,13 +21,13 @@ public class Main {
         AuthenticationService authenticationService = (AuthenticationService) INJECTOR
                 .getInstance(AuthenticationService.class);
         User bob = new User();
-        bob.setEmail("Bob");
+        bob.setEmail("bob@email");
         bob.setPassword("qwerty");
         User alice = new User();
-        alice.setEmail("Alice");
+        alice.setEmail("alice@gmail.com");
         alice.setPassword("123456");
         User john = new User();
-        john.setEmail("John");
+        john.setEmail("john@email");
         john.setPassword("helloworld");
         try {
             authenticationService.register(bob.getEmail(), bob.getPassword());
