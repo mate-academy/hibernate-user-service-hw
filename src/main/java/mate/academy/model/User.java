@@ -55,7 +55,6 @@ public class User {
         final StringBuffer sb = new StringBuffer("User{");
         sb.append("id=").append(id);
         sb.append(", email='").append(email).append('\'');
-        sb.append(", password='").append(password).append('\'');
         return sb.toString();
     }
 }
