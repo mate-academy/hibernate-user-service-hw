@@ -19,7 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         User user = userFromDbOptional.orElseThrow();
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
+        if (!userFromDbOptional.isPresent() || user.getPassword().equals(hashedPassword)) {
             return user;
         }
         throw new AuthenticationException("Can't authenticate user");
@@ -35,8 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setEmail(email);
         user.setSalt(HashUtil.getSalt());
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        user.setPassword(hashedPassword);
+        user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
         if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
             throw new RegistrationException("Can't register user");
         }
