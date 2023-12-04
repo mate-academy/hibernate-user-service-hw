@@ -1,11 +1,8 @@
 package mate.academy.util;
 
-import com.mysql.cj.util.DnsSrv;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Random;
 
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
@@ -26,7 +23,7 @@ public class HashUtil {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
-            for(byte b : digest) {
+            for (byte b : digest) {
                 hashedPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {

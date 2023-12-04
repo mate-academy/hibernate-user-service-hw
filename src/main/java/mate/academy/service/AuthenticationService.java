@@ -1,9 +1,7 @@
 package mate.academy.service;
 
-import mate.academy.exception.RegistrationException;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.model.User;
-
-import javax.naming.AuthenticationException;
 
 public interface AuthenticationService {
     User login(String email, String password) throws AuthenticationException;
@@ -14,5 +12,5 @@ public interface AuthenticationService {
      * @param password - user password
      * @return new user instance
      */
-    User register(String email, String password) throws RegistrationException;
+    User register(String email, String password);
 }
