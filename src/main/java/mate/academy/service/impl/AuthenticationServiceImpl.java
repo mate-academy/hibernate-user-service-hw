@@ -31,17 +31,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         User user = new User(email, password);
-        try {
-            if (user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
-                throw new RuntimeException("Email or password can't be empty");
-            }
-            if (!user.getEmail().matches(REGEX_EMAIL)) {
-                throw new RuntimeException("Invalid email format");
-            }
-            return userService.add(user);
-        } catch (Exception e) {
-            throw new RegistrationException("Can't register user with email:"
-            + email + " password: " + password, e);
+        if (user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
+            throw new RuntimeException("Email or password can't be empty");
         }
+        if (!user.getEmail().matches(REGEX_EMAIL)) {
+            throw new RuntimeException("Invalid email format");
+        }
+        if (!userService.findByEmail(email).isPresent()) {
+            throw new RuntimeException("User is already registered");
+        }
+        return userService.add(user);
     }
 }
