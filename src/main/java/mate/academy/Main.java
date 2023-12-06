@@ -1,55 +1,76 @@
 package mate.academy;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import mate.academy.model.CinemaHall;
-import mate.academy.model.Movie;
-import mate.academy.model.MovieSession;
-import mate.academy.service.CinemaHallService;
-import mate.academy.service.MovieService;
-import mate.academy.service.MovieSessionService;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
+import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
+import mate.academy.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
+    private static final Logger logger = LogManager.getLogger();
+    private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final AuthenticationService authenticationService =
+            (AuthenticationService) injector.getInstance(AuthenticationService.class);
+    private static final UserService userService = (UserService) injector
+            .getInstance(UserService.class);
+
     public static void main(String[] args) {
-        MovieService movieService = null;
+        userService.add(new User("eugenesinica@gmail.com", "bigboy2012"));
+        String eugenesinica = null;
+        try {
+            eugenesinica = "eugenesinica@gmail.com";
+            authenticationService.register(eugenesinica, "bigboy2012");
+        } catch (RegistrationException e) {
+            logger.error("AuthenticationService error while registering with email "
+                    + eugenesinica);
+            logger.error(e.getMessage());
+        }
 
-        Movie fastAndFurious = new Movie("Fast and Furious");
-        fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
-        movieService.add(fastAndFurious);
-        System.out.println(movieService.get(fastAndFurious.getId()));
-        movieService.getAll().forEach(System.out::println);
+        String dashakhmara = null;
+        try {
+            dashakhmara = "dashakhmara@gmail.com";
+            authenticationService.register(dashakhmara, "littlegirl2012");
+        } catch (RegistrationException e) {
+            logger.error("AuthenticationService error while registering with email "
+                    + dashakhmara);
+            logger.error(e.getMessage());
+        }
 
-        CinemaHall firstCinemaHall = new CinemaHall();
-        firstCinemaHall.setCapacity(100);
-        firstCinemaHall.setDescription("first hall with capacity 100");
+        String teabag = null;
+        try {
+            teabag = "teabag@gmail.com";
+            authenticationService.register(teabag, "teabag1213");
+        } catch (RegistrationException e) {
+            logger.error("AuthenticationService error while registering with email "
+                    + teabag);
+            logger.error(e.getMessage());
+        }
 
-        CinemaHall secondCinemaHall = new CinemaHall();
-        secondCinemaHall.setCapacity(200);
-        secondCinemaHall.setDescription("second hall with capacity 200");
+        try {
+            authenticationService.login(eugenesinica, "bigboy2012");
+        } catch (AuthenticationException e) {
+            logger.error("AuthenticationService error while logging in with email "
+                    + eugenesinica);
+            logger.error(e.getMessage());
+        }
 
-        CinemaHallService cinemaHallService = null;
-        cinemaHallService.add(firstCinemaHall);
-        cinemaHallService.add(secondCinemaHall);
+        try {
+            authenticationService.login(dashakhmara, "littlegirl2012");
+        } catch (AuthenticationException e) {
+            logger.error("AuthenticationService error while logging in with email "
+                    + dashakhmara);
+            logger.error(e.getMessage());
+        }
 
-        System.out.println(cinemaHallService.getAll());
-        System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
-
-        MovieSession tomorrowMovieSession = new MovieSession();
-        tomorrowMovieSession.setCinemaHall(firstCinemaHall);
-        tomorrowMovieSession.setMovie(fastAndFurious);
-        tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
-
-        MovieSession yesterdayMovieSession = new MovieSession();
-        yesterdayMovieSession.setCinemaHall(firstCinemaHall);
-        yesterdayMovieSession.setMovie(fastAndFurious);
-        yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
-
-        MovieSessionService movieSessionService = null;
-        movieSessionService.add(tomorrowMovieSession);
-        movieSessionService.add(yesterdayMovieSession);
-
-        System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-        System.out.println(movieSessionService.findAvailableSessions(
-                        fastAndFurious.getId(), LocalDate.now()));
+        try {
+            authenticationService.login(teabag, "WRONG TEABAG PASSWORD");
+        } catch (AuthenticationException e) {
+            logger.error("AuthenticationService error while logging in with email "
+                    + teabag);
+            logger.error(e.getMessage());
+        }
     }
 }
