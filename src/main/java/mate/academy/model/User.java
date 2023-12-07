@@ -13,7 +13,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 50, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
     private String password;
     private byte[] salt;
