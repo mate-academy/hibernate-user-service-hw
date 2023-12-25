@@ -19,7 +19,7 @@ import mate.academy.service.UserService;
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) throws AuthenticationException, RegistrationException {
+    public static void main(String[] args) {
         MovieService movieService = (MovieService)
                 injector.getInstance(MovieService.class);
 
@@ -78,12 +78,25 @@ public class Main {
         AuthenticationService authenticationService = (AuthenticationService)
                 injector.getInstance(AuthenticationService.class);
         System.out.println("Register new user Alice!");
-        User userAlice = authenticationService.register("Alice@gmail.com", "Alice1234");
+        User userAlice = null;
+        try {
+            userAlice = authenticationService.register("Alice@gmail.com", "Alice1234");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Registration failed!", e);
+        }
         System.out.println(userAlice);
         System.out.println("Login for user Alice!");
-        System.out.println(authenticationService.login(userAlice.getLogin(), "Alice1234"));
+        try {
+            System.out.println(authenticationService.login(userAlice.getLogin(), "Alice1234"));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Authentication failed!", e);
+        }
         System.out.println("Login for user Bob!");
-        System.out.println(authenticationService.login(userBob.getLogin(), "Bob1234"));
+        try {
+            System.out.println(authenticationService.login(userBob.getLogin(), "Bob1234"));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Authentication failed!", e);
+        }
         System.out.println("Finish!!!");
     }
 }

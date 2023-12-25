@@ -39,7 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return userService.add(user);
         } catch (DataProcessingException e) {
             throw new RegistrationException("Can not register user with email: " + email
-                    + ". Try again with another one.", e);
+                    + ". Try again with another one.");
         }
     }
 }
