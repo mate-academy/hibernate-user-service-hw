@@ -23,23 +23,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (optionalUserByEmail.isPresent()
                 && user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()))) {
             return user;
-        } else {
-            throw new AuthenticationException("Can authenticate user. Wrong email or password.");
         }
-
+        throw new AuthenticationException("Can authenticate user. Wrong email or password.");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        User user = new User();
-        user.setLogin(email);
-        user.setPassword(password);
-
-        try {
-            return userService.add(user);
-        } catch (DataProcessingException e) {
+        if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Can not register user with email: " + email
                     + ". Try again with another one.");
         }
+        User user = new User();
+        user.setLogin(email);
+        user.setPassword(password);
+        return userService.add(user);
     }
 }
