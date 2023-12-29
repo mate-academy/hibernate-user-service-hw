@@ -1,7 +1,6 @@
 package mate.academy.util;
 
 import mate.academy.exception.DataProcessingException;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
