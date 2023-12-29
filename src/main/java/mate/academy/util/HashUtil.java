@@ -30,7 +30,8 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new DataProcessingException("Can`t create hash using SHA-512 algorithm ", e);
+            throw new DataProcessingException("Can`t create hash using SHA-512 algorithm "
+                    + CRYPTO_ALGORITHM, e);
         }
         return hashedPassword.toString();
     }
