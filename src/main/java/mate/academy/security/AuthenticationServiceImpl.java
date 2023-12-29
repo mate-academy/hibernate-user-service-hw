@@ -1,6 +1,5 @@
 package mate.academy.security;
 
-import java.util.Optional;
 import javax.naming.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
