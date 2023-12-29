@@ -30,11 +30,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userByEmail = userService.findByEmail(email);
-        if (userByEmail.isEmpty()) {
-            throw new AuthenticationException("Can`t authenticate user");
-        }
-        User user = userByEmail.get();
+        User user = userService.findByEmail(email)
+                .orElseThrow(() -> new AuthenticationException("Can't authenticate user"));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;
