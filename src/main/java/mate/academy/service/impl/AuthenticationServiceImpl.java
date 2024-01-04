@@ -24,7 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         User user = new User(email, password);
         try {
-            validationUser(user);
+            validateUser(user);
             return userService.add(user);
         } catch (Exception e) {
             throw new RegistrationException("Email "
@@ -48,7 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return user;
     }
 
-    private void validationUser(User user) {
+    private void validateUser(User user) {
         if (user.getEmail().isEmpty() || user.getPassword().isEmpty()) {
             throw new RuntimeException("Email and password cannot be empty");
         }
