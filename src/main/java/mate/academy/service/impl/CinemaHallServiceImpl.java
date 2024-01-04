@@ -12,6 +12,9 @@ public class CinemaHallServiceImpl implements CinemaHallService {
     @Inject
     private CinemaHallDao cinemaHallDao;
 
+    public CinemaHallServiceImpl() {
+    }
+
     @Override
     public CinemaHall add(CinemaHall cinemaHall) {
         return cinemaHallDao.add(cinemaHall);
