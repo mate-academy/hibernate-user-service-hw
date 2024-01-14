@@ -2,7 +2,6 @@ package mate.academy.service.impl;
 
 import java.util.Optional;
 import mate.academy.dao.UserDao;
-import mate.academy.dao.impl.UserDaoImpl;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
