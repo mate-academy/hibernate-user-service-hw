@@ -49,10 +49,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         User registeredUser = userService.add(user);
 
-        if (registeredUser == null) {
-            throw new RegistrationException("Failed to register user");
-        }
-
         return registeredUser;
     }
 }
