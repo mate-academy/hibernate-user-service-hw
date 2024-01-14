@@ -13,7 +13,7 @@ import mate.academy.util.HashUtil;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
-    private UserService userService = new UserServiceImpl();
+    private UserService userService;
 
     /**
      * We should register a new user. The new user entity will contain the email and password

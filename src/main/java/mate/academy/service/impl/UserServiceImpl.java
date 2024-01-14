@@ -12,7 +12,7 @@ import mate.academy.util.HashUtil;
 @Service
 public class UserServiceImpl implements UserService {
     @Inject
-    private UserDao userDao = new UserDaoImpl();
+    private UserDao userDao;
 
     @Override
     public User add(User user) {
