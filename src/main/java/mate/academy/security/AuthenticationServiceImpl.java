@@ -1,11 +1,11 @@
 package mate.academy.security;
 
+import java.util.Optional;
 import mate.academy.exceptions.AuthenticationException;
 import mate.academy.exceptions.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.model.User;
 import mate.academy.service.UserService;
-import java.util.Optional;
 import mate.academy.util.HashUtil;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
