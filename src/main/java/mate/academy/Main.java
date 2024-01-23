@@ -14,7 +14,6 @@ import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
-
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) {
@@ -26,11 +25,11 @@ public class Main {
         System.out.println(movieService.get(fastAndFurious.getId()));
         movieService.getAll().forEach(System.out::println);
 
-        CinemaHall firstCinemaHall = (CinemaHall) INJECTOR.getInstance(CinemaHall.class);
+        CinemaHall firstCinemaHall = new CinemaHall();
         firstCinemaHall.setCapacity(100);
         firstCinemaHall.setDescription("first hall with capacity 100");
 
-        CinemaHall secondCinemaHall = (CinemaHall) INJECTOR.getInstance(CinemaHall.class);
+        CinemaHall secondCinemaHall = new CinemaHall();
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
@@ -42,14 +41,12 @@ public class Main {
         System.out.println(cinemaHallService.getAll());
         System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
 
-        MovieSession tomorrowMovieSession = (MovieSession) INJECTOR
-                .getInstance(MovieSession.class);
+        MovieSession tomorrowMovieSession = new MovieSession();
         tomorrowMovieSession.setCinemaHall(firstCinemaHall);
         tomorrowMovieSession.setMovie(fastAndFurious);
         tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
 
-        MovieSession yesterdayMovieSession = (MovieSession) INJECTOR
-                .getInstance(MovieSession.class);
+        MovieSession yesterdayMovieSession = new MovieSession();
         yesterdayMovieSession.setCinemaHall(firstCinemaHall);
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));

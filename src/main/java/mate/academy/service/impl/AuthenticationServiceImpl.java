@@ -4,13 +4,14 @@ import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
+import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
+@Service
 public class AuthenticationServiceImpl implements AuthenticationService {
-
     @Inject
     private UserService userService;
 
@@ -34,10 +35,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("User with such email already exist: " + email);
         }
 
-        User newUser = new User();
-        newUser.setEmail(email);
-        newUser.setPassword(password);
-        userService.add(newUser);
-        return newUser;
+        User newUser = new User(email, password);
+        newUser.setSalt(HashUtil.getSalt());
+        newUser.setPassword(HashUtil.hashPassword(newUser.getPassword(), newUser.getSalt()));
+        return userService.add(newUser);
     }
 }
