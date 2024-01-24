@@ -63,19 +63,16 @@ public class Main {
         AuthenticationService authenticationService =
                 (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
 
-        //register new user
         try {
             authenticationService.register("user@gmail.com", "qwerty");
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }
 
-        //login
         try {
             authenticationService.login("user@gmail.com", "qwerty");
         } catch (AuthenticationException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
