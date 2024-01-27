@@ -14,19 +14,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationFailureException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationFailureException("Authentication failed. "
-                    + "Please check your email and password and try again. "
-                    + "If you don't have an account, you can register a new user.");
-        }
-        User user = userFromDbOptional.get();
+        User user = userService.findByEmail(email)
+                .orElseThrow(() -> new AuthenticationFailureException("Authentication failed. "
+                        + "Please check your email and password and try again. "
+                        + "If you don't have an account, you can register a new user."));
+
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+
         if (!user.getPassword().equals(hashedPassword)) {
             throw new AuthenticationFailureException("Authentication failed. "
                     + "Please check your email and password and try again. "
                     + "If you don't have an account, you can register a new user.");
         }
+
         return user;
     }
 
