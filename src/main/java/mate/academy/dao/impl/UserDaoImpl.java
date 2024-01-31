@@ -12,7 +12,6 @@ import org.hibernate.Transaction;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-
     @Override
     public User add(User user) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -43,6 +42,8 @@ public class UserDaoImpl implements UserDao {
             return session.createQuery("FROM User u WHERE email = :email", User.class)
                     .setParameter("email", email)
                     .uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't find a user by email: " + email, e);
         }
     }
 }

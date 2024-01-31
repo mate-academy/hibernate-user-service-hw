@@ -8,4 +8,3 @@ public interface UserDao {
 
     Optional<User> findByEmail(String email);
 }
-

@@ -32,4 +32,3 @@ public class HashUtil {
         return hashedPassword.toString();
     }
 }
-
