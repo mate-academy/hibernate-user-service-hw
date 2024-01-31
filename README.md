@@ -3,7 +3,7 @@
 We will continue working on our Cinema project.
 
 Your task is to implement the following steps:
-- Create models:+
+- Create models:
   - User
 
 

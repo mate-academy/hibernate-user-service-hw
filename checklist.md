@@ -1,7 +1,7 @@
 ## Common mistakes (hibernate-user-service-hw)
 
 * Let's make the email unique. We need to check the email during user registration and make the email a unique field in the database.
-* Custom `AuthenticationException` and `RegistrationException` shouldn't be `RuntimeException`. 
+* Custom `AuthenticationException` and `RegistrationException` shouldn't be `RuntimeException`.
 * `findByEmail()` - don't complicate with unnecessary variables, expect to receive only one String param 
   in method arguments.
 * `findByEmail()` - should return Optional on both Dao and Service layers.
