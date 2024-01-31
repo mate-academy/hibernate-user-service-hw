@@ -17,8 +17,7 @@ public class UserDaoImpl implements UserDao {
         Transaction transaction = null;
         Session session = null;
         try {
-            session = HibernateUtil.getSessionFactory()
-                    .openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
@@ -37,8 +36,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        try (Session session = HibernateUtil.getSessionFactory()
-                .openSession()) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<User> query = session.createQuery("from User u where u.email = :email",
                     User.class);
             query.setParameter("email", email);
