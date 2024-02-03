@@ -13,6 +13,7 @@ import org.hibernate.Transaction;
 @Dao
 public class UserDaoImpl implements UserDao {
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     @Override
     public User add(User user) {
         Transaction transaction = null;
