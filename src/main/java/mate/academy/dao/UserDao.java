@@ -4,7 +4,6 @@ import java.util.Optional;
 import mate.academy.model.User;
 
 public interface UserDao {
-
     public User save(User movie);
 
     public User get(Long id);
