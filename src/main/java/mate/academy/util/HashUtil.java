@@ -29,7 +29,8 @@ public class HashUtil {
             return hashedPassword.toString();
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(
-                    "Can't hashed password with crypto algorithm SHA-512", e);
+                    "Can't hashed password with crypto algorithm: "
+                            + CRYPTO_ALGORITHM, e);
         }
     }
 }
