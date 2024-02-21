@@ -23,15 +23,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userByEmailFromDbOptional = userService.findByEmail(email);
         try {
             if (userByEmailFromDbOptional.isEmpty()) {
-                throw new AuthenticationException("Input not correct email or user by email '"
-                        + email + "' does not exist");
+                throw new AuthenticationException("Incorrect email: " + email);
             }
             User userFromDbByEmail = userByEmailFromDbOptional.get();
             String hashedPassword = HashUtil.hashPassword(password, userFromDbByEmail.getSalt());
             if (userFromDbByEmail.getPassword().equals(hashedPassword)) {
                 return userFromDbByEmail;
             }
-            throw new AuthenticationException("Input not correct password");
+            throw new AuthenticationException("Wrong password");
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't authenticate user by email '" + email
                     + "' and password.", e);
@@ -45,16 +44,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             Optional<User> userFromDb = userDao.findByEmail(email);
             if (userFromDb.isPresent()) {
-                throw new RegistrationException("User by email '" + email + "' exists,"
-                        + "please try input login, if you forgot your password restore it please");
+                throw new RegistrationException("User by email '" + email + "' already exists,"
+                        + "please use another login or restore password");
             }
             newUser = new User();
             newUser.setEmail(email);
             newUser.setPassword(password);
             userService.add(newUser);
         } catch (RegistrationException registrationException) {
-            throw new RuntimeException("You can not register by email '"
-                    + email + "' and input password");
+            throw new RuntimeException("You cannot register with the email you entered");
         }
         return newUser;
     }
