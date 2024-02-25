@@ -1,6 +1,7 @@
 package mate.academy.security;
 
 import java.util.Optional;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -23,14 +24,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String login, String password) {
         Optional<User> userFromDbOptional = userService.findByEmail(login);
-        if (userFromDbOptional.isEmpty()) {
-            throw new mate.academy.exception.AuthenticationException("Can't authenticate user");
-        }
         User user = userFromDbOptional.get();
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
+        if (userFromDbOptional.isEmpty() && !user.getPassword().equals(hashedPassword)) {
+            throw new AuthenticationException("Can't authenticate user");
         }
-        throw new mate.academy.exception.AuthenticationException("Can`t authenticate user");
+        return user;
     }
 }
