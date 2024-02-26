@@ -22,15 +22,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
         if (userFromDb.isEmpty()) {
-            throw new AuthenticationException("Can`t login a user by empty email");
+            throw new AuthenticationException("Can`t login a user by email");
         }
         User user = userFromDb.get();
         String hashPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashPassword)) {
             return user;
         }
-        throw new AuthenticationException("Can`t login a user by email(" + email + ")."
-                + " Wrong password.");
+        throw new AuthenticationException(String.format("Can`t login a user by email(%s)."
+                + " Wrong password.", email));
     }
 
     @Override
