@@ -36,8 +36,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userDao.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Can't register user. "
-                    + "The email (" + email + ") is already in use.");
+            throw new RegistrationException(String.format("Can't register user. "
+                    + "The email($s) is already in use.", email));
         }
         User user = new User();
         user.setEmail(email);
