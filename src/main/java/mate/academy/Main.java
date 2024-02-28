@@ -67,7 +67,13 @@ public class Main {
         //Success expected
         System.out.println("Login successful for user: "
                 + authenticationService.login("adammudrak2000@gmail.com", "Adam123"));
-        //Fail expected
-        authenticationService.register("adammudrak2000@gmail.com", "Adam123");
+        ////Fail expected with "user doesn't exist"
+        //System.out.println("Login successful for user: "
+        //          + authenticationService.login("adammudrak1999@gmail.com", "Adam1233"));
+        ////Fail expected with "wrong password"
+        //System.out.println("Login successful for user: "
+        //          + authenticationService.login("adammudrak2000@gmail.com", "Adam1234"));
+        ////Fail expected with "user already exists"
+        //authenticationService.register("adammudrak2000@gmail.com", "Adam123");
     }
 }
