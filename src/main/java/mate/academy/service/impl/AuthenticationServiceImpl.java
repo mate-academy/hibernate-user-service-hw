@@ -23,24 +23,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setPassword(password);
             userService.add(user);
         } catch (Exception e) {
-            throw new RegistrationException("Can't register new user. "
-                    + "Possible cause: user with email " + email + " already exists");
+            throw new RegistrationException(
+                    "Can't register new user. Possible cause: user with email " + email
+                            + " already exists");
         }
     }
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can't authenticate user: user with email "
-                    + email + " doesn't exist");
-        }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("Can't authenticate user: "
-                + "invalid password. Try again...");
+
+        userFromDbOptional.filter(user -> {
+            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+            return user.getPassword().equals(hashedPassword);
+        }).orElseThrow(() -> new AuthenticationException(
+                "Can't authenticate user: invalid email or password. Try again..."));
+
+        return userFromDbOptional.get();
     }
+
 }
