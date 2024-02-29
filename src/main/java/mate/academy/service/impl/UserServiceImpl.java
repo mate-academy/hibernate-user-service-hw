@@ -3,6 +3,7 @@ package mate.academy.service.impl;
 import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -23,7 +24,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User get(Long id) {
-        return userDao.get(id).orElseThrow..;
+        return userDao.get(id).orElseThrow(()
+                -> new DataProcessingException("Can't get a user by id: " + id));
     }
 
     @Override
