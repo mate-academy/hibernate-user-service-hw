@@ -23,9 +23,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setEmail(email);
             user.setPassword(password);
             userService.add(user);
-            //only for testing, I know it shouldn't be here
-            System.out.println("User added to DB:");
-            System.out.println(userService.get(user.getId()));
         } else {
             throw new RegistrationException("Can't register new user: user with email "
                     + email + " already exists");
