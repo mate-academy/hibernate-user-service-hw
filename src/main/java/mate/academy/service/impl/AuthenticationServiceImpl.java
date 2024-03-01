@@ -17,18 +17,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void register(String email, String password) throws RegistrationException {
-        try {
+        Optional<User> userFromDbOptional = userService.findByEmail(email);
+        if (userFromDbOptional.isEmpty()) {
             User user = new User();
             user.setEmail(email);
             user.setPassword(password);
             userService.add(user);
-        } catch (Exception e) {
-            throw new RegistrationException(
-                    "Can't register new user. Possible cause: user with email " + email
-                            + " already exists");
+        } else {
+            throw new RegistrationException("Can't register new user: user with email "
+                    + email + " already exists");
         }
     }
-
+    
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
