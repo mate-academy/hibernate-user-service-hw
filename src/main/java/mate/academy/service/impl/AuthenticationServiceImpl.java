@@ -41,5 +41,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return userFromDbOptional.get();
     }
-
 }
