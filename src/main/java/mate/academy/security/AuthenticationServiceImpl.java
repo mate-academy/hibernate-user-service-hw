@@ -19,12 +19,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
-        User user = userFromDb.orElseThrow(() ->
-                new AuthenticationException("User not found."));
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
 
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
+        if (userFromDb.isPresent() && doesPasswordsMatch(password, userFromDb.get())) {
+            return userFromDb.get();
         }
 
         throw new AuthenticationException("User email or password incorrect.");
@@ -39,5 +36,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (DataProcessingException e) {
             throw new RegistrationException("Registration failed.", e);
         }
+    }
+
+    private boolean doesPasswordsMatch(String password, User user) {
+        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        return user.getPassword().equals(hashedPassword);
     }
 }
