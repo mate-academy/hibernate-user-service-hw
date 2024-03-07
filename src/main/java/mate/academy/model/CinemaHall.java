@@ -15,6 +15,15 @@ public class CinemaHall {
     private int capacity;
     private String description;
 
+    public CinemaHall() {
+    }
+
+    public CinemaHall(Long id, int capacity, String description) {
+        this.id = id;
+        this.capacity = capacity;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
     }
