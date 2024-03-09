@@ -19,7 +19,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new AuthenticationException("Can't authenticate user, "
                     + "problems with login or password");
         }
-        User user = userFromDbOptional.get();
+        User user = userFromDbOptional.orElseThrow(() ->
+                new AuthenticationException(("Can't find user with email " + email)));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;
@@ -32,13 +33,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isEmpty()) {
-            throw new RegistrationException("Can't register user with email: " + email);
+            throw new RegistrationException("Can't register user with "
+                    + "email: " + email);
         }
-        User user = userFromDbOptional.get();
+        User user = userFromDbOptional.orElseThrow(() ->
+                new RegistrationException("Can't find user with email " + email));
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;
         }
-        return userService.add(new User(email,password));
+        return userService.add(new User(email, password));
     }
 }
