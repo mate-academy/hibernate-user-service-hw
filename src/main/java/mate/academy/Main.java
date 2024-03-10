@@ -4,11 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.dao.UserDao;
 import mate.academy.dao.impl.UserDaoImpl;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -31,13 +33,24 @@ public class Main {
                 injector.getInstance(UserService.class);
 
         User misha = new User();
-        misha.setLogin(Login);
+        misha.setEmail(Login);
         misha.setSalt(HashUtil.getSalt());
         misha.setPassword(HashUtil.hashPassword(Password, misha.getSalt()));
 
         UserDao userDao = new UserDaoImpl();
         userDao.save(misha);
         userService.add(misha);
+
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        User newUser = null;
+        try {
+            newUser = authenticationService.register("misha124@gmail.com",
+                    "asdMMw@34");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Registration failed", e);
+        }
+        System.out.println(("Registration process for user " + newUser + " is complete"));
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");

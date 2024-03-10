@@ -26,7 +26,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't save user to db", e);
+            throw new DataProcessingException("Can't save user to db" + user, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -36,10 +36,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User get(Long id) {
+    public Optional<User> get(Long id) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         try (Session session = sessionFactory.openSession()) {
-            return session.get(User.class, id);
+            return Optional.ofNullable(session.get(User.class, id));
         }
     }
 
