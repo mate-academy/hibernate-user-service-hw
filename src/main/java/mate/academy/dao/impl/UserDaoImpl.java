@@ -40,6 +40,8 @@ public class UserDaoImpl implements UserDao {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         try (Session session = sessionFactory.openSession()) {
             return Optional.ofNullable(session.get(User.class, id));
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get user by id: " + id, e);
         }
     }
 
@@ -50,6 +52,8 @@ public class UserDaoImpl implements UserDao {
             return session.createQuery("from User u where u.email = : email", User.class)
                     .setParameter("email", email)
                     .uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't find user by email: " + email, e);
         }
     }
 }
