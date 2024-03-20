@@ -7,8 +7,10 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
+import mate.academy.service.HashUtil;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.UserService;
@@ -57,8 +59,17 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        UserService userService = (UserService) injector.getInstance(UserService.class);
+        User john = new User();
+        john.setEmail("johndoe@yahoo.com");
+        john.setPassword(HashUtil.hashPassword("doe09091995"));
 
-        AuthenticationService authenticationService = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        User jane = new User();
+        jane.setEmail("janedoe@yahoo.com");
+        jane.setPassword(HashUtil.hashPassword("doe12121998"));
+
+        AuthenticationService authenticationService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
+        authenticationService.register(john.getEmail(), john.getPassword());
+        authenticationService.register(jane.getEmail(), jane.getPassword());
     }
 }

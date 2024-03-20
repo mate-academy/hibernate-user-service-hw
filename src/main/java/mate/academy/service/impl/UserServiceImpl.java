@@ -14,11 +14,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User add(User user) {
-        return null;
+        return userDao.add(user);
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.empty();
+        return userDao.get(email);
     }
 }
