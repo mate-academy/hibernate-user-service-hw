@@ -1,6 +1,5 @@
 package mate.academy.dao.impl;
 
-import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
@@ -36,11 +35,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> get(String email) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<User> getAll() {
-        return null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return Optional.ofNullable(session.get(User.class, email));
+        } catch (Exception e) {
+            throw new DataProcessingException("Can`t get user by email "
+                    + email + " from the DB", e);
+        }
     }
 }
