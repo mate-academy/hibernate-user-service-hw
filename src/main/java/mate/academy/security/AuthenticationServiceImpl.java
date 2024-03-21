@@ -18,8 +18,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isPresent() && matchPasswords(password, userFromDbOptional.get())) {
-                return userFromDbOptional.get();
-            }
+            return userFromDbOptional.get();
+        }
         throw new AuthenticationException("Wrong email or password");
     }
 
