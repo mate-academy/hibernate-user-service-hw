@@ -29,9 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return user;
             }
         }
-        throw new AuthenticationException("Check your password and email. "
-                + "email: " + email
-                + ", password: " + password);
+        throw new AuthenticationException("Something went wrong, please check your credentials");
     }
 
     @Override
