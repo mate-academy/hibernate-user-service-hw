@@ -18,7 +18,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String login, String password) throws RegistrationException {
         userService.findByLogin(login).ifPresent(user -> {
-            throw new RegistrationException("User with login " + login + " already exists");
+            try {
+                throw new RegistrationException("User with login " + login + " already exists");
+            } catch (RegistrationException e) {
+                throw new RuntimeException(e);
+            }
         });
         User user = new User();
         user.setLogin(login);
