@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
-import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
@@ -29,9 +28,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByLogin(String login) {
-        return Optional.ofNullable(userDao.findByLogin(login)
+    public User findByLogin(String login) {
+        return userDao.findByLogin(login)
                 .orElseThrow(() ->
-                        new EntityNotFoundException("User with login " + login + " not found")));
+                        new EntityNotFoundException("User with login " + login + " not found"));
     }
 }

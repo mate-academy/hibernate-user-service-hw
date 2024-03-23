@@ -3,7 +3,6 @@ package mate.academy.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import mate.academy.exception.DataProcessingException;
 
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
@@ -28,7 +27,8 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new DataProcessingException("Could not create hash using SHA-512 algorithm", e);
+            throw new IllegalStateException("Could not create hash using "
+                    + CRYPTO_ALGORITHM + " algorithm", e);
         }
         return hashedPassword.toString();
     }
