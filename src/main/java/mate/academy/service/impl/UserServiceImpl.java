@@ -5,7 +5,7 @@ import mate.academy.dao.UserDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
-import mate.academy.security.HashUtil;
+import mate.academy.util.HashUtil;
 import mate.academy.service.UserService;
 
 @Service

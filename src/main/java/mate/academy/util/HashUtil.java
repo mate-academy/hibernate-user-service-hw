@@ -1,4 +1,4 @@
-package mate.academy.security;
+package mate.academy.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
