@@ -18,11 +18,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDB = userService.findByEmail(email);
-        boolean userExists = userFromDB.isPresent();
-        boolean passwordsMatch = userExists
-                && userFromDB.get().getPassword().equals(
-                        HashUtil.hashPassword(password, userFromDB.get().getSalt()));
-        if (!userExists || !passwordsMatch) {
+        if (userFromDB.isEmpty() || !userFromDB.get().getPassword().equals(
+                HashUtil.hashPassword(password, userFromDB.get().getSalt()))) {
             throw new AuthenticationException("Cannot login user with email = " + email);
         }
         return userFromDB.get();
