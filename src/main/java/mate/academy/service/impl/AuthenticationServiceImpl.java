@@ -25,7 +25,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return user;
             }
         }
-        throw new AuthenticationException("Can't authentication user");
+        throw new AuthenticationException("Can't authenticate user");
     }
 
     @Override
@@ -35,7 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     + email);
         }
         if (password.isEmpty()) {
-            throw new RegistrationException("Password must contain more characters");
+            throw new RegistrationException("Password must not be empty");
         }
         User user = new User();
         user.setPassword(password);
