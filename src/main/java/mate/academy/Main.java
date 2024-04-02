@@ -54,7 +54,7 @@ public class Main {
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-        System.out.println(movieSessionService.findAvailableSessions(
-                fastAndFurious.getId(), LocalDate.now()));
+        System.out.println(movieSessionService
+                .findAvailableSessions(fastAndFurious.getId(), LocalDate.now()));
     }
 }

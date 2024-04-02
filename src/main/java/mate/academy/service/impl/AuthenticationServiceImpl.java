@@ -16,11 +16,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        if (isInvalidEmail(email)) {
-            throw new AuthenticationException("Email is invalid");
-        }
-        if (isInvalidPassword(password)) {
-            throw new AuthenticationException("Password is invalid");
+        if (isInvalidEmailOrPassword(email, password)) {
+            throw new AuthenticationException("Email or password are invalid");
         }
 
         User userFromDb = userService.findByEmail(email)
@@ -37,11 +34,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (isInvalidEmail(email)) {
-            throw new RegistrationException("Email is invalid");
-        }
-        if (isInvalidPassword(password)) {
-            throw new RegistrationException("Password is invalid");
+        if (isInvalidEmailOrPassword(email, password)) {
+            throw new RegistrationException("Email or password are invalid");
         }
 
         if (userService.findByEmail(email).isPresent()) {
@@ -51,11 +45,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return userService.add(newUser);
     }
 
-    private boolean isInvalidEmail(String email) {
-        return email == null || email.isBlank();
-    }
-
-    private boolean isInvalidPassword(String password) {
-        return password == null || password.isBlank();
+    private boolean isInvalidEmailOrPassword(String email, String password) {
+        return email == null || email.isBlank()
+                || password == null || password.isBlank();
     }
 }
