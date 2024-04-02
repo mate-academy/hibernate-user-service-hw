@@ -30,7 +30,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userFromDB = userService.findByEmail(email);
         if (userFromDB.isPresent()) {
             throw new RegistrationException("User with email " + email + " is already registered");
-        } else if (password == null || password.isEmpty()) {
+        }
+        if (password == null || password.isEmpty()) {
             throw new RegistrationException("Password cannot be empty");
         }
         User user = new User(email, password);
