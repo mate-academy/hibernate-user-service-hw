@@ -7,8 +7,8 @@
 * `findByEmail()` - should return Optional on both Dao and Service layers.
 * Instead of `password.length() == 0` or `password.equals("")` use `isEmpty()` method of String class (if necessary).
 * In `findByEmail()` method you can use `uniqueResultOptional()` method to retrieve User from Query.
-* Create only one condition for throwing `AuthenticationException` in `login()` method. You may combine two checks: 
-  whether the user has been found by login and does passwords match.
+* Create only one condition for throwing `AuthenticationException` in `email()` method. You may combine two checks: 
+  whether the user has been found by email and does passwords match.
 * Don't forget to use `transaction.rollback()` in your dao implementations.
 * Don't use Dao in `authServiceImpl`.
 * You should create salt and hash password in UserService `add()` method.
