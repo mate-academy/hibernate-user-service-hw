@@ -15,13 +15,17 @@ public class Main {
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-        User user1 = new User("bob", "qwerty");
-        User user2 = new User("bob1", "qwerty");
-        User user3 = new User("bob", "qwerty");
+        String userName1 = "bob";
+        String userName2 = "bob2";
+        String password = "qwerty";
+
+        User user1 = new User(userName1, password);
+        User user2 = new User(userName2, password);
+        User user3 = new User(userName1, password);
 
         try {
-            authenticationService.register(user1.getLogin(), user1.getPassword());
-            authenticationService.login(user1.getLogin(), user1.getPassword());
+            authenticationService.register(userName1, password);
+            authenticationService.login(userName1, password);
         } catch (RegistrationException e) {
             throw new RuntimeException("Cannot register user 1");
         } catch (AuthenticationException e) {
@@ -29,13 +33,13 @@ public class Main {
         }
 
         try {
-            authenticationService.login(user2.getLogin(), user2.getPassword());
+            authenticationService.login(userName2, password);
         } catch (AuthenticationException e) {
             System.out.println("Cannot login user 2 because not registered");
         }
 
         try {
-            authenticationService.register(user3.getLogin(), user3.getPassword());
+            authenticationService.register(userName1, password);
         } catch (RegistrationException e) {
             System.out.println("Cannot register user 3 because same login as user 1");
         }
