@@ -6,13 +6,15 @@ import java.security.SecureRandom;
 
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
+    private static final String HEX_FORMATTER_TWO_DIGITS = "%02x";
+    private static final int LENGTH_SALT_ARR = 16;
     private static final SecureRandom secureRandom = new SecureRandom();
 
     public HashUtil() {
     }
 
     public static byte[] getSalt() {
-        byte[] salt = new byte[16];
+        byte[] salt = new byte[LENGTH_SALT_ARR];
         secureRandom.nextBytes(salt);
         return salt;
     }
@@ -24,7 +26,7 @@ public class HashUtil {
             messageDigest.update(salt);
             byte[] digits = messageDigest.digest(password.getBytes());
             for (byte bytes : digits) {
-                hashedPassword.append(String.format("%02x", bytes));
+                hashedPassword.append(String.format(HEX_FORMATTER_TWO_DIGITS, bytes));
             }
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Could not create hash using SHA-515 algorithm", e);

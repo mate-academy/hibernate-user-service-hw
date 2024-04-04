@@ -13,6 +13,8 @@ import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
+    private static final String EMAIL_PARAMETER = "login";
+
     @Override
     public User save(User user) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -39,9 +41,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Query<User> findByEmailQuery = session.createQuery("from User u WHERE "
+            Query<User> findByEmailQuery = session.createQuery("FROM User u WHERE "
                     + "u.email = :email", User.class);
-            findByEmailQuery.setParameter("login", email);
+            findByEmailQuery.setParameter(EMAIL_PARAMETER, email);
             return findByEmailQuery.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find user by email: " + email, e);
