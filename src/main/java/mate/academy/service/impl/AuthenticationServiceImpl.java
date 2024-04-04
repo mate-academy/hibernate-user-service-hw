@@ -15,14 +15,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String email, String password) throws AuthenticationException {
-        if (isInvalidEmailOrPassword(email, password)) {
-            throw new AuthenticationException("Email or password are invalid");
-        }
+    public User login(String email, String password) throws AuthenticationException,
+            RegistrationException {
+        validateEmailAndPassword(email, password);
 
         User userFromDb = userService.findByEmail(email)
                 .orElseThrow(() -> new AuthenticationException(
-                        "User with such email doesn't already exist"));
+                        "User with such email doesn't exist"));
 
         byte[] salt = userFromDb.getSalt();
         String hashPass = HashUtil.hashPassword(password, salt);
@@ -34,9 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (isInvalidEmailOrPassword(email, password)) {
-            throw new RegistrationException("Email or password are invalid");
-        }
+        validateEmailAndPassword(email, password);
 
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with such email has already exist: " + email);
@@ -45,8 +42,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return userService.add(newUser);
     }
 
-    private boolean isInvalidEmailOrPassword(String email, String password) {
-        return email == null || email.isBlank()
-                || password == null || password.isBlank();
+    private void validateEmailAndPassword(String email, String password)
+            throws RegistrationException {
+        if (email == null || email.isBlank() || password == null || password.isBlank()) {
+            throw new RegistrationException("Email or password are invalid");
+        }
     }
 }
