@@ -7,13 +7,14 @@ import java.security.SecureRandom;
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
     private static final String HEXADECIMAL = "%02x";
+    private static final int SALT_LENGTH = 16;
 
     public HashUtil() {
     }
 
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
-        byte[] salt = new byte[16];
+        byte[] salt = new byte[SALT_LENGTH];
         secureRandom.nextBytes(salt);
         return salt;
 
@@ -29,7 +30,7 @@ public class HashUtil {
                 hashedPassword.append(String.format(HEXADECIMAL, b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Couldn't create hash using SHA-512 algotithm");
+            throw new IllegalStateException("Couldn't create hash using SHA-512 algorithm");
         }
         return hashedPassword.toString();
     }

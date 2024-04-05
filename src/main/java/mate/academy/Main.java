@@ -18,11 +18,13 @@ public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
+        String login = "bob@gmail.com";
+        String password = "SomePassword";
 
         AuthenticationService authenticationService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
-        User bob = authenticationService.register("bob@gmail.com", "SomePassword");
-        User loginBob = authenticationService.login("bob@gmail.com", "SomePassword");
+        User bob = authenticationService.register(login, password);
+        User loginBob = authenticationService.login(login, password);
         System.out.println(loginBob);
 
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
