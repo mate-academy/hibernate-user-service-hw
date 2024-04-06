@@ -46,7 +46,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByLogin(String login) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM User u where u.login = :login", User.class)
+            return session.createQuery("FROM User u WHERE u.login = :login", User.class)
                     .setParameter("login", login)
                     .uniqueResultOptional();
         }
