@@ -19,29 +19,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isPresent() && isValidPasswordForUser(userFromDb.get(), password)) {
-            return userFromDb.get();
-        }
-        throw new AuthenticationException("Invalid email or password");
+        return validateLoginCredentials(userFromDb, password);
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
         Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isPresent()) {
-            throw new RegistrationException(String.format("User with email: %s  already exists",
-                    email));
-        }
-        if (password == null || password.isBlank() || password.length() < 6) {
-            throw new RegistrationException("Password must be at least 6 characters");
-        }
+        validateRegistrationCredentials(userFromDb, password);
         User user = new User();
         user.setLogin(email);
         user.setPassword(password);
         return userService.add(user);
     }
 
-    private boolean isValidPasswordForUser(User user, String password) {
-        return Objects.equals(user.getPassword(), HashUtil.hashPassword(password, user.getSalt()));
+    private User validateLoginCredentials(Optional<User> userFromDb, String password)
+            throws AuthenticationException {
+        if (userFromDb.isPresent()) {
+            User user = userFromDb.get();
+            if (Objects.equals(user.getPassword(), HashUtil.hashPassword(password,
+                    user.getSalt()))) {
+                return user;
+            }
+        }
+        throw new AuthenticationException("Invalid email or password");
+    }
+
+    private void validateRegistrationCredentials(Optional<User> userFromDb, String password)
+            throws RegistrationException {
+        if (userFromDb.isPresent()) {
+            throw new RegistrationException(String.format("User with email: %s  already exists",
+                    userFromDb.get().getLogin()));
+        }
+        if (password == null || password.isBlank() || password.length() < 6) {
+            throw new RegistrationException("Password must be at least 6 characters");
+        }
     }
 }
