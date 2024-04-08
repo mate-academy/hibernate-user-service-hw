@@ -45,7 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         });
     }
 
-    public static void validateInput(String input, String field) {
+    public void validateInput(String input, String field) {
         if (input == null || input.isEmpty()) {
             throw new RegistrationException("Can't register a user, wrong " + field);
         }
