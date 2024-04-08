@@ -18,6 +18,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
+        validateInput(email, EMAIL);
+        validateInput(password, PASSWORD);
+
         User user = userService.findByEmail(email).orElseThrow(() ->
                 new AuthenticationException("User with email " + email + " not found"));
 

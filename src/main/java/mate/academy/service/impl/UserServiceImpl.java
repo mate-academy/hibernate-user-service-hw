@@ -2,6 +2,7 @@ package mate.academy.service.impl;
 
 import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -16,7 +17,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User add(User user) {
         String password = user.getPassword();
-        byte[] salt = user.getSalt();
+        byte[] salt = HashUtil.getSalt();
 
         String hashedPassword = HashUtil.hashPassword(password, salt);
         user.setPassword(hashedPassword);
@@ -26,6 +27,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByEmail(String email) {
         return Optional.ofNullable(userDao.getByEmail(email).orElseThrow(() ->
-                new RuntimeException("There's no user with email " + email)));
+                new DataProcessingException("There's no user with email " + email)));
     }
 }
