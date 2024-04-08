@@ -12,7 +12,7 @@ import org.hibernate.Transaction;
 
 @Dao
 public class UserDaoImpl implements UserDao {
-    private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     @Override
     public User add(User user) {
@@ -33,13 +33,6 @@ public class UserDaoImpl implements UserDao {
             if (session != null) {
                 session.close();
             }
-        }
-    }
-
-    @Override
-    public User get(Long id) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.get(User.class, id);
         }
     }
 
