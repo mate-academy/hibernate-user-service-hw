@@ -76,7 +76,7 @@ public class Main {
             User loginedUser = authenticationService.login(email, password);
             System.out.println("Logined user: " + loginedUser);
         } catch (AuthenticationException ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
     }
 }
