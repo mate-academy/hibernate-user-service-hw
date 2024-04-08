@@ -1,20 +1,19 @@
 package mate.academy.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import java.util.Arrays;
 
 @Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "login"))
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(unique = true)
     private String login;
     private String password;
     private byte[] salt;
@@ -64,8 +63,6 @@ public class User {
         return "User {"
                 + "id='" + id + '\''
                 + ", login='" + login + '\''
-                + ", password='" + password + '\''
-                + ", salt='" + Arrays.toString(salt)
                 + '}';
     }
 }

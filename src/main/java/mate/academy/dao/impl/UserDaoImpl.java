@@ -35,22 +35,12 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findByLogin(String login) {
-        System.out.println("dao login : " + login);
-        Session session = getSession();
-        Transaction transaction = session.beginTransaction();
-        try {
-            Query query = session.createQuery("FROM User WHERE login = :login");
+        try (Session session = getSession()) {
+            Query<User> query = session.createQuery("FROM User WHERE login = :login");
             query.setParameter("login", login);
-            User user = (User) query.uniqueResult();
-            transaction.commit();
-            return Optional.ofNullable(user);
+            return query.uniqueResultOptional();
         } catch (Exception e) {
-            transaction.rollback();
             throw new DataProcessingException("Error finding user by email: " + login, e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 

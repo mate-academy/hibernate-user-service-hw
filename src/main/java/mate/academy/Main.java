@@ -24,14 +24,14 @@ public class Main {
         try {
             authenticationService.register("guf@dgigurda.com", "1234");
         } catch (RegistrationException e) {
-            throw new RuntimeException("Authentication failed", e);
+            throw new RuntimeException("Registration failed", e);
         }
 
         try {
             User u1 = authenticationService.login("guf@dgigurda.com", "1234");
             System.out.println(u1);
         } catch (AuthenticationException e) {
-            throw new RuntimeException("Authentication failed", e);
+            throw new RuntimeException("Login failed", e);
         }
         MovieService movieService = (MovieService) injector
                 .getInstance(MovieService.class);
