@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -20,7 +21,7 @@ public class Main {
     private static final String SECOND_USER_PASSWORD = "123456";
     private static final String WRONG_PASSWORD = "password";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegistrationException, AuthenticationException {
         Injector injector = Injector.getInstance("mate.academy");
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
@@ -69,47 +70,13 @@ public class Main {
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
         // No exceptions expected:
-        try {
-            authenticationService.register(FIRST_USER_EMAIL, FIRST_USER_PASSWORD);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            authenticationService.register(SECOND_USER_EMAIL, SECOND_USER_PASSWORD);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            authenticationService.login(FIRST_USER_EMAIL, FIRST_USER_PASSWORD);
-        } catch (AuthenticationException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            authenticationService.login(SECOND_USER_EMAIL, SECOND_USER_PASSWORD);
-        } catch (AuthenticationException e) {
-            System.out.println(e.getMessage());
-        }
-
+        authenticationService.register(FIRST_USER_EMAIL, FIRST_USER_PASSWORD);
+        authenticationService.register(SECOND_USER_EMAIL, SECOND_USER_PASSWORD);
+        authenticationService.login(FIRST_USER_EMAIL, FIRST_USER_PASSWORD);
+        authenticationService.login(SECOND_USER_EMAIL, SECOND_USER_PASSWORD);
         // Exceptions expected:
-        try {
-            authenticationService.login(NON_EXISTENT_EMAIL, FIRST_USER_PASSWORD);
-        } catch (AuthenticationException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            authenticationService.login(FIRST_USER_EMAIL, WRONG_PASSWORD);
-        } catch (AuthenticationException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            authenticationService.register(FIRST_USER_EMAIL, FIRST_USER_PASSWORD);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        //authenticationService.login(NON_EXISTENT_EMAIL, FIRST_USER_PASSWORD);
+        //authenticationService.login(FIRST_USER_EMAIL, WRONG_PASSWORD);
+        //authenticationService.register(FIRST_USER_EMAIL, FIRST_USER_PASSWORD);
     }
 }

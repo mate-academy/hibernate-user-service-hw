@@ -40,10 +40,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
-            String hql = "from User where login = :email";
-            Query<User> findByEmailQuery = session.createQuery(hql, User.class).setParameter(
+            String findByEmailQuery = "from User where login = :email";
+            Query<User> userOptional =
+                    session.createQuery(findByEmailQuery, User.class).setParameter(
                     "email", email);
-            return findByEmailQuery.uniqueResultOptional();
+            return userOptional.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Could not find user with email: " + email, e);
         }
