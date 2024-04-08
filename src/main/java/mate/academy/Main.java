@@ -2,10 +2,14 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
@@ -57,5 +61,22 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        AuthenticationService authenticationService =
+                (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
+        String email = "testemail@email.com";
+        String password = "testpassword";
+        try {
+            User registeredUser = authenticationService.register(email, password);
+            System.out.println("Registered user: " + registeredUser);
+        } catch (RegistrationException ex) {
+            System.out.println(ex.getMessage());
+        }
+        try {
+            User loginedUser = authenticationService.login(email, password);
+            System.out.println("Logined user: " + loginedUser);
+        } catch (AuthenticationException ex) {
+            System.out.println(ex);
+        }
     }
 }

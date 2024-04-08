@@ -25,9 +25,8 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException(String.format(
-                    "Can`t save user %s to the DB", user
-            ), ex);
+            throw new DataProcessingException(String.format("Can`t save user %s to the DB", user),
+                    ex);
         }
         return user;
     }
@@ -39,9 +38,8 @@ public class UserDaoImpl implements UserDao {
                     .setParameter("email", email)
                     .uniqueResultOptional();
         } catch (Exception ex) {
-            throw new DataProcessingException(String.format(
-                    "Can`t find user with email %s", email
-            ), ex);
+            throw new DataProcessingException(String.format("Can`t find user with email %s", email),
+                    ex);
         }
     }
 }
