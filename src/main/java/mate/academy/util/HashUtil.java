@@ -5,8 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashUtil {
-    public static final int SALT_LENGTH = 16;
-    public static final String HEX_FORMAT = "%02x";
+    private static final int SALT_LENGTH = 16;
+    private static final String HEX_FORMAT = "%02x";
     private static final String CRYPTO_ALGORITHM = "SHA-512";
 
     private HashUtil() {
@@ -30,7 +30,8 @@ public class HashUtil {
             }
             return builder.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Could not create hash using SHA-512 algorithm ", e);
+            throw new IllegalStateException("Could not create hash using " + CRYPTO_ALGORITHM
+                    + " algorithm ", e);
         }
     }
 }

@@ -28,15 +28,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        try {
-            if (userService.findByEmail(email) != null) {
-                throw new RegistrationException("This email is already in use " + email);
-            }
-            byte[] salt = HashUtil.getSalt();
-            String hashedPassword = HashUtil.hashPassword(password, salt);
-            return userService.add(new User(email, hashedPassword, salt));
-        } catch (Exception e) {
-            throw new RegistrationException("Can't register new user with email " + email, e);
+        if (userService.findByEmail(email) != null) {
+            throw new RegistrationException("This email is already in use " + email);
         }
+        byte[] salt = HashUtil.getSalt();
+        String hashedPassword = HashUtil.hashPassword(password, salt);
+        return userService.add(new User(email, hashedPassword, salt));
     }
 }
