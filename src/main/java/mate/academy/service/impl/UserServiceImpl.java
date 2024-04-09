@@ -2,6 +2,7 @@ package mate.academy.service.impl;
 
 import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return userDao.findByEmail(email);
+        return Optional.ofNullable(userDao.findByEmail(email).orElseThrow(()
+                -> new DataProcessingException("Can't get user by email " + email)));
     }
 }

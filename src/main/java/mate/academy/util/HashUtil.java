@@ -5,10 +5,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashUtil {
-    private static final String CRYPTO_ALGORITHM = "SHA-512";
     public static final int SALT_LENGTH = 16;
     public static final String HEX_FORMAT = "%02x";
-
+    private static final String CRYPTO_ALGORITHM = "SHA-512";
 
     private HashUtil() {
     }
