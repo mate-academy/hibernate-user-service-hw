@@ -1,18 +1,42 @@
 package mate.academy.dao.impl;
 
 import mate.academy.dao.UserDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.model.User;
+import mate.academy.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
+    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
     @Override
     public User add(User user) {
-        return null;
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.persist(user);
+            transaction.commit();
+            return user;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new DataProcessingException("Can't insert movie session" + user, e);
+        }
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.empty();
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("FROM User u WHERE u.email = :email", User.class);
+            query.setParameter("email", email);
+            return query.uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't find user with email = " + email, e);
+        }
     }
 }
