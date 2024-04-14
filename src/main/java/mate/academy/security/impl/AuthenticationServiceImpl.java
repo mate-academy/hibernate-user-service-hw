@@ -1,6 +1,6 @@
 package mate.academy.security.impl;
 
-import java.util.Optional;
+import jakarta.transaction.Transactional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -16,15 +16,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
+    @Transactional
     public User register(String email, String password) throws RegistrationException {
         if (email == null || email.isEmpty()) {
-            throw new RegistrationException("email can not be empty");
+            throw new RegistrationException("Email can not be empty");
         }
         if (password == null || password.isEmpty()) {
-            throw new RegistrationException("password can not be empty");
+            throw new RegistrationException("Password can not be empty");
         }
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("email already exists");
+            throw new RegistrationException("Email already exists");
         }
         User user = new User();
         user.setEmail(email);
@@ -34,11 +35,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDB = userService.findByEmail(email);
-        if (userFromDB.isEmpty() || !userFromDB.get().getPassword().equals(
-                HashUtil.hashPassword(password, userFromDB.get().getSalt()))) {
-            throw new AuthenticationException("There is a problem with user login");
+        User user = userService.findByEmail(email).orElseThrow(
+                () -> new AuthenticationException("User not found by email: " + email));
+        if (!user.getPassword().equals(
+                HashUtil.hashPassword(password, user.getSalt()))) {
+            throw new AuthenticationException("There is incorrect password");
         }
-        return userFromDB.get();
+        return user;
     }
 }
