@@ -11,9 +11,9 @@ import jakarta.persistence.Table;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String email;
-    String password;
+    private Long id;
+    private String email;
+    private String password;
     private byte[] salt;
 
     public Long getId() {

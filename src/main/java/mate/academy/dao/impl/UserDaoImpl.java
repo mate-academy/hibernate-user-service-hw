@@ -1,5 +1,6 @@
 package mate.academy.dao.impl;
 
+import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -10,11 +11,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.util.Optional;
-
 @Dao
 public class UserDaoImpl implements UserDao {
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     @Override
     public User add(User user) {
         Transaction transaction = null;
@@ -34,7 +34,8 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("FROM User u WHERE u.email = :email", User.class);
+            Query<User> query = session.createQuery("FROM User u "
+                                                        + "WHERE u.email = :email", User.class);
             query.setParameter("email", email);
             return query.uniqueResultOptional();
         } catch (Exception e) {

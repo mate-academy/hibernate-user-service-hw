@@ -1,5 +1,6 @@
 package mate.academy.auth;
 
+import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -7,8 +8,6 @@ import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
-
-import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -27,7 +26,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         throw new AuthenticationException("User is not registered or wrong password provided");
     }
-
 
     @Override
     public User register(String email, String password) throws RegistrationException {

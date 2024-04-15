@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 
 public class HashUtil {
     private static final String HASH_ALGORITHM = "SHA-512";
+
     public static String hashPassword(String password, byte[] salt) {
         StringBuilder hashedPassword = new StringBuilder();
         try {
