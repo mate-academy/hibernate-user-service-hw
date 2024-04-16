@@ -66,13 +66,13 @@ public class Main {
         try {
             authenticationService.register("taras@gooogle.com", "1324");
         } catch (RegistrationException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't register", e);
         }
         try {
             System.out.println(authenticationService.login("taras@gooogle.com",
                     "1324"));
         } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Can't login.", e);
         }
     }
 }
