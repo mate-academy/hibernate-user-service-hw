@@ -21,7 +21,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> userFromDb = userService.findByEmail(email);
         if (userFromDb.isPresent()) {
             User user = userService.findByEmail(email)
-                    .orElseThrow(() -> new NoSuchElementException("No user found with the provided email."));
+                    .orElseThrow(() -> new NoSuchElementException("No user found "
+                            + "with the provided email."));
             String hashedPass = HashUtil.hashPassword(password, user.getSalt());
             if (hashedPass.equals(user.getPassword())) {
                 return user;
