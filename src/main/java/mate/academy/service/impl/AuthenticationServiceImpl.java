@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -17,9 +18,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isPresent()) {
-            User user = userFromDbOptional.get();
+        Optional<User> userFromDb = userService.findByEmail(email);
+        if (userFromDb.isPresent()) {
+            User user = userService.findByEmail(email)
+                    .orElseThrow(() -> new NoSuchElementException("No user found with the provided email."));
             String hashedPass = HashUtil.hashPassword(password, user.getSalt());
             if (hashedPass.equals(user.getPassword())) {
                 return user;
