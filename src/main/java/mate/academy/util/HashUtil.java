@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 public class HashUtil {
-    public static final String CROPTO_ALGORITHM = "SHA-512";
+    public static final String CRYPTO_ALGORITHM = "SHA-512";
 
     private HashUtil() {
     }
@@ -20,16 +20,15 @@ public class HashUtil {
     public static String hashPassword(String password, byte[] salt) {
         StringBuilder hashedPasswordStrBuilder = new StringBuilder();
         try {
-            MessageDigest messageDigest = MessageDigest.getInstance(CROPTO_ALGORITHM);
+            MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
             for (byte b : digest) {
                 hashedPasswordStrBuilder.append(String.format("%02x", b));
             }
-
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Could not create hash using algorithm of "
-                    + CROPTO_ALGORITHM, e);
+                    + CRYPTO_ALGORITHM, e);
         }
         return hashedPasswordStrBuilder.toString();
     }

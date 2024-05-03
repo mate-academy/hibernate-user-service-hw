@@ -31,11 +31,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        if (email == null || password == null) {
+            throw new RegistrationException(
+                    "Email and password of registering user must be not null");
+        }
         Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isPresent()) {
             throw new RegistrationException("User with email " + email + " is already registered");
         }
-        User newUser = new User(email);
+        User newUser = new User();
+        newUser.setEmail(email);
         newUser.setPassword(password);
         return userService.add(newUser);
     }
