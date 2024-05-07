@@ -3,7 +3,6 @@ package mate.academy.dao.impl;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
@@ -38,34 +37,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> get(Long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return Optional.ofNullable(session.get(User.class, id));
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get a user by id: " + id, e);
-        }
-    }
-
-    @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<User> criteria = builder.createQuery(User.class);
             Root<User> root = criteria.from(User.class);
             criteria.where(builder.equal(root.get("email"), email));
-            return Optional.ofNullable(session.createQuery(criteria).uniqueResult());
-        }
-    }
-
-    @Override
-    public List<User> getAll() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder()
-                    .createQuery(User.class);
-            criteriaQuery.from(User.class);
-            return session.createQuery(criteriaQuery).getResultList();
-        } catch (Exception e) {
-            throw new DataProcessingException("Can't get all users", e);
+            return session.createQuery(criteria).uniqueResultOptional();
         }
     }
 }
