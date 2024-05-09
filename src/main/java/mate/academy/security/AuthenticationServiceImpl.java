@@ -20,7 +20,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> byEmail = userService.findByEmail(email);
         if (byEmail.isEmpty()) {
-            throw new AuthenticationException("Create custom error for this");
+            throw new AuthenticationException("Sorry, you don`t registered");
         }
         User user = byEmail.get();
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());

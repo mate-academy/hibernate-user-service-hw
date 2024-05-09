@@ -18,9 +18,9 @@ public class Main {
     public static void main(String[] args) throws AuthenticationException {
         AuthenticationService authenticationService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
-        authenticationService.register("qwerty.com", "Jhonatan");
-        authenticationService.register("qwerty1.com", "Jhonatan1");
-        System.out.println(authenticationService.login("qwerty.com", "Jhonatan"));
+        authenticationService.register("qwerty2com", "Jhonatan");
+        authenticationService.register("qwerty1com", "Jhonatan1");
+        System.out.println(authenticationService.login("qwerty2com", "Jhonatan"));
 
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -37,7 +37,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService = (CinemaHallService) injector
+                .getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -54,7 +55,8 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService = (MovieSessionService) injector
+                .getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
