@@ -40,7 +40,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private void checkValidData(String email, String password) {
-
         if (password == null || password.isEmpty()) {
             throw new RegistrationException("You forgot enter password, try again.");
         }
