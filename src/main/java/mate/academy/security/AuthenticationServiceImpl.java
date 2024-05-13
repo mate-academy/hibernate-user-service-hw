@@ -18,12 +18,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> byEmail = userService.findByEmail(email);
-        if (byEmail.isPresent()) {
-            User user = byEmail.get();
-            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-            if (user.getPassword().equals(hashedPassword)) {
-                return user;
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isPresent()) {
+            User userFromDB = user.get();
+            String hashedPassword = HashUtil.hashPassword(password, userFromDB.getSalt());
+            if (userFromDB.getPassword().equals(hashedPassword)) {
+                return userFromDB;
             }
         }
         throw new AuthenticationException("Sorry, you don`t registered");
