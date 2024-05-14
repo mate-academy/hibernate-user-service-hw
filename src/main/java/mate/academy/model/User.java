@@ -5,15 +5,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.Arrays;
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String email;
     private String password;
+    private byte[] salt;
 
     public long getId() {
         return id;
@@ -39,12 +41,21 @@ public class User {
         this.password = password;
     }
 
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
+    }
+
     @Override
     public String toString() {
         return "User{"
                 + "id=" + id
                 + ", email='" + email + '\''
                 + ", password='" + password + '\''
+                + ", salt=" + Arrays.toString(salt)
                 + '}';
     }
 }
