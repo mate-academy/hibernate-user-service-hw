@@ -67,12 +67,12 @@ public class Main {
         try {
             System.out.println(authenticationService.register("e-mail", "12345"));
         } catch (RegistrationException e) {
-            System.out.println("Can`t register user, try again");
+            System.out.println("Can`t register user, try again.");
         }
         try {
             System.out.println(authenticationService.login("e-mail", "12345"));
         } catch (AuthenticationException e) {
-            System.out.println("E-mail or password is incorrect, try again");
+            System.out.println("E-mail or password is incorrect, try again.");
         }
     }
 }

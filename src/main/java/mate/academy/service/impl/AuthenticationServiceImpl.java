@@ -17,30 +17,34 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isEmpty() || !isValidPassword(user.get(), password)) {
             throw new AuthenticationException(
-                    "Can`t authentication user");
+                    "Authentication failed for user with email: " + email);
         }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException(
-                "Can`t authentication user");
+        return user.get();
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isPresent() || password.isEmpty()) {
-            throw new RegistrationException("Can`t register user");
+        Optional<User> user = userService.findByEmail(email);
+        if (!isValidUserToRegister(user, email, password)) {
+            throw new RegistrationException("Register failed for user with email: " + email);
         }
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        userService.add(user);
-        return user;
+        User currentUser = new User();
+        currentUser.setEmail(email);
+        currentUser.setPassword(password);
+        userService.add(currentUser);
+        return currentUser;
+    }
+
+    private boolean isValidPassword(User user, String password) {
+        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        return user.getPassword().equals(hashedPassword);
+    }
+
+    private boolean isValidUserToRegister(Optional<User> userOptional,
+                                          String email, String password) {
+        return userOptional.isEmpty() && !email.isEmpty() && !password.isEmpty();
     }
 }
