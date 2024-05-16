@@ -59,12 +59,6 @@ public class User {
                 + id
                 + ", email='"
                 + email
-                + '\''
-                + ", password='"
-                + password
-                + '\''
-                + ", salt="
-                + Arrays.toString(salt)
                 + '}';
     }
 }
