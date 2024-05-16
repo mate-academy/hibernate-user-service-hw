@@ -2,6 +2,7 @@ package mate.academy.service.impl;
 
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
@@ -16,20 +17,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String email, String password) throws AuthenticationException {
+    public User login(String email, String password) {
         Optional<User> user = userService.findByEmail(email);
-        if (user.isEmpty() || !isValidPassword(user.get(), password)) {
-            throw new AuthenticationException(
-                    "Authentication failed for user with email: " + email);
+        try {
+            isValidPassword(user, password);
+            isValidString(email);
+            return user.get();
+        } catch (AuthenticationException | RegistrationException e) {
+            throw new DataProcessingException("Incorrect email or password this user is not exist");
         }
-        return user.get();
     }
 
     @Override
-    public User register(String email, String password) throws RegistrationException {
+    public User register(String email, String password) {
         Optional<User> user = userService.findByEmail(email);
-        if (!isValidUserToRegister(user, email, password)) {
-            throw new RegistrationException("Register failed for user with email: " + email);
+        try {
+            isUserPresent(user);
+            isValidString(email);
+            isValidString(password);
+        } catch (RegistrationException e) {
+            throw new DataProcessingException(
+                    "Incorrect email or password can`t register this user");
         }
         User currentUser = new User();
         currentUser.setEmail(email);
@@ -38,13 +46,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return currentUser;
     }
 
-    private boolean isValidPassword(User user, String password) {
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        return user.getPassword().equals(hashedPassword);
+    private void isValidPassword(Optional<User> user,
+                                 String password) throws AuthenticationException {
+        isUserExist(user);
+        String hashedPassword = HashUtil.hashPassword(password, user.get().getSalt());
+        if (!user.get().getPassword().equals(hashedPassword)) {
+            throw new AuthenticationException("Incorrect password");
+        }
     }
 
-    private boolean isValidUserToRegister(Optional<User> userOptional,
-                                          String email, String password) {
-        return userOptional.isEmpty() && !email.isEmpty() && !password.isEmpty();
+    private void isUserExist(Optional<User> userOptional) throws AuthenticationException {
+        if (userOptional.isEmpty()) {
+            throw new AuthenticationException("User is not exist");
+        }
+    }
+
+    private void isUserPresent(Optional<User> userOptional) throws RegistrationException {
+        if (userOptional.isPresent()) {
+            throw new RegistrationException("User is exist");
+        }
+    }
+
+    private void isValidString(String str) throws RegistrationException {
+        if (str.isEmpty()) {
+            throw new RegistrationException("Incorrect email");
+        }
     }
 }
