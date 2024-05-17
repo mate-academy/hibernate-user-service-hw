@@ -1,0 +1,72 @@
+[2024/05/17 10:54:25.990, java.exe (PID: 8520, TID: 8404), JavaEnvironment.cpp:502 (JavaEnvironment::detect)]
+	TRACE: Entering JavaEnvironment::detect
+[2024/05/17 10:54:26.000, java.exe (PID: 8520, TID: 8404), JavaEnvironment.cpp:519 (JavaEnvironment::detect)]
+	TRACE: Installed Java detected: version=; arch=64; productCode={701CE19D-1741-5258-9CD3-D5DDD1A6DEDE}; type=1
+[2024/05/17 10:54:26.001, java.exe (PID: 8520, TID: 8404), JavaEnvironment.cpp:135 (`anonymous-namespace'::detectHomeDir)]
+	TRACE: Find home dir of {701CE19D-1741-5258-9CD3-D5DDD1A6DEDE} Java installation
+[2024/05/17 10:54:26.001, java.exe (PID: 8520, TID: 8404), JavaEnvironment.cpp:302 (`anonymous-namespace'::detectFullVersion)]
+	TRACE: Detect full version of {701CE19D-1741-5258-9CD3-D5DDD1A6DEDE} Java installation
+[2024/05/17 10:54:26.001, java.exe (PID: 8520, TID: 8404), JavaEnvironment.cpp:213 (`anonymous-namespace'::detectFullVersionFromMsi)]
+	TRACE: detectFullVersionFromMsi({701CE19D-1741-5258-9CD3-D5DDD1A6DEDE})
+[2024/05/17 10:54:26.020, java.exe (PID: 8520, TID: 8404), JavaEnvironment.cpp:481 (`anonymous-namespace'::getInstalledJava)]
+	TRACE: InstalledJava(11.0.20+9|11.0.20+9|JDK|64bit|C:\Program Files\Java\jdk-11|{701CE19D-1741-5258-9CD3-D5DDD1A6DEDE}|-10|)
+[2024/05/17 10:54:26.023, java.exe (PID: 8520, TID: 8404), JavaEnvironment.cpp:0 (JavaEnvironment::detect)]
+	TRACE: Exiting JavaEnvironment::detect (entered at JavaEnvironment.cpp:502)
+[2024/05/17 10:54:26.038, java.exe (PID: 8520, TID: 8404), Executor.cpp:602 (Executor2::startProcess)]
+	TRACE: CreateProcess(C:\Program Files\Java\jdk-11\bin\java.exe, "C:\\Program Files\\Java\\jdk-11\\bin\\java.exe" -classpath C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6\\boot\\plexus-classworlds-2.7.0.jar -Dclassworlds.conf=C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6\\bin\\m2.conf -Dmaven.home=C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6 -Dlibrary.jansi.path=C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6\\lib\\jansi-native -Dmaven.multiModuleProjectDirectory=C:\\IdeaProjects\\hibernate-user-service-hw org.codehaus.plexus.classworlds.launcher.Launcher clean package) succeeded; PID=12048
+[2024/05/17 10:54:29.406, java.exe (PID: 8520, TID: 8404), Executor.cpp:563 (Executor2::execAndWait)]
+	TRACE: Process with PID=12048 terminated. Exit code=1
+[2024/05/17 10:54:55.319, java.exe (PID: 11932, TID: 6556), JavaEnvironment.cpp:502 (JavaEnvironment::detect)]
+	TRACE: Entering JavaEnvironment::detect
+[2024/05/17 10:54:55.329, java.exe (PID: 11932, TID: 6556), JavaEnvironment.cpp:519 (JavaEnvironment::detect)]
+	TRACE: Installed Java detected: version=; arch=64; productCode={701CE19D-1741-5258-9CD3-D5DDD1A6DEDE}; type=1
+[2024/05/17 10:54:55.329, java.exe (PID: 11932, TID: 6556), JavaEnvironment.cpp:135 (`anonymous-namespace'::detectHomeDir)]
+	TRACE: Find home dir of {701CE19D-1741-5258-9CD3-D5DDD1A6DEDE} Java installation
+[2024/05/17 10:54:55.329, java.exe (PID: 11932, TID: 6556), JavaEnvironment.cpp:302 (`anonymous-namespace'::detectFullVersion)]
+	TRACE: Detect full version of {701CE19D-1741-5258-9CD3-D5DDD1A6DEDE} Java installation
+[2024/05/17 10:54:55.330, java.exe (PID: 11932, TID: 6556), JavaEnvironment.cpp:213 (`anonymous-namespace'::detectFullVersionFromMsi)]
+	TRACE: detectFullVersionFromMsi({701CE19D-1741-5258-9CD3-D5DDD1A6DEDE})
+[2024/05/17 10:54:55.333, java.exe (PID: 11932, TID: 6556), JavaEnvironment.cpp:481 (`anonymous-namespace'::getInstalledJava)]
+	TRACE: InstalledJava(11.0.20+9|11.0.20+9|JDK|64bit|C:\Program Files\Java\jdk-11|{701CE19D-1741-5258-9CD3-D5DDD1A6DEDE}|-10|)
+[2024/05/17 10:54:55.336, java.exe (PID: 11932, TID: 6556), JavaEnvironment.cpp:0 (JavaEnvironment::detect)]
+	TRACE: Exiting JavaEnvironment::detect (entered at JavaEnvironment.cpp:502)
+[2024/05/17 10:54:55.342, java.exe (PID: 11932, TID: 6556), Executor.cpp:602 (Executor2::startProcess)]
+	TRACE: CreateProcess(C:\Program Files\Java\jdk-11\bin\java.exe, "C:\\Program Files\\Java\\jdk-11\\bin\\java.exe" -classpath C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6\\boot\\plexus-classworlds-2.7.0.jar -Dclassworlds.conf=C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6\\bin\\m2.conf -Dmaven.home=C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6 -Dlibrary.jansi.path=C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6\\lib\\jansi-native -Dmaven.multiModuleProjectDirectory=C:\\IdeaProjects\\hibernate-user-service-hw org.codehaus.plexus.classworlds.launcher.Launcher checkstyle) succeeded; PID=12856
+[2024/05/17 10:54:57.080, java.exe (PID: 11932, TID: 6556), Executor.cpp:563 (Executor2::execAndWait)]
+	TRACE: Process with PID=12856 terminated. Exit code=1
+[2024/05/17 11:00:35.083, java.exe (PID: 15276, TID: 8496), JavaEnvironment.cpp:502 (JavaEnvironment::detect)]
+	TRACE: Entering JavaEnvironment::detect
+[2024/05/17 11:00:35.092, java.exe (PID: 15276, TID: 8496), JavaEnvironment.cpp:519 (JavaEnvironment::detect)]
+	TRACE: Installed Java detected: version=; arch=64; productCode={701CE19D-1741-5258-9CD3-D5DDD1A6DEDE}; type=1
+[2024/05/17 11:00:35.092, java.exe (PID: 15276, TID: 8496), JavaEnvironment.cpp:135 (`anonymous-namespace'::detectHomeDir)]
+	TRACE: Find home dir of {701CE19D-1741-5258-9CD3-D5DDD1A6DEDE} Java installation
+[2024/05/17 11:00:35.092, java.exe (PID: 15276, TID: 8496), JavaEnvironment.cpp:302 (`anonymous-namespace'::detectFullVersion)]
+	TRACE: Detect full version of {701CE19D-1741-5258-9CD3-D5DDD1A6DEDE} Java installation
+[2024/05/17 11:00:35.092, java.exe (PID: 15276, TID: 8496), JavaEnvironment.cpp:213 (`anonymous-namespace'::detectFullVersionFromMsi)]
+	TRACE: detectFullVersionFromMsi({701CE19D-1741-5258-9CD3-D5DDD1A6DEDE})
+[2024/05/17 11:00:35.096, java.exe (PID: 15276, TID: 8496), JavaEnvironment.cpp:481 (`anonymous-namespace'::getInstalledJava)]
+	TRACE: InstalledJava(11.0.20+9|11.0.20+9|JDK|64bit|C:\Program Files\Java\jdk-11|{701CE19D-1741-5258-9CD3-D5DDD1A6DEDE}|-10|)
+[2024/05/17 11:00:35.099, java.exe (PID: 15276, TID: 8496), JavaEnvironment.cpp:0 (JavaEnvironment::detect)]
+	TRACE: Exiting JavaEnvironment::detect (entered at JavaEnvironment.cpp:502)
+[2024/05/17 11:00:35.105, java.exe (PID: 15276, TID: 8496), Executor.cpp:602 (Executor2::startProcess)]
+	TRACE: CreateProcess(C:\Program Files\Java\jdk-11\bin\java.exe, "C:\\Program Files\\Java\\jdk-11\\bin\\java.exe" -classpath C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6\\boot\\plexus-classworlds-2.7.0.jar -Dclassworlds.conf=C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6\\bin\\m2.conf -Dmaven.home=C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6 -Dlibrary.jansi.path=C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6\\lib\\jansi-native -Dmaven.multiModuleProjectDirectory=C:\\IdeaProjects\\hibernate-user-service-hw org.codehaus.plexus.classworlds.launcher.Launcher clean package) succeeded; PID=12020
+[2024/05/17 11:00:38.569, java.exe (PID: 15276, TID: 8496), Executor.cpp:563 (Executor2::execAndWait)]
+	TRACE: Process with PID=12020 terminated. Exit code=1
+[2024/05/17 11:01:48.646, java.exe (PID: 12488, TID: 5112), JavaEnvironment.cpp:502 (JavaEnvironment::detect)]
+	TRACE: Entering JavaEnvironment::detect
+[2024/05/17 11:01:48.656, java.exe (PID: 12488, TID: 5112), JavaEnvironment.cpp:519 (JavaEnvironment::detect)]
+	TRACE: Installed Java detected: version=; arch=64; productCode={701CE19D-1741-5258-9CD3-D5DDD1A6DEDE}; type=1
+[2024/05/17 11:01:48.656, java.exe (PID: 12488, TID: 5112), JavaEnvironment.cpp:135 (`anonymous-namespace'::detectHomeDir)]
+	TRACE: Find home dir of {701CE19D-1741-5258-9CD3-D5DDD1A6DEDE} Java installation
+[2024/05/17 11:01:48.656, java.exe (PID: 12488, TID: 5112), JavaEnvironment.cpp:302 (`anonymous-namespace'::detectFullVersion)]
+	TRACE: Detect full version of {701CE19D-1741-5258-9CD3-D5DDD1A6DEDE} Java installation
+[2024/05/17 11:01:48.657, java.exe (PID: 12488, TID: 5112), JavaEnvironment.cpp:213 (`anonymous-namespace'::detectFullVersionFromMsi)]
+	TRACE: detectFullVersionFromMsi({701CE19D-1741-5258-9CD3-D5DDD1A6DEDE})
+[2024/05/17 11:01:48.660, java.exe (PID: 12488, TID: 5112), JavaEnvironment.cpp:481 (`anonymous-namespace'::getInstalledJava)]
+	TRACE: InstalledJava(11.0.20+9|11.0.20+9|JDK|64bit|C:\Program Files\Java\jdk-11|{701CE19D-1741-5258-9CD3-D5DDD1A6DEDE}|-10|)
+[2024/05/17 11:01:48.663, java.exe (PID: 12488, TID: 5112), JavaEnvironment.cpp:0 (JavaEnvironment::detect)]
+	TRACE: Exiting JavaEnvironment::detect (entered at JavaEnvironment.cpp:502)
+[2024/05/17 11:01:48.669, java.exe (PID: 12488, TID: 5112), Executor.cpp:602 (Executor2::startProcess)]
+	TRACE: CreateProcess(C:\Program Files\Java\jdk-11\bin\java.exe, "C:\\Program Files\\Java\\jdk-11\\bin\\java.exe" -classpath C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6\\boot\\plexus-classworlds-2.7.0.jar -Dclassworlds.conf=C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6\\bin\\m2.conf -Dmaven.home=C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6 -Dlibrary.jansi.path=C:\\Users\\Олегович\\Desktop\\apache-maven-3.9.6\\lib\\jansi-native -Dmaven.multiModuleProjectDirectory=C:\\IdeaProjects\\hibernate-user-service-hw org.codehaus.plexus.classworlds.launcher.Launcher clean package) succeeded; PID=13996
+[2024/05/17 11:01:51.689, java.exe (PID: 12488, TID: 5112), Executor.cpp:563 (Executor2::execAndWait)]
+	TRACE: Process with PID=13996 terminated. Exit code=1
