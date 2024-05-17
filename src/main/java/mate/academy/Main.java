@@ -16,6 +16,7 @@ import mate.academy.service.MovieSessionService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
@@ -33,7 +34,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = (CinemaHallService) injector.getInstance(CinemaHallService.class);
+        CinemaHallService cinemaHallService =
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -50,7 +52,8 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
@@ -68,15 +71,18 @@ public class Main {
         AuthenticationService authenticationService
                 = (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
-            User registerBob = authenticationService.register(userBob.getEmail(), userBob.getPassword());
-            User registerAlice = authenticationService.register(userAlice.getEmail(), userAlice.getPassword());
+            User registerBob = authenticationService
+                    .register(userBob.getEmail(), userBob.getPassword());
+            User registerAlice = authenticationService
+                    .register(userAlice.getEmail(), userAlice.getPassword());
             System.out.println(registerBob);
             System.out.println(registerAlice);
         } catch (RegistrationException e) {
             throw new RuntimeException("Cannot register users", e);
         }
         try {
-             System.out.println(authenticationService.login(userBob.getEmail(), userBob.getPassword()));
+            System.out.println(authenticationService
+                    .login(userBob.getEmail(), userBob.getPassword()));
         } catch (AuthenticationException e) {
             throw new RuntimeException("Cannot login user Bob", e);
         }

@@ -1,10 +1,9 @@
 package mate.academy.dao;
 
+import java.util.Optional;
 import mate.academy.model.User;
 
-import java.util.Optional;
-
-public interface UserDAO {
+public interface UserDao {
     User save(User user);
 
     Optional<User> findByMail(String mail);
