@@ -47,5 +47,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         throw new RegistrationException("Can't registration user with email: " + email
                 + ". User with email already exist or email does not valid", new Exception());
     }
-
 }
