@@ -1,10 +1,10 @@
 package mate.academy.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import mate.academy.dao.UserDao;
-import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
         if (isValidEmail(email)) {
             return userDao.findByEmail(email);
         }
-        throw new DataProcessingException("Can't find user with email: " + email
+        throw new EntityNotFoundException("Can't find user with email: " + email
                 + " in DB or email is not valid", new Exception());
     }
 
