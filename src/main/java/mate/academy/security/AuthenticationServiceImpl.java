@@ -31,10 +31,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("User with such email already exists");
-        }
         if (email != null && password != null) {
+            if (userService.findByEmail(email).isPresent()) {
+                throw new RegistrationException("User with such email already exists");
+            }
             User newUser = new User();
             newUser.setEmail(email);
             newUser.setPassword(password);
