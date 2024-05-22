@@ -1,9 +1,6 @@
 package mate.academy.dao.impl;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
@@ -37,13 +34,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Set<String> getAllLogins() {
+    public boolean checkLoginExists(String login) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            List<String> logins = session.createQuery("SELECT login FROM User", String.class)
-                    .getResultList();
-            return new HashSet<>(logins);
+            Long count = (Long) session.createQuery("SELECT COUNT(u) "
+                            + "FROM User u WHERE u.login = :login")
+                    .setParameter("login", login)
+                    .getSingleResult();
+            System.out.println(count);
+            return count != 0;
         } catch (Exception e) {
-            throw new DataProcessingException("Can`t get all users` logins.", e);
+            throw new DataProcessingException("Can't find user with login: " + login, e);
         }
     }
 

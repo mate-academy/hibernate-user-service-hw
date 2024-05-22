@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
 import java.util.Optional;
-import java.util.Set;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -37,7 +36,7 @@ public class AuthentificationServiceImpl implements AuthentificationService {
 
     @Override
     public User register(String login, String password) throws RegistrationException {
-        checkLogin(login);
+        isLoginExists(login);
         User user = new User();
         user.setPassword(password);
         user.setLogin(login);
@@ -45,9 +44,8 @@ public class AuthentificationServiceImpl implements AuthentificationService {
         return user;
     }
 
-    private void checkLogin(String login) {
-        Set<String> logins = userDao.getAllLogins();
-        if (logins.stream().anyMatch(l -> l.equals(login))) {
+    private void isLoginExists(String login) {
+        if (userDao.checkLoginExists(login)) {
             throw new RegistrationException("Login " + login + " already exists."
                     + "\nPlease come up with another login!");
         }

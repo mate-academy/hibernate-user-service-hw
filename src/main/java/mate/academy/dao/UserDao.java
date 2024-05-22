@@ -1,13 +1,12 @@
 package mate.academy.dao;
 
 import java.util.Optional;
-import java.util.Set;
 import mate.academy.model.User;
 
 public interface UserDao {
     User add(User user);
 
-    Set<String> getAllLogins();
+    public boolean checkLoginExists(String login);
 
     Optional<User> findByEmail(String login);
 }
