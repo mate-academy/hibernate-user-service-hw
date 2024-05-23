@@ -38,8 +38,8 @@ public class AuthentificationServiceImpl implements AuthentificationService {
     public User register(String login, String password) throws RegistrationException {
         isLoginExists(login);
         if (password == null || password.length() < PASSWORD_MIN_LENGTH) {
-            throw new RegistrationException("Ineligible password. " +
-                    "Length must be more than 5. " + password);
+            throw new RegistrationException("Ineligible password. "
+                    + "Length must be more than 5. " + password);
         }
         User user = new User();
         user.setPassword(password);
