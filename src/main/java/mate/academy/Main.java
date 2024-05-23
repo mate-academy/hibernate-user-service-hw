@@ -11,8 +11,8 @@ public class Main {
     public static void main(String[] args) {
         AuthentificationService authentificationService = (AuthentificationService)
                 injector.getInstance(AuthentificationService.class);
-        User user2 = authentificationService.login("ravshan567@gmail.com",
+        User user = authentificationService.login("ravshan567@gmail.com",
                 "ravshan4ik4irik");
-        System.out.println(user2);
+        System.out.println(user);
     }
 }

@@ -40,7 +40,6 @@ public class UserDaoImpl implements UserDao {
                             + "FROM User u WHERE u.login = :login")
                     .setParameter("login", login)
                     .getSingleResult();
-            System.out.println(count);
             return count != 0;
         } catch (Exception e) {
             throw new DataProcessingException("Can't find user with login: " + login, e);
