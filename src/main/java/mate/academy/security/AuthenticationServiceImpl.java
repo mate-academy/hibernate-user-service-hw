@@ -22,7 +22,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = optionalUserFromDb.get();
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
+        if (password != null
+                && user.getPassword().equals(hashedPassword)) {
             return user;
         }
         throw new AuthenticationException("User with this email or password is not registered");
@@ -30,6 +31,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        Optional<User> optionalUserByEmail = userService.findByEmail(email);
+        if (email == null || password == null) {
+            throw new RegistrationException("Email or password can't be null");
+        }
+        if (optionalUserByEmail.isPresent()) {
+            throw new RegistrationException("The user with current email already exist");
+        }
         User user = new User(email, password);
         return userService.add(user);
     }
