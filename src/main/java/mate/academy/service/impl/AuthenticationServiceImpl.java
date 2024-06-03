@@ -33,11 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Email already present " + email);
         }
-        try {
-            return userService.add(new User(email, password));
-        } catch (DataProcessingException e) {
-            throw new RegistrationException("Can not register user with email " + email, e);
-        }
+        return userService.add(new User(email, password));
     }
 
     private boolean isPasswordValid(User user, String password) {
