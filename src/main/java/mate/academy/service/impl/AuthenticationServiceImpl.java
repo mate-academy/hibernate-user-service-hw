@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.security.SecureRandom;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.DataProcessingException;
@@ -19,23 +20,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isEmpty()) {
-            throw new AuthenticationException("User is not found by email " + email);
+        if (userOptional.isEmpty() || isPasswordValid(userOptional.get(), password)) {
+            throw new AuthenticationException("Can not login user by email " + email);
         }
-        User user = userOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (!user.getPassword().equals(hashedPassword)) {
-            throw new AuthenticationException("Password is incorrect for user with email " + email);
-        }
-        return user;
+        return userOptional.get();
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        if (email == null || email.isBlank() || password == null || password.isBlank()) {
+            throw new RegistrationException("Invalid data for email " + email);
+        }
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("Email already present " + email);
+        }
         try {
             return userService.add(new User(email, password));
         } catch (DataProcessingException e) {
             throw new RegistrationException("Can not register user with email " + email, e);
         }
     }
+
+    private boolean isPasswordValid(User user, String password) {
+            return password != null && user.getPassword()
+                    .equals(HashUtil.hashPassword(password, user.getSalt()));
+        }
 }
