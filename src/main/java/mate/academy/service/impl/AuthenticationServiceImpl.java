@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import java.security.SecureRandom;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.DataProcessingException;
@@ -42,7 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private boolean isPasswordValid(User user, String password) {
-            return password != null && user.getPassword()
-                    .equals(HashUtil.hashPassword(password, user.getSalt()));
-        }
+        return password != null && user.getPassword()
+                .equals(HashUtil.hashPassword(password, user.getSalt()));
+    }
 }
