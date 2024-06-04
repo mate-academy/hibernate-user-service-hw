@@ -24,7 +24,7 @@ Your task is to implement the following steps:
     - AuthenticationService
         ````java
         public interface AuthenticationService {
-            User login(String email, String password) throws AuthenticationException;
+            User email(String email, String password) throws AuthenticationException;
 
             /**
             * We should register a new user. The new user entity will contain the email and password
@@ -35,7 +35,7 @@ Your task is to implement the following steps:
             User register(String email, String password) throws RegistrationException;
         }
         ````
-    - Create your own checked `RegistrationException` and `AuthenticationException` to use in `register()` and `login()` methods respectively
+    - Create your own checked `RegistrationException` and `AuthenticationException` to use in `register()` and `email()` methods respectively
 
     - Please don’t forget to use salt and password-hashing
 - In the `mate/academy/Main.main()` method create an instance of AuthenticationService using injector and test all methods from it.

@@ -12,7 +12,7 @@ public class Main {
         final AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         try {
-            authenticationService.register("email@gmail.com", "password");
+            authenticationService.register("email121@gmail.com", "password");
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }
