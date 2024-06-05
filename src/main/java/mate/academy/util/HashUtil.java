@@ -8,7 +8,7 @@ public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
     private static final String FORMAT = "%02x";
 
-    public HashUtil() {
+    private HashUtil() {
     }
 
     public static byte[] getSalt() {
