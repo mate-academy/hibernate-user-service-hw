@@ -18,23 +18,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDmOptional = userService.findByEmail(email);
-        if (userFromDmOptional.isEmpty()) {
-            throw new AuthenticationException("Can`t login user with email " + email,
-                    new RuntimeException());
+
+        if (userFromDmOptional.isPresent()) {
+            User user = userFromDmOptional.get();
+            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+            if (hashedPassword.equals(user.getPassword())) {
+                return user;
+            }
         }
-        User user = userFromDmOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (hashedPassword.equals(user.getPassword())) {
-            return user;
-        }
+
         throw new AuthenticationException("Can`t login user with email " + email,
                 new RuntimeException());
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        User user = new User(email, password);
-        userService.add(user);
-        return user;
+        Optional<User> userFromDmOptional = userService.findByEmail(email);
+        if (userFromDmOptional.isEmpty()) {
+            User user = new User(email, password);
+            userService.add(user);
+            return user;
+        }
+
+        throw new RegistrationException("Registration failed. Already exist user with email "
+                + email, new RuntimeException());
     }
 }
