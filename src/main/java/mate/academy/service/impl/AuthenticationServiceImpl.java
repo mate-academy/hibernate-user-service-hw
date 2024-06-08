@@ -27,8 +27,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
         }
 
-        throw new AuthenticationException("Can`t login user with email " + email,
-                new RuntimeException());
+        throw new AuthenticationException("Can`t login user with email " + email);
     }
 
     @Override
@@ -41,6 +40,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         throw new RegistrationException("Registration failed. Already exist user with email "
-                + email, new RuntimeException());
+                + email);
     }
 }
