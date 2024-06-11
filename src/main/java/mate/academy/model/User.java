@@ -10,7 +10,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -59,5 +58,4 @@ public class User {
     public void setSalt(byte[] salt) {
         this.salt = salt;
     }
-
 }
