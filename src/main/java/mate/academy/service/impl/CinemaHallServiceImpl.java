@@ -1,6 +1,8 @@
 package mate.academy.service.impl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import mate.academy.dao.CinemaHallDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
@@ -10,7 +12,11 @@ import mate.academy.service.CinemaHallService;
 @Service
 public class CinemaHallServiceImpl implements CinemaHallService {
     @Inject
-    private CinemaHallDao cinemaHallDao;
+    private final CinemaHallDao cinemaHallDao;
+
+    public CinemaHallServiceImpl(CinemaHallDao cinemaHallDao) {
+        this.cinemaHallDao = cinemaHallDao;
+    }
 
     @Override
     public CinemaHall add(CinemaHall cinemaHall) {
@@ -19,7 +25,12 @@ public class CinemaHallServiceImpl implements CinemaHallService {
 
     @Override
     public CinemaHall get(Long id) {
-        return cinemaHallDao.get(id).get();
+        Optional<CinemaHall> optionalCinemaHall = cinemaHallDao.get(id);
+        if (optionalCinemaHall.isPresent()) {
+            return optionalCinemaHall.get();
+        } else {
+            throw new NoSuchElementException("No CinemaHall found with ID " + id);
+        }
     }
 
     @Override
