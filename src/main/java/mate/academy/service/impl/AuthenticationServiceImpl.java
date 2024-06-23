@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import com.mysql.cj.util.StringUtils;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -41,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public void validateData(String email, String password) throws AuthenticationException {
-        if (email.isEmpty() || password.isEmpty()) {
+        if (StringUtils.isNullOrEmpty(email) || StringUtils.isNullOrEmpty(password)) {
             throw new AuthenticationException("Email or password cannot be null");
         }
     }

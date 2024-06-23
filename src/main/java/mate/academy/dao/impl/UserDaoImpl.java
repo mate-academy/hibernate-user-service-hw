@@ -39,8 +39,7 @@ public class UserDaoImpl implements UserDao {
             String hql = "from User where email = :email";
             return session.createQuery(hql, User.class)
                     .setParameter("email", email)
-                    .stream()
-                    .findFirst();
+                    .uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find user by email " + email, e);
         }
