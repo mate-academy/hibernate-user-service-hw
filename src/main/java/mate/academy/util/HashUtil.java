@@ -25,7 +25,7 @@ public class HashUtil {
             byte[] hash = md.digest(saltedPassword.getBytes());
             return Base64.getEncoder().encodeToString(hash);
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Hashing algorithm not found", e);
+            throw new RuntimeException("Hashing algorithm '" + SHA_256 + "' not found", e);
         }
     }
 }
