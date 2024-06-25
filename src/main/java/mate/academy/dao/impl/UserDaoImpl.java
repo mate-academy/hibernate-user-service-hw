@@ -33,13 +33,13 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public Optional<User> findByLogin(String login) {
+    public Optional<User> findByEmail(String email) {
         try (Session session = factory.openSession()) {
-            var query = session.createQuery("FROM User u WHERE u.login = :login", User.class);
-            query.setParameter("login", login);
+            var query = session.createQuery("FROM User u WHERE u.email = :login", User.class);
+            query.setParameter("email", email);
             return query.uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Unable to find a user by login " + login, e);
+            throw new DataProcessingException("Unable to find a user by email " + email, e);
         }
     }
 }

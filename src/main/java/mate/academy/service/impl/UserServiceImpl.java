@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
         return userDao.save(user);
     }
 
-    public Optional<User> findByLogin(String login) {
-        return userDao.findByLogin(login);
+    public Optional<User> findByEmail(String email) {
+        return userDao.findByEmail(email);
     }
 }

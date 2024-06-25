@@ -13,19 +13,52 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public void register(String mail, String password) throws RegistrationException {
-        if (userService.findByLogin(mail).isPresent()) {
-            throw new RegistrationException("User with mail " + mail + "already exists");
+    public void register(String email, String password) throws RegistrationException {
+        validateEmail(email);
+        validatePassword(password);
+        ensureUserDoesNotExist(email);
+        createUserAndSave(email, password);
+    }
+
+    @Override
+    public User login(String email, String password) throws AuthenticationException {
+        validatePasswordForLogin(password);
+        return authenticateUser(email, password);
+    }
+
+    private void validateEmail(String email) throws RegistrationException {
+        if (email == null || email.trim().isEmpty()) {
+            throw new RegistrationException("Email cannot be null or empty.");
         }
+    }
+
+    private void validatePassword(String password) throws RegistrationException {
+        if (password == null || password.trim().isEmpty()) {
+            throw new RegistrationException("Password cannot be null or empty.");
+        }
+    }
+
+    private void ensureUserDoesNotExist(String email) throws RegistrationException {
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("User with email " + email + " already exists.");
+        }
+    }
+
+    private void createUserAndSave(String email, String password) {
         var user = new User();
-        user.setLogin(mail);
+        user.setEmail(email);
         user.setPassword(password);
         userService.save(user);
     }
 
-    @Override
-    public User login(String login, String password) throws AuthenticationException {
-        var optionalUserFromDB = userService.findByLogin(login);
+    private static void validatePasswordForLogin(String password) throws AuthenticationException {
+        if (password == null || password.trim().isEmpty()) {
+            throw new AuthenticationException("Password cannot be null or empty.");
+        }
+    }
+
+    private User authenticateUser(String email, String password) throws AuthenticationException {
+        var optionalUserFromDB = userService.findByEmail(email);
         if (optionalUserFromDB.isEmpty() || !HashUtil.hashPassword(password,
                         optionalUserFromDB.get().getSalt())
                 .equals(optionalUserFromDB.get().getPassword())) {
