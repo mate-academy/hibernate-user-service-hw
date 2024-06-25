@@ -5,13 +5,17 @@ import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
 import mate.academy.model.User;
-import org.hibernate.Session;
+import mate.academy.util.HibernateUtil;
 import org.hibernate.SessionFactory;
 
 @Dao
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     public UserDaoImpl(SessionFactory factory) {
         super(factory);
+    }
+
+    public UserDaoImpl() {
+        this(HibernateUtil.getSessionFactory());
     }
 
     @Override
@@ -24,8 +28,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public Optional<User> get(Long id) {
-        try {
-            var session = factory.openSession();
+        try (var session = factory.openSession()) {
             return Optional.ofNullable(session.get(User.class, id));
         } catch (Exception e) {
             throw new DataProcessingException("Unable to get a user by id:" + id, e);
@@ -34,8 +37,8 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        try (Session session = factory.openSession()) {
-            var query = session.createQuery("FROM User u WHERE u.email = :login", User.class);
+        try (var session = factory.openSession()) {
+            var query = session.createQuery("FROM User u WHERE u.email = :email", User.class);
             query.setParameter("email", email);
             return query.uniqueResultOptional();
         } catch (Exception e) {

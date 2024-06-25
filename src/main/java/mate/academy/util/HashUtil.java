@@ -28,7 +28,7 @@ public final class HashUtil {
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("No such hashing algorithmn: " + HASH_ALGORITHM, e);
+            throw new RuntimeException("No such hashing algorithm: " + HASH_ALGORITHM, e);
         }
     }
 }
