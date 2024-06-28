@@ -16,28 +16,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isEmpty()) {
-            throw new AuthenticationException("This email is not registered");
+        Optional<User> userFromDb = userService.findByEmail(email);
+        String hashedPassword = HashUtil.hashPassword(password, userFromDb.orElseThrow().getSalt());
+        if ((!password.isEmpty())
+                || isValidPassword(userFromDb.orElseThrow().getPassword(), hashedPassword)) {
+            return userFromDb.get();
         }
-        User user = userOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (isValidPassword(hashedPassword, user.getPassword())) {
-            return user;
-        } else {
-            throw new AuthenticationException("Invalid password");
-        }
-
+        throw new AuthenticationException("Incorrect email or password!");
     }
 
     @Override
-    public User register(String email, String password, String passwordAgain)
+    public User register(String email, String password)
             throws RegistrationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isPresent()) {
+        if (email.isEmpty() || password.isEmpty()) {
+            throw new RegistrationException("Enter all data");
+        } else if (userOptional.isPresent()) {
             throw new RegistrationException("Email already exists");
-        } else if (!isValidPassword(password, passwordAgain)) {
-            throw new RegistrationException("The passwords do not match");
         }
         User user = new User();
         user.setEmail(email);
