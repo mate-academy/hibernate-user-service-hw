@@ -2,33 +2,40 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import mate.academy.dao.CinemaHallDao;
-import mate.academy.dao.MovieDao;
-import mate.academy.dao.MovieSessionDao;
-import mate.academy.dao.impl.CinemaHallDaoImpl;
-import mate.academy.dao.impl.MovieDaoImpl;
-import mate.academy.dao.impl.MovieSessionDaoImpl;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
-import mate.academy.service.impl.CinemaHallServiceImpl;
-import mate.academy.service.impl.MovieServiceImpl;
-import mate.academy.service.impl.MovieSessionServiceImpl;
+import mate.academy.service.UserService;
+import mate.academy.service.impl.AuthenticationServiceImpl;
 
 public class Main {
+    private static final Injector INJECTOR = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
-        final MovieDao movieDao = new MovieDaoImpl();
-        final MovieService movieService = new MovieServiceImpl(movieDao);
-
-        final CinemaHallDao cinemaHallDao = new CinemaHallDaoImpl();
-        final CinemaHallService cinemaHallService = new CinemaHallServiceImpl(cinemaHallDao);
-
-        final MovieSessionDao movieSessionDao = new MovieSessionDaoImpl();
-        final MovieSessionService movieSessionService =
-                new MovieSessionServiceImpl(movieSessionDao);
+        final MovieService movieService = (
+                MovieService) INJECTOR.getInstance(MovieService.class);
+        final CinemaHallService cinemaHallService = (
+                CinemaHallService) INJECTOR.getInstance(CinemaHallService.class);
+        final MovieSessionService movieSessionService = (
+                MovieSessionService) INJECTOR.getInstance(MovieSessionService.class);
+        final UserService userService = (
+                UserService) INJECTOR.getInstance(UserService.class);
+        try {
+            AuthenticationService authenticationService =
+                    new AuthenticationServiceImpl(userService);
+            User loggedInUser = authenticationService
+                    .login("newuser@example.com", "password123");
+            System.out.println("Logged in user: " + loggedInUser.getEmail());
+        } catch (AuthenticationException e) {
+            System.err.println(e.getMessage());
+        }
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -65,6 +72,6 @@ public class Main {
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
-                        fastAndFurious.getId(), LocalDate.now()));
+                fastAndFurious.getId(), LocalDate.now()));
     }
 }
