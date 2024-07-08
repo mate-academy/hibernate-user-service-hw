@@ -19,7 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> byEmail = userService.findByEmail(email);
         if (byEmail.isEmpty()) {
-            throw new AuthenticationException("Email is not Empty");
+            throw new AuthenticationException("Email is Empty");
         }
         User user = byEmail.get();
         String hashPassword = HashUtil
@@ -35,6 +35,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("Email Already Exists");
+        }
         userService.add(user);
         return user;
     }
