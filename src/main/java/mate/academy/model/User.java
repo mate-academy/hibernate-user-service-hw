@@ -1,6 +1,11 @@
 package mate.academy.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -13,11 +18,7 @@ public class User {
     private String password;
     private byte[] salt;
 
-    public User(int id, String email, String password, byte[] salt) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.salt = salt;
+    public User() {
     }
 
     public int getId() {
