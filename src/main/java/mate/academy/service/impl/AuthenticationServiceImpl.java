@@ -17,6 +17,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) {
+        if (!isValidInputString(email, password)) {
+            throw new AuthenticationException("email address and password cannot be null or empty");
+        }
         Optional<User> optionalUser = userService.findByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
@@ -30,16 +33,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) {
+        if (!isValidInputString(email, password)) {
+            throw new RegistrationException("email address and password cannot be null or empty");
+        }
         Optional<User> optionalUser = userService.findByEmail(email);
         if (optionalUser.isEmpty()) {
             User user = new User();
             user.setEmail(email);
-            user.setSalt(HashUtil.getSalt());
-            user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
+            user.setPassword(password);
             return userService.add(user);
         } else {
             throw new RegistrationException("User with email: " + email + " already exist!");
         }
+    }
 
+    private boolean isValidInputString(String...input) {
+        for (String i: input) {
+            if (i == null || i.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
