@@ -17,29 +17,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can't authenticate user");
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isEmpty() || !isValidPassword(user.get(),password)) {
+            throw new AuthenticationException("Can't authenticate user by email: " + email);
         }
-        User user = userFromDbOptional.get();
-        if (user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()))) {
-            return user;
-        } else {
-            throw new AuthenticationException("Wrong password!");
-        }
+        return user.get();
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (email.isEmpty() || password.isEmpty()) {
+        validateRegisterData(email,password);
+        return userService.add(new User(email, password));
+    }
+
+    private void validateRegisterData(String email, String password) throws RegistrationException {
+        if (email.isEmpty() || email.isBlank()
+                || password.isEmpty() || password.isBlank()) {
             throw new RegistrationException("Email and password can't be empty!");
-        } else if (userFromDbOptional.isPresent()) {
+        } else if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with this email already exist");
         }
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        return userService.add(user);
+    }
+
+    private boolean isValidPassword(User user, String password) {
+        return password != null && user.getPassword()
+                .equals(HashUtil.hashPassword(password, user.getSalt()));
     }
 }
