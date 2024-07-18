@@ -17,7 +17,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) {
-        if (!isValidInputString(email, password)) {
+        if (!isValidParameters(email, password)) {
             throw new AuthenticationException("email address and password cannot be null or empty");
         }
         Optional<User> optionalUser = userService.findByEmail(email);
@@ -33,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) {
-        if (!isValidInputString(email, password)) {
+        if (!isValidParameters(email, password)) {
             throw new RegistrationException("email address and password cannot be null or empty");
         }
         Optional<User> optionalUser = userService.findByEmail(email);
@@ -47,9 +47,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private boolean isValidInputString(String...input) {
-        for (String i: input) {
-            if (i == null || i.isEmpty()) {
+    private boolean isValidParameters(String...params) {
+        for (String param: params) {
+            if (param == null || param.isEmpty()) {
                 return false;
             }
         }
