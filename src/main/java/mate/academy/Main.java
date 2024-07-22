@@ -15,7 +15,7 @@ import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+    public static void main(String[] args) {
         Injector injector = Injector.getInstance("mate.academy");
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
@@ -62,7 +62,29 @@ public class Main {
 
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User bob = authenticationService.register("bob@gmail.com", "qwerty");
-        User loggedBob = authenticationService.login("bob@gmail.com", "qwerty");
+        try {
+            User bob = authenticationService.register("bob@gmail.com", "qwerty");
+            System.out.println("Registered user: " + bob);
+        } catch (RegistrationException e) {
+            System.out.println("Registration threw exception: " + e);
+        }
+        try {
+            User nullPassBob = authenticationService.register("nullpassbob@gmail.com", null);
+            System.out.println("Registered user: " + nullPassBob);
+        } catch (RegistrationException e) {
+            System.out.println("Registration threw exception: " + e);
+        }
+        try {
+            User emptyPassBob = authenticationService.register("emptypassbob@gmail.com", "");
+            System.out.println("Registered user: " + emptyPassBob);
+        } catch (RegistrationException e) {
+            System.out.println("Registration threw exception: " + e);
+        }
+        try {
+            User loggedBob = authenticationService.login("bob@gmail.com", "qwerty");
+            System.out.println("Logged user: " + loggedBob);
+        } catch (AuthenticationException e) {
+            System.out.println("Login threw exception: " + e);
+        }
     }
 }

@@ -17,27 +17,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> userFromFbOptional = userService.findByEmail(email);
-        if (userFromFbOptional.isEmpty()
-                || !userFromFbOptional.get().getPassword()
-                        .equals(HashUtil.hashPassword(
-                                password,
-                                userFromFbOptional.get().getSalt())
-                        )
+        Optional<User> userFromDbOptional = userService.findByEmail(email);
+        if (userFromDbOptional.isEmpty()
+                || !isPasswordCorrect(userFromDbOptional.get(), password)
         ) {
-            throw new AuthenticationException("Wrong login or password", new Exception());
+            throw new AuthenticationException("Wrong login or password");
         }
-        return userFromFbOptional.get();
+        return userFromDbOptional.get();
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userFromFbOptional = userService.findByEmail(email);
-        if (userFromFbOptional.isPresent()) {
-            throw new RegistrationException("Account by this email already exits: " + email,
-                    new Exception());
+        Optional<User> userFromDbOptional = userService.findByEmail(email);
+        if (userFromDbOptional.isPresent()) {
+            throw new RegistrationException("Account by this email already exits: " + email);
         }
-        User newUser = new User(email, password);
-        return userService.add(newUser);
+        if (email == null || password == null) {
+            throw new RegistrationException("Email or password cannot be null");
+        }
+        return userService.add(new User(email, password));
+    }
+
+    private boolean isPasswordCorrect(User user, String password) {
+        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        return user.getPassword().equals(hashedPassword);
     }
 }
