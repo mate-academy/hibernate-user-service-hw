@@ -16,9 +16,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String email, String password) {
+    public User login(String email, String password) throws AuthenticationException {
         if (!isValidParameters(email, password)) {
-            throw new AuthenticationException("email address and password cannot be null or empty");
+            throw new AuthenticationException("Email address and password cannot be null or empty");
         }
         Optional<User> optionalUser = userService.findByEmail(email);
         if (optionalUser.isPresent()) {
@@ -32,23 +32,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User register(String email, String password) {
+    public User register(String email, String password) throws RegistrationException {
         if (!isValidParameters(email, password)) {
-            throw new RegistrationException("email address and password cannot be null or empty");
+            throw new RegistrationException("Email address and password cannot be null or empty");
         }
         Optional<User> optionalUser = userService.findByEmail(email);
         if (optionalUser.isEmpty()) {
             User user = new User();
             user.setEmail(email);
-            user.setPassword(password);
+            user.setSalt(HashUtil.getSalt());
+            user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
             return userService.add(user);
         } else {
-            throw new RegistrationException("User with email: " + email + " already exist!");
+            throw new RegistrationException("User with email: " + email + " already exists!");
         }
     }
 
-    private boolean isValidParameters(String...params) {
-        for (String param: params) {
+    private boolean isValidParameters(String... params) {
+        for (String param : params) {
             if (param == null || param.isEmpty()) {
                 return false;
             }
