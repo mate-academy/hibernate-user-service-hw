@@ -35,8 +35,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = userFromDbOptional.get();
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        System.out.println(user.getPassword());
-        System.out.println(hashedPassword);
         if (user.getPassword().equals(hashedPassword)) {
             return user;
         }
