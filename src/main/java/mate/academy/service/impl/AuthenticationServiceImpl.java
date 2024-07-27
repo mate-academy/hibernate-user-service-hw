@@ -38,6 +38,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return user;
             }
         }
-        throw new AuthenticationException("Can't authenticate user: wrong password");
+        throw new AuthenticationException("Can't authenticate user: wrong password or email");
     }
 }
