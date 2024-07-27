@@ -22,9 +22,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             newUser.setEmail(email);
             newUser.setPassword(password);
             userService.save(newUser);
+        } else {
+            throw new RegistrationException("Can't register. "
+                    + "Password for registration an incorrect: " + password);
         }
-        throw new RegistrationException("Can't register. "
-                + "Password for registration an incorrect: " + password);
     }
 
     @Override
