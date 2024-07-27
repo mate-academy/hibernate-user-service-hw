@@ -17,26 +17,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void register(String email, String password) throws RegistrationException {
-        if (password.isEmpty()) {
-            throw new RegistrationException("Can't register. "
-                    + "Password for registration an incorrect: " + password);
+        if (!password.isEmpty()) {
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setPassword(password);
+            userService.save(newUser);
         }
-        User newUser = new User();
-        newUser.setEmail(email);
-        newUser.setPassword(password);
-        userService.save(newUser);
+        throw new RegistrationException("Can't register. "
+                + "Password for registration an incorrect: " + password);
     }
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("Can't authenticate user by email: " + email);
-        }
-        User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
+        if (userFromDbOptional.isPresent()) {
+            User user = userFromDbOptional.get();
+            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+
+            if (user.getPassword().equals(hashedPassword)) {
+                return user;
+            }
         }
         throw new AuthenticationException("Can't authenticate user: wrong password");
     }
