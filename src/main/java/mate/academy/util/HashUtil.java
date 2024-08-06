@@ -28,7 +28,7 @@ public class HashUtil {
             }
 
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException("Can't find algorithm: " + ALGORITHM);
         }
         return hashedPassword.toString();
     }
