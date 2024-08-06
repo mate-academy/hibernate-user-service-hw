@@ -17,10 +17,10 @@ public class HashUtil {
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
             for (byte b : digest) {
-                hashPassword.append(String.format("%02x",b));
+                hashPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Couldn't create hash using SHA-512 algorithm", e);
+            throw new IllegalStateException("Couldn't create hash using " + CRYPTO_ALGORITHM, e);
         }
         return hashPassword.toString();
     }

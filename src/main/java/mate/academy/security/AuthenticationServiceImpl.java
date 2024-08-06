@@ -15,27 +15,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User login(String mail, String password) throws AuthenticationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(mail);
-        User userFromDb = userFromDbOptional.orElseThrow(
-                () -> new AuthenticationException("The mail = " + mail + " didn't find in the DB")
+    public User login(String email, String password) throws AuthenticationException {
+        User user = userService.findByEmail(email).orElseThrow(
+                () -> new AuthenticationException("The email = " + email + " didn't find in the DB")
         );
-        String passwordFromDb = userFromDb.getPassword();
+        String storedPassword = user.getPassword();
         String hashedPassword = HashUtil.hashPassword(password, HashUtil.getSalt());
-        if (passwordFromDb.equals(hashedPassword)) {
-            return userFromDb;
+        if (storedPassword.equals(hashedPassword)) {
+            return user;
         }
         throw new AuthenticationException("The password " + password + "is wrong.");
     }
 
     @Override
-    public User register(String mail, String password) throws RegistrationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(mail);
-        if (userFromDbOptional.isPresent()) {
-            throw new RegistrationException("The mail = " + mail + " is already registered.");
+    public User register(String email, String password) throws RegistrationException {
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("The email = " + email + " is already registered.");
         }
         User user = new User();
-        user.setMail(mail);
+        user.setEmail(email);
         user.setPassword(password);
         userService.add(user);
         return user;
