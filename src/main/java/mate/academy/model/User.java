@@ -1,6 +1,10 @@
 package mate.academy.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class User {
@@ -12,7 +16,7 @@ public class User {
     private String password;
     private byte[] salt;
 
-    public User(){
+    public User() {
 
     }
 
@@ -56,9 +60,9 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                '}';
+        return "User{"
+                + "id="
+                + id
+                + ", email='" + email + '\'' + '}';
     }
 }

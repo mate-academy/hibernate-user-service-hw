@@ -7,10 +7,10 @@ import java.security.SecureRandom;
 public class HashUtil {
     private static final String ALGORITHM = "SHA-512";
 
-    private HashUtil(){
-
+    private HashUtil() {
     }
-    public static byte[] getSalt(){
+
+    public static byte[] getSalt() {
         try {
             SecureRandom sr = SecureRandom.getInstanceStrong();
             byte[] salt = new byte[16];
@@ -21,7 +21,7 @@ public class HashUtil {
         }
     }
 
-    public static String getHashOfPassword(String password, byte[] salt){
+    public static String getHashOfPassword(String password, byte[] salt) {
         StringBuilder hashPassword = new StringBuilder();
 
         try {
@@ -30,14 +30,15 @@ public class HashUtil {
 
             byte[] digest = messageDigest.digest(password.getBytes());
 
-            for(byte b : digest){
-                hashPassword.append(String.format("%02x",b));
+            for (byte b : digest) {
+                hashPassword.append(String.format("%02x", b));
             }
 
             return hashPassword.toString();
 
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Can't get hash of password with algorithm: " + ALGORITHM, e);
+            throw new RuntimeException("Can't get hash of password with algorithm: "
+                    + ALGORITHM, e);
         }
     }
 }

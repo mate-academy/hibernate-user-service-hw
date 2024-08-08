@@ -1,6 +1,5 @@
 package mate.academy.service.impl;
 
-import mate.academy.dao.UserDao;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -14,7 +13,6 @@ import mate.academy.util.HashUtil;
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
-
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
@@ -32,18 +30,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if(userService.findByEmail(email).orElse(null) != null){
+        if (userService.findByEmail(email).orElse(null) != null) {
             throw new RegistrationException("This email already exists " + email);
         }
 
-        if(password == null){
+        if (password == null) {
             throw new RegistrationException("Invalid password value");
         }
 
         byte[] userSalt = HashUtil.getSalt();
-        String hashPassword = HashUtil.getHashOfPassword(password,userSalt);
+        String hashPassword = HashUtil.getHashOfPassword(password, userSalt);
 
-        User newUser = new User(email,hashPassword,userSalt);
+        User newUser = new User(email, hashPassword, userSalt);
 
         return userService.add(newUser);
     }
