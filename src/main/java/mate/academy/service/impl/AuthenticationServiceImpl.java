@@ -13,7 +13,7 @@ import mate.academy.util.HashUtil;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
-    private UserService userService;
+    private UserService userService = new UserServiceImpl();
 
     @Override
     public User login(String email, String password) throws AuthenticationException {

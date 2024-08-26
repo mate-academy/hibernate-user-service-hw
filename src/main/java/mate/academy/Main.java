@@ -1,5 +1,6 @@
 package mate.academy;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.lib.Injector;
@@ -70,10 +71,11 @@ public class Main {
         userService.add(drWho);
 
         AuthenticationService authenticationService = new AuthenticationServiceImpl();
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         System.out.println(authenticationService.register("my@mail.com", "qwerty"));
         System.out.println(authenticationService.login("my@mail.com", "qwerty"));
         System.out.println(authenticationService.login("my@mail.com", "qwertyfgg"));
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-        //When i run main i don't see any messages from println
     }
 }
