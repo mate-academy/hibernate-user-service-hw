@@ -1,6 +1,5 @@
 package mate.academy;
 
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.lib.Injector;
