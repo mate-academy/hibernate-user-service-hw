@@ -1,13 +1,14 @@
 package mate.academy.dao.impl;
 
+import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.util.Optional;
-
+@Dao
 public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
@@ -28,14 +29,16 @@ public class UserDaoImpl implements UserDao {
                 session.close();
             }
         }
+        return user;
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from User u " +
-                    "where u.email = :email")
+            return session.createQuery("from User u "
+                            + "where u.email = :email")
                     .setParameter("email", email)
+                    .uniqueResultOptional();
         }
     }
 }
