@@ -15,36 +15,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User register(String login, String password) {
-        User user = new User();
-        user.setLogin(login);
-        user.setPassword(password);
-        return userService.save(user);
+    public User register(String email, String password) {
+        validateRegisterData(email, password);
+        return userService.save(new User(email, password));
     }
 
     @Override
-    public User login(String login, String password) {
-        Optional<User> userByLogin = userService.findByLogin(login);
-        if (userByLogin.isPresent()) {
-            User user = userByLogin.get();
-            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-            if (hashedPassword.equals(user.getPassword())) {
-                return user;
-            }
+    public User login(String email, String password) {
+        Optional<User> user = userService.findByEmail(email);
+        if (user.isEmpty() || !isValidPassword(user.get(), password)) {
+            throw new AuthenticationException(
+                    "Authentication failed for user with email: " + email);
         }
-        throw new AuthenticationException("Cant find login or user password incorrect!");
+        return user.get();
 
     }
 
-    public User authenticate(String login, String password) {
-        if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
+    private void validateRegisterData(String email, String password) {
+        if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
             throw new IllegalArgumentException("Login and password must not be null or empty");
         }
-        if (userService.findByLogin(login).isEmpty()) {
-            return register(login, password);
-        } else {
-            return login(login, password);
-        }
     }
 
+    private boolean isValidPassword(User user, String password) {
+        return password != null && user.getPassword()
+                .equals(HashUtil.hashPassword(password, user.getSalt()));
+    }
 }

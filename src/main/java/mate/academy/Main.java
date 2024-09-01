@@ -6,7 +6,6 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
-import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -16,14 +15,6 @@ public class Main {
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) {
-        AuthenticationService authenticationService
-                = (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
-        User userRegister = authenticationService.authenticate("mail@gmail.com", "qwerty");
-        System.out.println(userRegister + "successfully registered");
-
-        User userLogin = authenticationService.authenticate("mail@gmail.com", "qwerty");
-        System.out.println(userLogin + "successfully authenticated");
-
         MovieService movieService =
                 (MovieService) INJECTOR.getInstance(MovieService.class);
 
@@ -67,5 +58,11 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        AuthenticationService authenticationService =
+                (AuthenticationService) INJECTOR.getInstance(AuthenticationService.class);
+        authenticationService.register("email@gmail.com", "qwerty");
+        System.out.println(authenticationService.login("email@gmail.com","qwerty"));
+        System.out.println(authenticationService.login("email@gmail.com", "qwerty1"));
     }
 }
