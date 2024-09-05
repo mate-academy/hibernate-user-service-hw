@@ -3,10 +3,10 @@ package mate.academy.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.HexFormat;
 
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
-    private static final String HEX_FORMAT = "%02x";
 
     private HashUtil() {
     }
@@ -17,13 +17,10 @@ public class HashUtil {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
-            for (byte b : digest) {
-                hashedPassword.append(String.format(HEX_FORMAT, b));
-            }
+            return HexFormat.of().formatHex(digest);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException("Could`t create hash using SHA-512 algorithm", e);
         }
-        return hashedPassword.toString();
     }
 
     public static byte[] getSalt() {
