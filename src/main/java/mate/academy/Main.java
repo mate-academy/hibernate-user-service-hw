@@ -10,7 +10,6 @@ public class Main {
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
     private static final String TEST_EMAIL = "test@gmail.com";
     private static final String TEST_PASSWORD = "test";
-    private static final String WRONG_PASSWORD = "wrong";
 
     public static void main(String[] args) {
         AuthenticationService authenticationService = (AuthenticationService)
@@ -18,32 +17,18 @@ public class Main {
 
         // case of registration with a non-existing email
         try {
-            User registeruser = authenticationService.register(TEST_EMAIL, TEST_PASSWORD);
-            System.out.println(registeruser);
+            User registeredUser = authenticationService.register(TEST_EMAIL, TEST_PASSWORD);
+            System.out.println(registeredUser);
         } catch (RegistrationException e) {
             throw new RuntimeException(e.getMessage());
         }
 
         // case of logging in with the correct login and password
         try {
-            User userLogin = authenticationService.login(TEST_EMAIL, TEST_PASSWORD);
-            System.out.println(userLogin);
+            User user = authenticationService.login(TEST_EMAIL, TEST_PASSWORD);
+            System.out.println(user);
         } catch (AuthenticationException e) {
             throw new RuntimeException(e.getMessage());
-        }
-
-        // case of registration with existing email
-        try {
-            authenticationService.register(TEST_EMAIL, TEST_PASSWORD);
-        } catch (RegistrationException e) {
-            System.out.println(e.getMessage());
-        }
-
-        //case of logging in with the wrong password
-        try {
-            authenticationService.login(TEST_EMAIL, WRONG_PASSWORD);
-        } catch (AuthenticationException e) {
-            System.out.println(e.getMessage());
         }
     }
 }
