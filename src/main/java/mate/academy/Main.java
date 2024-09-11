@@ -65,11 +65,18 @@ public class Main {
         String incorrectEmail = "incorrect@email.com";
         String correctPassword = "correctPassword";
         String incorrectPassword = "incorrectPassword";
+        String emptyLine = "";
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
         try {
             authenticationService.register(correctEmail, correctPassword);
+        } catch (RegistrationException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            authenticationService.register(emptyLine, correctPassword);
         } catch (RegistrationException e) {
             throw new RuntimeException(e);
         }

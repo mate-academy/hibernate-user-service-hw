@@ -28,8 +28,8 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x", b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("Could not create hash using SHA-512: "
-                    + CRYPTO_AlGORITHM, e);
+            throw new IllegalStateException("Could not create hash using: "
+                    + CRYPTO_AlGORITHM + " algorythm ", e);
         }
         return hashedPassword.toString();
     }
