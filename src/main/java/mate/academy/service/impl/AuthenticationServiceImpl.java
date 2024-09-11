@@ -8,6 +8,7 @@ import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
+import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -22,7 +23,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     + email + ", password: " + password);
         }
         User user = userFromDbOptional.get();
-        if (!user.getPassword().equals(password)) {
+        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        if (!user.getPassword().equals(hashedPassword)) {
             throw new AuthenticationException("email or password is not correct. email: "
                     + email + ", password: " + password);
         }
