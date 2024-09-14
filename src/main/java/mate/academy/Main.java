@@ -72,7 +72,7 @@ public class Main {
             authenticationService.register(secondUser.getLogin(), secondUser.getPassword());
             authenticationService.register(thirdUser.getLogin(), thirdUser.getPassword());
             System.out.println(authenticationService.login(firstUser.getLogin(),
-                    "firstUser.getPassword()"));
+                    firstUser.getPassword()));
         } catch (AuthenticationException e) {
             throw new RuntimeException("Can't login user", e);
         } catch (RegisterException e) {
