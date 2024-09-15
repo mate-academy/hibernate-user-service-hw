@@ -68,7 +68,6 @@ public class Main {
                 AuthenticationService.class);
         try {
             authenticationService.register(firstUser.getLogin(), firstUser.getPassword());
-            authenticationService.register(firstUser.getLogin(), firstUser.getPassword());
             authenticationService.register(secondUser.getLogin(), secondUser.getPassword());
             authenticationService.register(thirdUser.getLogin(), thirdUser.getPassword());
             System.out.println(authenticationService.login(firstUser.getLogin(),
