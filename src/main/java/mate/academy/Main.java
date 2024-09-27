@@ -72,6 +72,8 @@ public class Main {
                     authenticationService.login("entersandman@mateacademy.br", "newpassNew");
 
             logger.info(loggedIn + " successfully logged in");
+            logger.info("attempting to register with an existing email");
+            authenticationService.register("entersandman@mateacademy.br", "New2newpass");
             logger.info("attempting register with an empty password");
             authenticationService.register("KirillKoval", "");
         } catch (RegistrationException e) {
