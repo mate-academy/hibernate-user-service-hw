@@ -1,8 +1,6 @@
 package mate.academy.service.impl;
 
-import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
-import mate.academy.exception.DataProcessingException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
@@ -18,17 +16,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> fetched = userService.findByEmail(email);
+        User user = userService.findByEmail(email)
+                .orElseThrow(() -> new AuthenticationException(
+                        "No user found for email " + email)
+                );
 
-        User retrieved = fetched.orElseThrow(
-                () -> new AuthenticationException("No user found for email " + email));
-
-        if (HashUtil.hashPassword(password, retrieved.getSalt()).equals(retrieved.getPassword())) {
-            return retrieved;
+        if (!HashUtil.hashPassword(password, user.getSalt()).equals(user.getPassword())) {
+            throw new AuthenticationException("Wrong password");
         }
 
-        throw new AuthenticationException(
-                "Y0u bEtTeR wIpE Y0Ur (0_0) gLaSseS beFoRe logging in with that password :-0");
+        return user;
     }
 
     @Override
@@ -36,12 +33,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (password.isBlank() || email.isBlank()) {
             throw new RegistrationException("Either your password or your email is empty or blank");
         }
-        try {
-            return userService.add(new User(
-                    email, password));
-        } catch (DataProcessingException e) {
-            throw new RegistrationException(String.format(
-                    "Cannot register user by email %s and password %s", email, password), e);
+
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("User with the current email already exists");
         }
+
+        return userService.add(new User(email, password));
     }
 }
