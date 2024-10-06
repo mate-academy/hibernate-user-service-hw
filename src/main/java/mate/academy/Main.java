@@ -13,12 +13,16 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.impl.AuthenticationServiceImpl;
+import mate.academy.service.impl.CinemaHallServiceImpl;
+import mate.academy.service.impl.MovieServiceImpl;
+import mate.academy.service.impl.MovieSessionServiceImpl;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) {
-        MovieService movieService = null;
+        MovieService movieService = (MovieService) injector
+                .getInstance(MovieServiceImpl.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -34,7 +38,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService = (CinemaHallService) injector
+                .getInstance(CinemaHallServiceImpl.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -51,7 +56,8 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService = (MovieSessionService) injector
+                .getInstance(MovieSessionServiceImpl.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
@@ -72,6 +78,12 @@ public class Main {
             authenticationService.login("bob.marley@gmail.com", "password");
         } catch (AuthenticationException e) {
             throw new RuntimeException("Could not login user", e);
+        }
+
+        try {
+            authenticationService.register("bob.marley@gmail.com", "password");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("This user already exist, you can't register", e);
         }
 
     }

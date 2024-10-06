@@ -33,7 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (!userFromDbOptional.isEmpty()) {
+        if (userFromDbOptional.isPresent()) {
             throw new RegistrationException("User with email " + email + " already exist");
         }
         User user = new User();
