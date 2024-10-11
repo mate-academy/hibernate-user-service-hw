@@ -13,8 +13,8 @@ import java.util.Map;
 
 public class Injector {
     private static final Map<String, Injector> injectors = new HashMap<>();
-    private final Map<Class<?>, Object> instanceOfClasses = new HashMap<>();
-    private final List<Class<?>> classes = new ArrayList<>();
+    private static final Map<Class<?>, Object> instanceOfClasses = new HashMap<>();
+    private static final List<Class<?>> classes = new ArrayList<>();
 
     private Injector(String mainPackageName) {
         try {
@@ -33,7 +33,7 @@ public class Injector {
         return injector;
     }
 
-    public Object getInstance(Class<?> certainInterface) {
+    public static Object getInstance(Class<?> certainInterface) {
         Object newInstanceOfClass = null;
         Class<?> clazz = findClassExtendingInterface(certainInterface);
         Object instanceOfCurrentClass = createInstance(clazz);
@@ -57,7 +57,7 @@ public class Injector {
         return newInstanceOfClass;
     }
 
-    private Class<?> findClassExtendingInterface(Class<?> certainInterface) {
+    private static Class<?> findClassExtendingInterface(Class<?> certainInterface) {
         for (Class<?> clazz : classes) {
             Class<?>[] interfaces = clazz.getInterfaces();
             for (Class<?> singleInterface : interfaces) {
@@ -73,7 +73,7 @@ public class Injector {
                 + " interface and has valid annotation (Dao or Service)");
     }
 
-    private Object getNewInstance(Class<?> certainClass) {
+    private static Object getNewInstance(Class<?> certainClass) {
         if (instanceOfClasses.containsKey(certainClass)) {
             return instanceOfClasses.get(certainClass);
         }
@@ -82,7 +82,7 @@ public class Injector {
         return newInstance;
     }
 
-    private boolean isFieldInitialized(Field field, Object instance) {
+    private static boolean isFieldInitialized(Field field, Object instance) {
         field.setAccessible(true);
         try {
             return field.get(instance) != null;
@@ -91,7 +91,7 @@ public class Injector {
         }
     }
 
-    private Object createInstance(Class<?> clazz) {
+    private static Object createInstance(Class<?> clazz) {
         Object newInstance;
         try {
             Constructor<?> classConstructor = clazz.getConstructor();
@@ -102,7 +102,7 @@ public class Injector {
         return newInstance;
     }
 
-    private void setValueToField(Field field, Object instanceOfClass, Object classToInject) {
+    private static void setValueToField(Field field, Object instanceOfClass, Object classToInject) {
         try {
             field.setAccessible(true);
             field.set(instanceOfClass, classToInject);
