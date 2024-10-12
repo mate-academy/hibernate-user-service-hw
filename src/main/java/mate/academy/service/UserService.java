@@ -1,11 +1,11 @@
 package mate.academy.service;
 
+import java.util.Optional;
+import mate.academy.exception.RegistrationException;
 import mate.academy.model.User;
 
-import java.util.Optional;
-
 public interface UserService {
-    User add(User user);
+    User add(User user) throws RegistrationException;
 
     Optional<User> findByEmail(String email);
 }
