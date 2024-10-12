@@ -18,7 +18,8 @@ import mate.academy.util.HashUtil;
 
 public class Main {
     public static void main(String[] args) throws RegistrationException {
-        MovieService movieService = (MovieService) Injector.getInstance(MovieService.class);
+        Injector injector = Injector.getInstance("src/main/java/mate/academy/service");
+        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -34,7 +35,7 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = (CinemaHallService) Injector
+        CinemaHallService cinemaHallService = (CinemaHallService) injector
                 .getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
@@ -52,7 +53,7 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = (MovieSessionService) Injector
+        MovieSessionService movieSessionService = (MovieSessionService) injector
                 .getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
@@ -61,7 +62,7 @@ public class Main {
         bob.setEmail("bob@gmail.com");
         bob.setSalt(HashUtil.getSalt());
         bob.setPassword(HashUtil.hashPassword("qwerty", bob.getSalt()));
-        UserService userService = (UserService) Injector
+        UserService userService = (UserService) injector
                 .getInstance(UserService.class);
         AuthenticationService authenticationService = new AuthenticationServiceImpl();
         authenticationService.register(bob.getEmail(), bob.getPassword());
