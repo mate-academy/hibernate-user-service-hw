@@ -4,7 +4,7 @@ import java.util.Optional;
 import mate.academy.model.User;
 
 public interface UserDao {
-    User add(User user);
+    User save(User user);
 
     Optional<User> findByEmail(String email);
 }
