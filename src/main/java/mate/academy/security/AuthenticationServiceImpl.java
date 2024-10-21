@@ -27,11 +27,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        Optional<User> byEmail = userService.findByEmail(email);
-        if (byEmail.isEmpty()) {
+        Optional<User> optionalUser = userService.findByEmail(email);
+        if (optionalUser.isEmpty()) {
             throw new AuthenticationException("Can't authentication user");
         }
-        User user = byEmail.get();
+        User user = optionalUser.get();
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;
