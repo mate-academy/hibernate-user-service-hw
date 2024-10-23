@@ -17,7 +17,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
-            throw new RegistrationException("Can't register user, email already exists");
+            throw new RegistrationException("Can't register user, email:"
+                    + email + " already exists");
         }
         User user = new User();
         user.setEmail(email);
