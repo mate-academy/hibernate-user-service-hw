@@ -22,7 +22,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setEmail(email);
         user.setSalt(HashUtil.getSalt());
-        user.setPassword(password);
+
+        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        user.setPassword(hashedPassword);
 
         userService.add(user);
     }
