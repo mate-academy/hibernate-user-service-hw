@@ -15,8 +15,12 @@ import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 import mate.academy.service.UserService;
 import mate.academy.service.impl.AuthenticationServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
+    private static final Logger logger = LogManager.getLogger(Main.class);
+
     public static void main(String[] args) throws AuthenticationException, RegistrationException {
         Injector injector = Injector.getInstance("mate.academy");
 
@@ -71,16 +75,15 @@ public class Main {
             System.out.println("=========================================");
             newRegisteredUser = authenticationService.register("mary@mail.com", "111111");
         } catch (RegistrationException e) {
-            throw new RegistrationException("Can't register user.",e);
+            logger.error("Can't register user: {}", newRegisteredUser);
         }
         System.out.println(newRegisteredUser);
 
         try {
             System.out.println("=========================================");
-            System.out.println(authenticationService.login("mary@mail.com", "111111"));
+            System.out.println(authenticationService.login("mary@mail.com", "1111111"));
         } catch (AuthenticationException e) {
-            throw new AuthenticationException("Can't login, "
-                    + "given password or email are incorrect",e);
+            logger.error("Can't login user.");
         }
     }
 }
