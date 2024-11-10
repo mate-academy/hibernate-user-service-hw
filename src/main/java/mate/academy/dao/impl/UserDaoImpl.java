@@ -25,7 +25,7 @@ public class UserDaoImpl implements UserDao {
             session.persist(user);
             transaction.commit();
             return user;
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -47,7 +47,7 @@ public class UserDaoImpl implements UserDao {
             return query.uniqueResultOptional();
 
         } catch (HibernateException e) {
-            throw new RuntimeException(e);
+            throw new DataProcessingException("Can't find user with email: " + email, e);
         }
 
     }

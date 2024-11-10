@@ -8,6 +8,7 @@ import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
+import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -22,17 +23,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> existingUserOptional = userService.findByEmail(email);
-        if (!existingUserOptional.isEmpty()
-                && existingUserOptional.get().getPassword().equals(password)) {
-            return existingUserOptional.get();
+        if (existingUserOptional.isPresent()) {
+            User userFromOptional = existingUserOptional.get();
+            String hashedPassword = HashUtil.hashPassword(password, userFromOptional.getSalt());
+            if (userFromOptional.getPassword().equals(hashedPassword)) {
+                return userFromOptional;
+            }
         }
-        throw new AuthenticationException("Given email or password for: "
+        throw new AuthenticationException("Can't login, given email or password for: "
                 + email + " are incorrect.");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (!userService.findByEmail(email).isEmpty()) {
+        if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with given email: " + email + " already exist.");
         }
         User newUser = new User();

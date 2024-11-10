@@ -70,16 +70,17 @@ public class Main {
         try {
             System.out.println("=========================================");
             newRegisteredUser = authenticationService.register("mary@mail.com", "111111");
-        } catch (Exception e) {
-            throw new RegistrationException("",e);
+        } catch (RegistrationException e) {
+            throw new RegistrationException("Can't register user.",e);
         }
         System.out.println(newRegisteredUser);
 
         try {
             System.out.println("=========================================");
-            System.out.println(authenticationService.login("bob@mail.com", "123"));
-        } catch (Exception e) {
-            throw new AuthenticationException("",e);
+            System.out.println(authenticationService.login("mary@mail.com", "111111"));
+        } catch (AuthenticationException e) {
+            throw new AuthenticationException("Can't login, "
+                    + "given password or email are incorrect",e);
         }
     }
 }
