@@ -71,15 +71,5 @@ public class Main {
         } catch (AuthenticationException e) {
             throw new RuntimeException("Login unsuccessful", e);
         }
-        try {
-            authenticationService.register("alice@mail.com", "qwerty");
-        } catch (RegistrationException e) {
-            throw new RuntimeException("Login unsuccessful", e);
-        }
-        try {
-            authenticationService.login("alice@mail.com", "qwerty");
-        } catch (AuthenticationException e) {
-            throw new RuntimeException("Login unsuccessful", e);
-        }
     }
 }
