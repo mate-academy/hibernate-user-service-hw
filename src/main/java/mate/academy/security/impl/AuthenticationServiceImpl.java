@@ -1,6 +1,5 @@
 package mate.academy.security.impl;
 
-import jakarta.transaction.Transactional;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
@@ -23,11 +22,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new AuthenticationException("Can not authenticate user");
         }
         User user = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
+        if (user.getPassword().equals(HashUtil.hashPassword(password, user.getSalt()))) {
             return user;
+        } else {
+            throw new AuthenticationException("Can not authenticate user");
         }
-        throw new AuthenticationException("Can not authenticate user");
     }
 
     /**
@@ -36,7 +35,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @param password - user password
      * @return new user instance
      */
-    @Transactional
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
@@ -45,7 +43,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
-        userService.add(user);
-        return userService.findByEmail(email).get();
+        return userService.add(user);
     }
 }

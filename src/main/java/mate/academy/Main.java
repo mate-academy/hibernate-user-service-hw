@@ -2,6 +2,7 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -65,6 +66,20 @@ public class Main {
         } catch (RegistrationException e) {
             throw new RuntimeException("Can not register user", e);
         }
-        authenticationService.login("bob@mail.com", "password");
+        try {
+            authenticationService.login("bob@mail.com", "password");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Login unsuccessful", e);
+        }
+        try {
+            authenticationService.register("alice@mail.com", "qwerty");
+        } catch (RegistrationException e) {
+            throw new RuntimeException("Login unsuccessful", e);
+        }
+        try {
+            authenticationService.login("alice@mail.com", "qwerty");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Login unsuccessful", e);
+        }
     }
 }
