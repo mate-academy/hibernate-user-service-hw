@@ -9,9 +9,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 public class UserDaoImpl implements UserDao {
+    private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     @Override
     public User save(User user) {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = null;
         Transaction transaction = null;
         try {

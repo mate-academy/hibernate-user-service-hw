@@ -27,7 +27,7 @@ public class Main {
         System.out.println(movieService.get(fastAndFurious.getId()));
         movieService.getAll().forEach(System.out::println);
 
-        CinemaHall firstCinemaHall = (CinemaHall) injector.getInstance(CinemaHall.class);
+        CinemaHall firstCinemaHall = new CinemaHall();
         firstCinemaHall.setCapacity(100);
         firstCinemaHall.setDescription("first hall with capacity 100");
 
@@ -35,7 +35,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService = (CinemaHallService)
+                injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -53,7 +54,7 @@ public class Main {
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
         MovieSessionService movieSessionService = (MovieSessionService)
-                injector.getInstance(MovieService.class);
+                injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
