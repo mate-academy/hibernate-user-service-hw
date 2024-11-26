@@ -16,8 +16,8 @@ import mate.academy.service.MovieSessionService;
 
 public class Main {
     private static final Injector INJECTOR = Injector.getInstance("mate.academy");
-    private static final String BOB_EMAIL = "bob@email";
-    private static final String ALICE_EMAIL = "alice@email";
+    private static final String BOB_EMAIL = "bob@email.com";
+    private static final String ALICE_EMAIL = "alice@email.com";
     private static final String BOB_PASSWORD = "123456";
     private static final String ALICE_PASSWORD = "qwerty";
     private static final String ANOTHER_PASSWORD = "789654";
@@ -79,8 +79,8 @@ public class Main {
         System.out.println(
                  authenticationService.login(bob.getEmail(), bob.getPassword()));
 
-        // authenticationService.register(unknown.getEmail(), unknown.getPassword());
-        // authenticationService.login(alice.getEmail(), alice.getPassword());
-        // authenticationService.login(bob.getEmail(), ANOTHER_PASSWORD);
+        authenticationService.register(unknown.getEmail(), unknown.getPassword());
+        authenticationService.login(alice.getEmail(), alice.getPassword());
+        authenticationService.login(bob.getEmail(), ANOTHER_PASSWORD);
     }
 }
