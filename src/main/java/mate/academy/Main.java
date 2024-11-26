@@ -70,9 +70,9 @@ public class Main {
         final AuthenticationService authenticationService =
                 (AuthenticationService) INJECTOR.getInstance(
                         AuthenticationService.class);
-        User bob = new User(BOB_EMAIL, BOB_PASSWORD);
-        User alice = new User(ALICE_EMAIL, ALICE_PASSWORD);
-        User unknown = new User(BOB_EMAIL, ANOTHER_PASSWORD);
+        final User bob = new User(BOB_EMAIL, BOB_PASSWORD);
+        final User alice = new User(ALICE_EMAIL, ALICE_PASSWORD);
+        final User unknown = new User(BOB_EMAIL, ANOTHER_PASSWORD);
 
         System.out.println(
                 authenticationService.register(bob.getEmail(), bob.getPassword()));
