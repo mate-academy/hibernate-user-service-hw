@@ -27,10 +27,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        User add = userService.add(new User(email, password));
-        if (add.getPassword().isEmpty() || add.getEmail().isEmpty()) {
-            throw new RegistrationException("Can't registration user");
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("Email is already in use.");
         }
-        return add;
+        User user = new User();
+        user.setEmail(email);
+        user.setSalt(HashUtil.getSalt());
+        user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
+        return userService.add(user);
     }
 }

@@ -37,7 +37,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Invalid login test: " + e.getMessage());
         }
-        MovieService movieService = null;
+        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
