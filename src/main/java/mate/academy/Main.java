@@ -2,15 +2,41 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+    private static final Injector injector = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
+        AuthenticationService authenticationService = (AuthenticationService) injector
+                .getInstance(AuthenticationService.class);
+        try {
+            User user = authenticationService.register("test@example.com", "securepassword");
+            System.out.println("User registered: " + user);
+        } catch (Exception e) {
+            System.out.println("Registration failed: " + e.getMessage());
+        }
+
+        try {
+            User user = authenticationService.login("test@example.com", "securepassword");
+            System.out.println("Login successful: " + user);
+        } catch (Exception e) {
+            System.out.println("Login failed: " + e.getMessage());
+        }
+
+        try {
+            authenticationService.login("test@example.com", "wrongpassword");
+        } catch (Exception e) {
+            System.out.println("Invalid login test: " + e.getMessage());
+        }
         MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
