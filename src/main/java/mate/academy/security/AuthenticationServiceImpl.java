@@ -26,20 +26,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return existingUser;
             }
         }
+        System.err.println("Failed login attempt for email: " + email);
         throw new AuthenticationException("Incorrect email or password");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (userService.findByEmail(email).isPresent()) {
+            System.err.println("Registration attempt with already used email: " + email);
             throw new RegistrationException("Email is already in use");
         }
-        byte[] salt = HashUtil.getSalt();
-        String hashedPassword = HashUtil.hashPassword(password, salt);
         User newUser = new User();
         newUser.setEmail(email);
-        newUser.setPassword(hashedPassword);
-        newUser.setSalt(salt);
+        newUser.setPassword(password);
+        newUser.setEmail(email);
+        newUser.setPassword(password);
         return userService.add(newUser);
     }
 }

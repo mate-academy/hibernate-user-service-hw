@@ -14,7 +14,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User save(User user) {
         Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
@@ -23,7 +25,12 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
+            System.err.println("Error saving user: " + e.getMessage());
             throw new DataProcessingException("Can't save user to DB", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
@@ -34,6 +41,7 @@ public class UserDaoImpl implements UserDao {
                     .setParameter("email", email)
                     .uniqueResultOptional();
         } catch (Exception e) {
+            System.err.println("Error finding user by email: " + e.getMessage());
             throw new DataProcessingException("Can't find user by email: " + email, e);
         }
     }
