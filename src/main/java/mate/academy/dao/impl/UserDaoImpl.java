@@ -1,18 +1,16 @@
 package mate.academy.dao.impl;
 
-import org.hibernate.query.Query;
 import jakarta.persistence.criteria.CriteriaQuery;
+import java.util.List;
+import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Dao;
-import mate.academy.model.Movie;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import java.util.List;
-import java.util.Optional;
+import org.hibernate.query.Query;
 
 @Dao
 public class UserDaoImpl implements UserDao {
@@ -61,10 +59,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder()
-                    .createQuery(User.class);
-            criteriaQuery.from(User.class);
-            return session.createQuery(criteriaQuery).getResultList();
+            CriteriaQuery<User> critQuery = session.getCriteriaBuilder().createQuery(User.class);
+            critQuery.from(User.class);
+            return session.createQuery(critQuery).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't get all users", e);
         }
