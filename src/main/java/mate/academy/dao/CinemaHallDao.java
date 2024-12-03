@@ -11,7 +11,7 @@ public interface CinemaHallDao {
 
     List<CinemaHall> getAll();
 
-    Boolean update(CinemaHall cinemaHall);
+    boolean update(CinemaHall cinemaHall);
 
-    Boolean delete(Long id);
+    boolean delete(Long id);
 }

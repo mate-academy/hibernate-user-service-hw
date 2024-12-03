@@ -1,7 +1,5 @@
 package mate.academy;
 
-import mate.academy.exception.AuthenticationException;
-import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
@@ -10,7 +8,7 @@ import mate.academy.service.UserService;
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+    public static void main(String[] args) {
 
         // 0. INJECTING
         final var userService

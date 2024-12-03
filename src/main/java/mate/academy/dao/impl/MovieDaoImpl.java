@@ -52,7 +52,7 @@ public class MovieDaoImpl implements MovieDao {
     }
 
     @Override
-    public Boolean update(Movie movie) {
+    public boolean update(Movie movie) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = null;
         Transaction transaction = null;
@@ -77,7 +77,7 @@ public class MovieDaoImpl implements MovieDao {
     }
 
     @Override
-    public Boolean delete(Long id) {
+    public boolean delete(Long id) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = null;
         Transaction transaction = null;

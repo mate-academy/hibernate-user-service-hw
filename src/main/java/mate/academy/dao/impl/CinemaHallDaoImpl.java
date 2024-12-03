@@ -52,7 +52,7 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
     }
 
     @Override
-    public Boolean update(CinemaHall cinemaHall) {
+    public boolean update(CinemaHall cinemaHall) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = null;
         Transaction transaction = null;
@@ -77,7 +77,7 @@ public class CinemaHallDaoImpl implements CinemaHallDao {
     }
 
     @Override
-    public Boolean delete(Long id) {
+    public boolean delete(Long id) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session session = null;
         Transaction transaction = null;

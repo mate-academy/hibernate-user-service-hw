@@ -11,7 +11,7 @@ public interface MovieDao {
 
     List<Movie> getAll();
 
-    Boolean update(Movie movie);
+    boolean update(Movie movie);
 
-    Boolean delete(Long id);
+    boolean delete(Long id);
 }
