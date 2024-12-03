@@ -10,4 +10,8 @@ public interface CinemaHallDao {
     Optional<CinemaHall> get(Long id);
 
     List<CinemaHall> getAll();
+
+    Boolean update(CinemaHall cinemaHall);
+
+    Boolean delete(Long id);
 }

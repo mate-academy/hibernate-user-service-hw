@@ -1,55 +1,56 @@
 package mate.academy;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import mate.academy.model.CinemaHall;
-import mate.academy.model.Movie;
-import mate.academy.model.MovieSession;
-import mate.academy.service.CinemaHallService;
-import mate.academy.service.MovieService;
-import mate.academy.service.MovieSessionService;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
+import mate.academy.service.UserService;
 
 public class Main {
-    public static void main(String[] args) {
-        MovieService movieService = null;
+    private static final Injector injector = Injector.getInstance("mate.academy");
 
-        Movie fastAndFurious = new Movie("Fast and Furious");
-        fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
-        movieService.add(fastAndFurious);
-        System.out.println(movieService.get(fastAndFurious.getId()));
-        movieService.getAll().forEach(System.out::println);
+    public static void main(String[] args) throws RegistrationException, AuthenticationException {
 
-        CinemaHall firstCinemaHall = new CinemaHall();
-        firstCinemaHall.setCapacity(100);
-        firstCinemaHall.setDescription("first hall with capacity 100");
+        // 0. INJECTING
+        final var userService
+                = (UserService) injector.getInstance(UserService.class);
+        final var authenticationService
+                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
-        CinemaHall secondCinemaHall = new CinemaHall();
-        secondCinemaHall.setCapacity(200);
-        secondCinemaHall.setDescription("second hall with capacity 200");
+        // 1. CREATING
+        // User
+        User user1 = new User();
+        user1.setEmail("user1@gmail.com");
+        user1.setPassword("password");
 
-        CinemaHallService cinemaHallService = null;
-        cinemaHallService.add(firstCinemaHall);
-        cinemaHallService.add(secondCinemaHall);
+        User user2 = new User();
+        user2.setEmail("user2@gmail.com");
+        user2.setPassword("password");
 
-        System.out.println(cinemaHallService.getAll());
-        System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
+        User user3 = new User();
+        user3.setEmail("user3@gmail.com");
+        user3.setPassword("password");
 
-        MovieSession tomorrowMovieSession = new MovieSession();
-        tomorrowMovieSession.setCinemaHall(firstCinemaHall);
-        tomorrowMovieSession.setMovie(fastAndFurious);
-        tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
+        // 2. ADDING
+        // User
+        userService.add(user1);
+        userService.add(user2);
+        userService.add(user3);
 
-        MovieSession yesterdayMovieSession = new MovieSession();
-        yesterdayMovieSession.setCinemaHall(firstCinemaHall);
-        yesterdayMovieSession.setMovie(fastAndFurious);
-        yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
+        // 3. GETTING BY EMAIL
+        // User
+        System.out.println("\n *** CREATE AND READ FUNCTIONS TEST *** \n");
+        System.out.println(userService.findByEmail("user1@gmail.com"));
+        System.out.println(userService.findByEmail("user2@gmail.com"));
+        System.out.println(userService.findByEmail("user3@gmail.com"));
 
-        MovieSessionService movieSessionService = null;
-        movieSessionService.add(tomorrowMovieSession);
-        movieSessionService.add(yesterdayMovieSession);
+        // 4. REGISTRATION
+        // Correct
+        authenticationService.registerUser("jan@gmail.com", "haslojana");
+        System.out.println(userService.findByEmail("jan@gmail.com"));
 
-        System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-        System.out.println(movieSessionService.findAvailableSessions(
-                        fastAndFurious.getId(), LocalDate.now()));
+        // 5. LOGIN
+        System.out.println(authenticationService.login("jan@gmail.com", "haslojana"));
     }
 }
