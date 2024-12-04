@@ -45,11 +45,11 @@ public class UserDaoImpl implements UserDao {
             Query<User> userQuery =
                     session.createQuery("SELECT u FROM User u where u.email=:email", User.class);
             userQuery.setParameter(EMAIL, email);
-            if (userQuery.getSingleResultOrNull() == null) {
+            User user = userQuery.getSingleResultOrNull();
+            if (user == null) {
                 return Optional.empty();
             }
-            return Optional.of(userQuery.getSingleResult());
-
+            return Optional.of(user);
         } catch (RuntimeException e) {
             throw new DataProcessingException(CAN_T_RECEIVE_USER_BY_EMAIL_MSG + email, e);
         }

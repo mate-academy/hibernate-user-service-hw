@@ -64,13 +64,13 @@ public class User {
         return Objects.equals(getId(), user.getId())
                 && Objects.equals(getEmail(), user.getEmail())
                 && Objects.equals(getPassword(), user.getPassword())
-                && Arrays.equals(getSalt(), user.getSalt());
+                && Arrays.equals(salt, user.salt);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(getId(), getEmail(), getPassword());
-        result = 31 * result + Arrays.hashCode(getSalt());
+        int result = Objects.hash(id, email, password);
+        result = 31 * result + Arrays.hashCode(salt);
         return result;
     }
 

@@ -24,10 +24,10 @@ public class Main {
             + "street racing, heists, and spies.";
     private static final String FIRST_HALL_CAPACITY = "first hall with capacity 100";
     private static final String SECOND_HALL_CAPACITY = "second hall with capacity 200";
-    private static final long LONG_1 = 1L;
+    private static final long ONE_DAY_OFFSET = 1L;
     private static final String USER_PASSWORD = "nazar1177";
     private static final String USER_EMAIL = "nazar@gmail.com";
-    private static final String EMAIL_NOT_EXIST = "nazarss@gmail.com";
+    private static final String NOT_EXIST_USER_EMAIL = "petro@gmail.com";
 
     public static void main(String[] args) throws Exception {
 
@@ -57,12 +57,12 @@ public class Main {
         MovieSession tomorrowMovieSession = new MovieSession();
         tomorrowMovieSession.setCinemaHall(firstCinemaHall);
         tomorrowMovieSession.setMovie(fastAndFurious);
-        tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(LONG_1));
+        tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(ONE_DAY_OFFSET));
 
         MovieSession yesterdayMovieSession = new MovieSession();
         yesterdayMovieSession.setCinemaHall(firstCinemaHall);
         yesterdayMovieSession.setMovie(fastAndFurious);
-        yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(LONG_1));
+        yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(ONE_DAY_OFFSET));
 
         MovieSessionService movieSessionService = (MovieSessionService)
                 injector.getInstance(MovieSessionService.class);
@@ -86,7 +86,10 @@ public class Main {
         AuthenticationService authenticationService = (AuthenticationService)
                 injector.getInstance(AuthenticationService.class);
 
-        User loginUser = authenticationService.register(USER_EMAIL, USER_PASSWORD);
+        User login = authenticationService.login(USER_EMAIL, USER_PASSWORD);
+        System.out.println(login);
+
+        User loginUser = authenticationService.register(NOT_EXIST_USER_EMAIL, USER_PASSWORD);
         System.out.println(loginUser);
     }
 }

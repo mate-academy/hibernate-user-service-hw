@@ -8,6 +8,7 @@ import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
+import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -17,25 +18,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = new User();
+        Optional<User> user = userService.findByEmail(email);
+        String userHashPassword = HashUtil.hashPassword(password, user.get().getSalt());
+        String userPasswordFromDB = user.get().getPassword();
+        String userEmail = user.get().getEmail();
+        if (email.equals(userEmail) && userPasswordFromDB.equals(userHashPassword)) {
+            return user.get();
+        } else {
+            throw new AuthenticationException("Can't find corresponding User " + userEmail);
+        }
+    }
 
+    @Override
+    public User register(String email, String password) throws RegistrationException {
+        User user = new User();
         Optional<User> userByEmail = userService.findByEmail(email);
         if (userByEmail.isEmpty()) {
             user.setEmail(email);
             user.setPassword(password);
             return user;
         } else {
-            throw new AuthenticationException("User with email " + email + " already exist");
-        }
-    }
-
-    @Override
-    public User register(String email, String password) throws RegistrationException {
-        try {
-            User userLogin = login(email, password);
-            return userService.add(userLogin);
-        } catch (Exception e) {
-            throw new RegistrationException("User can't register ", e);
+            throw new RegistrationException("User with email " + email + " already exist");
         }
     }
 }
