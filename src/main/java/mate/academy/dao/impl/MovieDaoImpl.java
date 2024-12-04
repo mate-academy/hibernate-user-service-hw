@@ -13,6 +13,11 @@ import org.hibernate.Transaction;
 
 @Dao
 public class MovieDaoImpl implements MovieDao {
+
+    private static final String CAN_T_INSERT_MOVIE = "Can't insert movie ";
+    private static final String CAN_T_GET_A_MOVIE_BY_ID = "Can't get a movie by id: ";
+    private static final String CAN_T_GET_ALL_MOVIES = "Can't get all movies";
+
     @Override
     public Movie add(Movie movie) {
         Transaction transaction = null;
@@ -27,7 +32,7 @@ public class MovieDaoImpl implements MovieDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Can't insert movie " + movie, e);
+            throw new DataProcessingException(CAN_T_INSERT_MOVIE + movie, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -40,7 +45,7 @@ public class MovieDaoImpl implements MovieDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return Optional.ofNullable(session.get(Movie.class, id));
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get a movie by id: " + id, e);
+            throw new DataProcessingException(CAN_T_GET_A_MOVIE_BY_ID + id, e);
         }
     }
 
@@ -52,7 +57,7 @@ public class MovieDaoImpl implements MovieDao {
             criteriaQuery.from(Movie.class);
             return session.createQuery(criteriaQuery).getResultList();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get all movies", e);
+            throw new DataProcessingException(CAN_T_GET_ALL_MOVIES, e);
         }
     }
 }

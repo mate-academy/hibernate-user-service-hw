@@ -5,6 +5,7 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateUtil {
     private static final SessionFactory sessionFactory = initSessionFactory();
+    private static final String ERROR_CREATING_SESSION_FACTORY = "Error creating SessionFactory";
 
     private HibernateUtil() {
     }
@@ -13,7 +14,7 @@ public class HibernateUtil {
         try {
             return new Configuration().configure().buildSessionFactory();
         } catch (Exception e) {
-            throw new RuntimeException("Error creating SessionFactory", e);
+            throw new RuntimeException(ERROR_CREATING_SESSION_FACTORY, e);
         }
     }
 
