@@ -20,14 +20,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         final Optional<User> userFromDbOptional = userService.findByEmail(email);
         if (userFromDbOptional.isEmpty()) {
             throw new AuthenticationException("The user with email = "
-                    + email + "does not exist in the database");
+                    + email + " does not exist in the database");
         }
         final User user = userFromDbOptional.get();
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;
         }
-        throw new AuthenticationException("Password " + password + "is not correct");
+        throw new AuthenticationException("Password " + password + " is not correct");
     }
 
     @Override
