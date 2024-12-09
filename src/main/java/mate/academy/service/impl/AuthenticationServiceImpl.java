@@ -17,7 +17,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final String HASHING_ALGORITHM = "SHA-256";
     @Inject
-    private final UserService userService;
+    private UserService userService;
 
     public AuthenticationServiceImpl(UserService userService) {
         this.userService = userService;

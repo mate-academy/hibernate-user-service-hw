@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import mate.academy.dao.impl.UserDaoImpl;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
@@ -19,47 +20,58 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class Main {
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
-        MovieService movieService = null;
+    private static final Injector injector = Injector.getInstance("mate.academy");
 
-        Movie fastAndFurious = new Movie("Fast and Furious");
-        fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
-        movieService.add(fastAndFurious);
-        System.out.println(movieService.get(fastAndFurious.getId()));
-        movieService.getAll().forEach(System.out::println);
+    public static void main(String[] args) {
+        final MovieService movieService =
+                (MovieService) injector.getInstance(MovieService.class);
+        final CinemaHallService cinemaHallService =
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
+        final MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
 
-        CinemaHall firstCinemaHall = new CinemaHall();
-        firstCinemaHall.setCapacity(100);
-        firstCinemaHall.setDescription("first hall with capacity 100");
+        // Test MovieService
+        Movie movie1 = new Movie();
+        movie1.setTitle("The Matrix");
+        Movie movie2 = new Movie();
+        movie2.setTitle("Inception");
 
-        CinemaHall secondCinemaHall = new CinemaHall();
-        secondCinemaHall.setCapacity(200);
-        secondCinemaHall.setDescription("second hall with capacity 200");
+        movieService.add(movie1);
+        movieService.add(movie2);
+        System.out.println("All movies: " + movieService.getAll());
+        System.out.println("Movie with ID 1: " + movieService.get(1L));
 
-        CinemaHallService cinemaHallService = null;
-        cinemaHallService.add(firstCinemaHall);
-        cinemaHallService.add(secondCinemaHall);
+        // Test CinemaHallService
+        CinemaHall hall1 = new CinemaHall();
+        hall1.setCapacity(100);
+        hall1.setDescription("IMAX Hall");
 
-        System.out.println(cinemaHallService.getAll());
-        System.out.println(cinemaHallService.get(firstCinemaHall.getId()));
+        CinemaHall hall2 = new CinemaHall();
+        hall2.setCapacity(50);
+        hall2.setDescription("Standard Hall");
 
-        MovieSession tomorrowMovieSession = new MovieSession();
-        tomorrowMovieSession.setCinemaHall(firstCinemaHall);
-        tomorrowMovieSession.setMovie(fastAndFurious);
-        tomorrowMovieSession.setShowTime(LocalDateTime.now().plusDays(1L));
+        cinemaHallService.add(hall1);
+        cinemaHallService.add(hall2);
+        System.out.println("All cinema halls: " + cinemaHallService.getAll());
+        System.out.println("Cinema hall with ID 1: " + cinemaHallService.get(1L));
 
-        MovieSession yesterdayMovieSession = new MovieSession();
-        yesterdayMovieSession.setCinemaHall(firstCinemaHall);
-        yesterdayMovieSession.setMovie(fastAndFurious);
-        yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
+        // Test MovieSessionService
+        MovieSession session1 = new MovieSession();
+        session1.setMovie(movie1);
+        session1.setCinemaHall(hall1);
+        session1.setShowTime(LocalDateTime.of(2024, 12, 8, 14, 0));
 
-        MovieSessionService movieSessionService = null;
-        movieSessionService.add(tomorrowMovieSession);
-        movieSessionService.add(yesterdayMovieSession);
+        MovieSession session2 = new MovieSession();
+        session2.setMovie(movie2);
+        session2.setCinemaHall(hall2);
+        session2.setShowTime(LocalDateTime.of(2024, 12, 8, 20, 0));
 
-        System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
-        System.out.println(movieSessionService.findAvailableSessions(
-                        fastAndFurious.getId(), LocalDate.now()));
+        movieSessionService.add(session1);
+        movieSessionService.add(session2);
+
+        LocalDate testDate = LocalDate.of(2024, 12, 8);
+        System.out.println("Available sessions for 'The Matrix' on " + testDate + ": "
+                + movieSessionService.findAvailableSessions(movie1.getId(), testDate));
 
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
         UserDaoImpl userDao = new UserDaoImpl(sessionFactory);
