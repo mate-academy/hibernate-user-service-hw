@@ -2,15 +2,24 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.dao.impl.UserDaoImpl;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.impl.AuthenticationServiceImpl;
+import mate.academy.service.impl.UserServiceImpl;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegistrationException, AuthenticationException {
         MovieService movieService = null;
 
         Movie fastAndFurious = new Movie("Fast and Furious");
@@ -51,5 +60,22 @@ public class Main {
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+        UserDaoImpl userDao = new UserDaoImpl(sessionFactory);
+        UserServiceImpl userService = new UserServiceImpl(userDao);
+        AuthenticationService authenticationService = new AuthenticationServiceImpl(userService);
+
+        try {
+            User registeredUser = authenticationService.register("test@example.com", "password123");
+            System.out.println("Registered user: " + registeredUser);
+
+            User loggedInUser = authenticationService.login("test@example.com", "password123");
+            System.out.println("Logged in user: " + loggedInUser);
+        } catch (RegistrationException | AuthenticationException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            sessionFactory.close();
+        }
     }
 }
