@@ -16,32 +16,28 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email).orElse(new User());
-        if (user.getEmail() != null) {
-            boolean userExist = user.getEmail().equals(email);
-            boolean passwordIsCorrect = HashUtil.hashPassword(password, user.getSalt())
+        if (userService.findByEmail(email).isEmpty()) {
+            throw new AuthenticationException("User with email: " + email + " was not found.");
+        }
+        User user = userService.findByEmail(email).get();
+        boolean passwordIsCorrect = HashUtil.hashPassword(password, user.getSalt())
                     .equals(user.getPassword());
-
-            if (userExist && passwordIsCorrect) {
-                System.out.println("User: " + user.getEmail() + " was successfully logged in.");
-                return user;
-            }
+        if (passwordIsCorrect) {
+            System.out.println("User: " + user.getEmail() + " was successfully logged in.");
+            return user;
         }
         throw new AuthenticationException("Can`t log in user: "
-                + user.getEmail() + ". Login or password are incorrect");
+                + email + ". Incorrect password.");
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("User with email: " + email + " already registered.");
+        }
         User user = new User();
         user.setEmail(email);
-        user.setSalt(HashUtil.getSalt());
-        user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
-
-        try {
-            return userService.add(user);
-        } catch (Exception e) {
-            throw new RegistrationException("Can`t register user with email: " + email, e);
-        }
+        user.setPassword(password);
+        return userService.add(user);
     }
 }
