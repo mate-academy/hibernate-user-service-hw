@@ -14,7 +14,7 @@ import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
-public class gMain {
+public class Main {
     public static void main(String[] args) {
         Injector injector = Injector.getInstance("mate.academy");
 
