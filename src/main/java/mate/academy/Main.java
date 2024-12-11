@@ -63,8 +63,8 @@ public class Main {
         AuthenticationService authenticationService =
                     (AuthenticationService) injector.getInstance(AuthenticationService.class);
         User user = new User();
-        user.setEmail("qwerty@gmail.com");
-        user.setPassword("qwerty");
+        user.setEmail("LikeMyWorld@gmail.com");
+        user.setPassword("123QWE");
 
         authenticationService.register(user.getEmail(), user.getPassword());
         System.out.println(authenticationService.login(user.getEmail(), user.getPassword()));
