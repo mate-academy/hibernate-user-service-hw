@@ -35,7 +35,7 @@ public class Main {
         secondCinemaHall.setDescription("second hall with capacity 200");
 
         CinemaHallService cinemaHallService =
-                    (CinemaHallService) injector.getInstance(CinemaHallService.class);
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -53,22 +53,27 @@ public class Main {
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
         MovieSessionService movieSessionService =
-                    (MovieSessionService) injector.getInstance(MovieSessionService.class);
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
-                        fastAndFurious.getId(), LocalDate.now()));
+                fastAndFurious.getId(), LocalDate.now()));
         AuthenticationService authenticationService =
-                    (AuthenticationService) injector.getInstance(AuthenticationService.class);
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
         User user = new User();
         user.setEmail("LikeMyWorld@gmail.com");
         user.setPassword("123QWE");
 
         authenticationService.register(user.getEmail(), user.getPassword());
-        System.out.println(authenticationService.login(user.getEmail(), user.getPassword()));
-        System.out.println(user.getEmail());
-        System.out.println(user.getPassword());
+        User loggedInUser = authenticationService.login(user.getEmail(), user.getPassword());
+        if (loggedInUser != null) {
+            System.out.println("Login successful for email: " + loggedInUser.getEmail());
+        } else {
+            System.out.println("Login failed for email: " + user.getEmail());
+        }
+
+        System.out.println("User email: " + user.getEmail());
     }
 }
