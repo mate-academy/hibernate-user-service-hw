@@ -37,7 +37,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> get(Long id) {
-        return Optional.empty();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
+           return Optional.ofNullable(session.get(User.class, id));
+        }catch (Exception e){
+            throw new DataProcessingException("Couldn't get all users", e);
+        }
     }
 
     @Override
