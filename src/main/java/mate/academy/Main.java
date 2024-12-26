@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
@@ -16,6 +18,7 @@ import mate.academy.service.MovieSessionService;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
@@ -67,6 +70,7 @@ public class Main {
             User registeredUser = authenticationService.register("email@gmail.com", "password");
             System.out.println(registeredUser);
         } catch (RegistrationException e) {
+            logger.log(Level.SEVERE, "Error during user authentication: ", e);
             throw new RuntimeException("Failed to register a new user."
                     + " Please check your email or password.");
         }
@@ -75,6 +79,7 @@ public class Main {
             User loginedUser = authenticationService.login("email@gmail.com", "password");
             System.out.println(loginedUser);
         } catch (AuthenticationException e) {
+            logger.log(Level.SEVERE, "Error during user registration: ", e);
             throw new RuntimeException("Failed to login in account, "
                     + "email or password is incorrect.");
         }

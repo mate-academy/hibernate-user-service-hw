@@ -48,9 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (password.length() < 8) {
             throw new RegistrationException("Password must be at least 8 characters long.");
         }
-        User newUser = new User();
-        newUser.setEmail(email);
-        newUser.setPassword(password);
+        User newUser = new User(email, password);
         userService.add(newUser);
         return newUser;
     }
