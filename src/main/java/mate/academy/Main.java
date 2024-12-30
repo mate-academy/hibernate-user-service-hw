@@ -21,7 +21,6 @@ public class Main {
     private static final String PASSWORD = "Password";
 
     public static void main(String[] args) throws AuthenticationException, RegistrationException {
-
         MovieService movieService = (MovieService)
                 injector.getInstance(MovieService.class);
 
