@@ -22,6 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new AuthenticationException("User not found");
         }
         User user = userFromDb.get();
+        user.setSalt(HashUtil.getSalt());
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;
@@ -38,6 +39,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEmail(email);
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         user.setPassword(hashedPassword);
-        return user;
+        return userService.add(user);
     }
 }
