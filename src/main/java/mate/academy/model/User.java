@@ -65,8 +65,8 @@ public class User {
         }
 
         User user = (User) obj;
-        return (email != null && email.equals(user.email)) &&
-                (id != null && id.equals(user.id));
+        return (email != null && email.equals(user.email))
+                && (id != null && id.equals(user.id));
     }
 
     @Override
