@@ -65,12 +65,16 @@ public class User {
         }
 
         User user = (User) obj;
-        return email != null && email.equals(user.email);
+        return (email != null && email.equals(user.email)) &&
+                (id != null && id.equals(user.id));
     }
 
     @Override
     public int hashCode() {
-        return email != null ? email.hashCode() : 0;
+        int result = 17;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        return result;
     }
 }
 

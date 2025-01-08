@@ -24,9 +24,9 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User get(Long id) {
+    public Optional<User> get(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(User.class, id);
+            return Optional.of(session.get(User.class, id));
         } catch (Exception e) {
             throw new DataProcessingException("Can't get a user by id: " + id, e);
         }
