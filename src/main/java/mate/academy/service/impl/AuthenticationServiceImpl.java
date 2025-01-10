@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
 import java.util.Optional;
-
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
