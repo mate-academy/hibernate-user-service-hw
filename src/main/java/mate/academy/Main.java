@@ -17,7 +17,7 @@ import mate.academy.service.MovieSessionService;
 public class Main {
     public static void main(String[] args) {
         Injector injector = Injector.getInstance("mate.academy");
-        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);;
+        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -34,7 +34,7 @@ public class Main {
         secondCinemaHall.setDescription("second hall with capacity 200");
 
         CinemaHallService cinemaHallService =
-                (CinemaHallService) injector.getInstance(CinemaHallService.class);;
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 

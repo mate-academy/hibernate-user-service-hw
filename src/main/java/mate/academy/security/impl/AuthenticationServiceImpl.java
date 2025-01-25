@@ -17,19 +17,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        try {
-            Optional<User> userOptional = userService.findByEmail(email);
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-                if (user.getPassword().equals(hashedPassword)) {
-                    return user;
-                }
+        Optional<User> userOptional = userService.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+            if (user.getPassword().equals(hashedPassword)) {
+                return user;
             }
-            throw new AuthenticationException("Invalid email or password");
-        } catch (Exception e) {
-            throw new AuthenticationException("Authentication failed", e);
         }
+        throw new AuthenticationException("Invalid email or password");
     }
 
     @Override
@@ -40,10 +36,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (password == null || password.isEmpty()) {
             throw new RegistrationException("Password cannot be null or empty");
         }
-        User user = userService.add(new User(email, password));
-        if (user != null) {
-            return user;
-        }
-        throw new RegistrationException("Register failed");
+        User user = new User();
+        user.setEmail(email);
+        user.setSalt(HashUtil.getSalt());
+        user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
+        return userService.add(user);
     }
 }
