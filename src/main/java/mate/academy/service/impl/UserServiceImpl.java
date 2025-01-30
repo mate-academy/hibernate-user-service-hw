@@ -7,7 +7,7 @@ import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
 public class UserServiceImpl implements UserService {
-    UserDao userDao;
+    private UserDao userDao;
 
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
