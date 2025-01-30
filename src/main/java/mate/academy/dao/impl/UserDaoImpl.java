@@ -7,6 +7,8 @@ import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.Optional;
+
 public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
@@ -30,13 +32,16 @@ public class UserDaoImpl implements UserDao {
                 session.close();
             }
         }
-        return null;
+        return user;
     }
 
     @Override
-    public User findByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return (User) session.get(email, User.class);
+            return session
+                    .createQuery("FROM User WHERE email = :email", User.class)
+                    .setParameter("email", email)
+                    .uniqueResultOptional();
         } catch (Exception e) {
             e.printStackTrace();
             throw new DataProcessingException(
