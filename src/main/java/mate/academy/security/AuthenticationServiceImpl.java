@@ -21,7 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new AuthenticationException("Can't authenticate user");
         }
         String hashPassword = HashUtil.hashPassword(password, findUser.get().getSalt());
-        if (findUser.get().getPassword().equals(hashPassword) && !password.isEmpty()) {
+        if (findUser.get().getPassword().equals(hashPassword)) {
             return findUser.get();
         }
         throw new AuthenticationException("The email or password that you entered is incorrect");

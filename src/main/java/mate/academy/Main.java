@@ -58,9 +58,6 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                 fastAndFurious.getId(), LocalDate.now()));
 
-        User ihor = new User("sidorenko.igorek@gmail.com", "mysql666");
-        User nelia = new User("sidorenko.nelia@gmail.com", "mysql777");
-
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         System.out.println(authenticationService.register(
