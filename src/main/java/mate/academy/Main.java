@@ -5,13 +5,19 @@ import java.time.LocalDateTime;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.secure.AuthenticationService;
+import mate.academy.secure.impl.AuthenticationServiceImpl;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.impl.CinemaHallServiceImpl;
+import mate.academy.service.impl.MovieServiceImpl;
+import mate.academy.service.impl.MovieSessionServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
-        MovieService movieService = null;
+        MovieService movieService = new MovieServiceImpl();
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -27,7 +33,7 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService = new CinemaHallServiceImpl();
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,12 +50,22 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService = new MovieSessionServiceImpl();
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        User user = new User();
+        user.setEmail("andriy@gmail.com");
+        user.setPassword("password");
+
+        AuthenticationService authenticationService = new AuthenticationServiceImpl();
+        System.out.println(authenticationService.register(user.getEmail(), user.getPassword()));
+
+        System.out.println(authenticationService.login("andriy@gmail.com", "password"));
+
     }
 }
