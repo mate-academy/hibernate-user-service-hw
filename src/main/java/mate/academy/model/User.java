@@ -46,8 +46,8 @@ public class User {
         return salt;
     }
 
-    public void setSalt(byte[] sold) {
-        this.salt = sold;
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class User {
                 + "id=" + id
                 + ", email='" + email + '\''
                 + ", password='" + password + '\''
-                + ", sold=" + Arrays.toString(salt)
+                + ", salt=" + Arrays.toString(salt)
                 + '}';
     }
 

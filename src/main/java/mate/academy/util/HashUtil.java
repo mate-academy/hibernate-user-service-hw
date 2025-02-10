@@ -21,6 +21,7 @@ public class HashUtil {
         StringBuilder hashPassword = new StringBuilder();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(CRYPTO_ALGORITHM);
+            messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
 
             for (byte b : digest) {

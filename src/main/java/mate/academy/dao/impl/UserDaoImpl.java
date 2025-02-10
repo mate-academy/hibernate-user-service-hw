@@ -20,7 +20,7 @@ public class UserDaoImpl implements UserDao {
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
-                transaction.commit();
+                transaction.rollback();
             }
             throw new DataProcessingException("Can`t create user: " + user, e);
         } finally {
@@ -34,7 +34,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> get(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return Optional.of(session.get(User.class, id));
+            return Optional.ofNullable(session.get(User.class, id));
         }
     }
 
