@@ -7,6 +7,10 @@ import java.security.SecureRandom;
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
 
+    private HashUtil() {
+        throw new UnsupportedOperationException("Utility class should not be instantiated");
+    }
+
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[16];

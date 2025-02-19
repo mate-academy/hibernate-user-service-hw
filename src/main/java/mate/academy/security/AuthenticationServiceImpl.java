@@ -14,24 +14,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public void register(String email, String password) {
+    public void register(String email, String password) throws RegistrationException {
         if (email.isBlank() || password.isBlank()) {
             throw new RegistrationException("Email and password cannot be empty");
         }
 
-        userService.findByEmail(email).ifPresent(u -> {
+        if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with this email already exists");
-        });
+        }
 
         User user = new User();
-        user.setSalt(HashUtil.getSalt());
         user.setEmail(email);
-        user.setPassword(HashUtil.hashPassword(password, user.getSalt()));
+        user.setPassword(password);
         userService.add(user);
     }
 
     @Override
-    public User login(String login, String password) {
+    public User login(String login, String password) throws AuthenticationException {
         User user = userService.findByEmail(login)
                 .orElseThrow(() -> new AuthenticationException("Cannot authenticate user"));
 
