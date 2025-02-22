@@ -16,12 +16,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
+        Optional<User> optionalUserFromDB = userService.findByEmail(email);
+        if (optionalUserFromDB.isEmpty()) {
+            throw new AuthenticationException("Can't authenticate user");
+        }
+        User user = optionalUserFromDB.get();
+        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+        if (user.getPassword().equals(hashedPassword)) {
+            return user;
+        }
+        throw new AuthenticationException("Can't authenticate user");
+    }
+
+    @Override
+    public User register(String email, String password) throws RegistrationException {
         if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
-            throw new AuthenticationException("Email or password can't be empty");
+            throw new RegistrationException("Invalid email or password");
         }
         Optional<User> optionalUserFromDB = userService.findByEmail(email);
         if (optionalUserFromDB.isPresent()) {
-            throw new AuthenticationException("User with this email already exists");
+            throw new RegistrationException("User with this email already exists");
         }
         User newUser = new User();
         newUser.setEmail(email);
@@ -30,17 +44,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return newUser;
     }
 
-    @Override
-    public User register(String email, String password) throws RegistrationException {
-        Optional<User> optionalUserFromDB = userService.findByEmail(email);
-        if (optionalUserFromDB.isEmpty()) {
-            throw new RegistrationException("Can't authenticate user");
-        }
-        User user = optionalUserFromDB.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new RegistrationException("Can't authenticate user");
-    }
 }

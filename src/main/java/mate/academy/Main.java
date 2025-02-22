@@ -63,21 +63,21 @@ public class Main {
                 fastAndFurious.getId(), LocalDate.now()));
 
         User bob = new User();
-        bob.setEmail("Bob");
+        bob.setEmail("Bob@gmail.com");
         bob.setSalt(HashUtil.getSalt());
         bob.setPassword(HashUtil.hashPassword("5060860", bob.getSalt()));
 
         AuthenticationService authenticationService = (AuthenticationService)
                 injector.getInstance(AuthenticationService.class);
         try {
-            authenticationService.login(bob.getEmail(), bob.getPassword());
-        } catch (AuthenticationException e) {
+            authenticationService.register(bob.getEmail(), bob.getPassword());
+        } catch (RegistrationException e) {
             throw new RuntimeException("Can't register user", e);
         }
         try {
-            System.out.println(authenticationService.register(bob.getEmail(), bob.getPassword()));
-        } catch (RegistrationException e) {
-            throw new RuntimeException("Wrong password or login", e);
+            System.out.println(authenticationService.login(bob.getEmail(), bob.getPassword()));
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Can't log in user", e);
         }
     }
 

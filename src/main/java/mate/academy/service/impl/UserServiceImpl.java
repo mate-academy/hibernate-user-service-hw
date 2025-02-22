@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.ofNullable(userDao.findByEmail(email)).get();
+        return userDao.findByEmail(email);
     }
+
 }
