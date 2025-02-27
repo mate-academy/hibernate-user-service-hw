@@ -31,11 +31,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userFromDbOptional = userService.findByEmail(email);
-        if (userFromDbOptional.isEmpty()) {
-            User user = new User(email, password);
-            return userService.add(user);
+        if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+            throw new RegistrationException("Invalid email or password");
         }
-        throw new RegistrationException("Can't register user, this email already exists: " + email);
+        Optional<User> userFromDbOptional = userService.findByEmail(email);
+        if (userFromDbOptional.isPresent()) {
+            throw new RegistrationException(
+                    "Can't register user, this email already exists: " + email);
+        }
+        User user = new User(email, password);
+        return userService.add(user);
     }
 }
