@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
             session.persist(user);
             transaction.commit();
             return user;
-        } catch (DataProcessingException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
