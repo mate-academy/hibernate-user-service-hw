@@ -1,7 +1,6 @@
 package mate.academy.service.impl;
 
 import java.util.Optional;
-import mate.academy.dao.UserDao;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -20,7 +19,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
         if (userOptional.isEmpty()) {
-            throw new AuthenticationException("User with email: " + email + " does not exist in DB!");
+            throw new AuthenticationException("User with email: " + email
+                    + " does not exist in DB!");
         }
         User user = userOptional.get();
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
