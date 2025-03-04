@@ -27,14 +27,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) {
-        User user = new User();
         Optional<User> userEmail = userService.findByEmail(email);
         if (userEmail.isEmpty()) {
-            user.setEmail(email);
-            user.setPassword(password);
-            return user;
-        } else {
-            throw new RegistrationException("User with email " + email + " already exist");
+            throw new RegistrationException("User with email " + email + " already exists");
         }
+
+        User user = new User();
+        user.setEmail(email);
+
+        byte[] salt = HashUtil.getSalt();
+        String hashedPassword = HashUtil.hashedPassword(password, salt);
+
+        user.setSalt(salt);
+        user.setPassword(hashedPassword);
+
+        return userService.add(user);
     }
 }

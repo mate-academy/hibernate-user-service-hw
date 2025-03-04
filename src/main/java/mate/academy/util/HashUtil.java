@@ -12,9 +12,9 @@ public class HashUtil {
 
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
-        byte[] satl = new byte[16];
-        secureRandom.nextBytes(satl);
-        return satl;
+        byte[] salt = new byte[16];
+        secureRandom.nextBytes(salt);
+        return salt;
     }
 
     public static String hashedPassword(String password, byte[] salt) {
