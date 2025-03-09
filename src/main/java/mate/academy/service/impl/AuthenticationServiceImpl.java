@@ -20,14 +20,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             try {
                 throw new RegistrationException("Email and password cannot be empty");
             } catch (RegistrationException e) {
-                throw new RuntimeException(e);
+
             }
         }
         if (userService.findByEmail(email).isPresent()) {
             try {
-                throw new RegistrationException("Email and password cannot be empty");
+                throw new RegistrationException("Email address already in use");
             } catch (RegistrationException e) {
-                throw new RuntimeException(e);
+
             }
         }
 
