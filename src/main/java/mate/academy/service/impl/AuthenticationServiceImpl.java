@@ -35,7 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RegistrationException("User already exists");
         }
         User user = new User();
-
+        user.setEmail(email);
         return userService.add(user);
     }
 }
