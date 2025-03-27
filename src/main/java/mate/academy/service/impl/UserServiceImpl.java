@@ -2,6 +2,7 @@ package mate.academy.service.impl;
 
 import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -14,9 +15,13 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public User save(User user) {
-        user.setSalt(HashUtil.getSalt());
-        user.setPassword(HashUtil.hashPassword(user.getPassword(), user.getSalt()));
+    public User save(User user) throws RegistrationException {
+        if (user.getPassword() == null) {
+            throw new RegistrationException("Password cannot be null");
+        }
+        byte[] salt = HashUtil.getSalt();
+        user.setSalt(salt);
+        user.setPassword(HashUtil.hashPassword(user.getPassword(), salt));
         return userDao.add(user);
     }
 

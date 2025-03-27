@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Arrays;
 
 @Entity
 @Table(name = "usersPassword")
@@ -74,8 +73,6 @@ public class User {
         return "User{"
                 + "id=" + id
                 + ", login='" + login + '\''
-                + ", password='" + password + '\''
-                + ", salt=" + Arrays.toString(salt)
                 + ", email='" + email + '\''
                 + '}';
     }
