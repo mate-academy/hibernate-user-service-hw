@@ -3,6 +3,7 @@ package mate.academy.dao.impl;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
+import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
@@ -10,9 +11,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-public class UserDaoImpl extends AbstractDao implements UserDao {
+@Dao
+public class UserDaoImpl implements UserDao {
+    private SessionFactory sessionFactory;
+
     protected UserDaoImpl(SessionFactory sessionFactory) {
-        super(sessionFactory);
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
@@ -20,11 +24,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = factory.openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
