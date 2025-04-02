@@ -9,5 +9,5 @@ public interface AuthenticationService {
             throws AuthenticationException;
 
     User register(String email, String password)
-            throws AuthenticationException, RegistrationException;
+            throws RegistrationException;
 }
