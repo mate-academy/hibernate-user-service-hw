@@ -2,10 +2,12 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -14,12 +16,16 @@ import mate.academy.service.MovieSessionService;
 public class Main {
     private static final Injector instance = Injector.getInstance("mate.academy");
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AuthenticationException {
         AuthenticationService authenticationService = (AuthenticationService)
                 instance.getInstance(AuthenticationService.class);
 
-        MovieService movieService = null;
+        User newUser = new User();
+        newUser.setEmail("nikolya.cr@gmail.com");
+        newUser.setPassword("12345678910");
+        authenticationService.login(newUser.getEmail(), newUser.getPassword());
 
+        MovieService movieService = null;
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
         movieService.add(fastAndFurious);
