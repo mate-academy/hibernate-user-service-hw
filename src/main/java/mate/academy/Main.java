@@ -2,7 +2,6 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import mate.academy.lib.Inject;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -16,7 +15,6 @@ public class Main {
     private static final Injector instance = Injector.getInstance("mate.academy");
 
     public static void main(String[] args) {
-        @Inject
         AuthenticationService authenticationService = (AuthenticationService)
                 instance.getInstance(AuthenticationService.class);
 
