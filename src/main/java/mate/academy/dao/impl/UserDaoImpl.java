@@ -19,7 +19,7 @@ public class UserDaoImpl implements UserDao {
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            session.save(user);
+            session.persist(user);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -40,10 +40,7 @@ public class UserDaoImpl implements UserDao {
             Query<User> userByEmail = session.createQuery(
                     "from User u where u.email = :email", User.class)
                     .setParameter("email", email);
-            if (userByEmail.uniqueResult() != null) {
-                return Optional.of(userByEmail.uniqueResult());
-            }
-            return Optional.empty();
+            return Optional.ofNullable(userByEmail.uniqueResult());
         }
     }
 }

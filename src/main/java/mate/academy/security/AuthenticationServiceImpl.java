@@ -45,11 +45,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             }
             transaction = session.beginTransaction();
             user.setEmail(email);
-            byte[] salt = HashUtil.getSalt();
-            String hashPassword = HashUtil.hashPassword(password,salt);
-            user.setPassword(hashPassword);
-            user.setSalt(salt);
-            session.save(user);
+            user.setPassword(password);
+            userService.add(user);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
