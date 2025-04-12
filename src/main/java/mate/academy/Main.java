@@ -18,7 +18,7 @@ public class Main {
     private static final String EMAIL = "bob@gmail.com";
     private static final String PASSWORD = "password";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AuthenticationException, RegistrationException {
 
         Injector injector = Injector.getInstance("mate.academy");
         MovieService movieService =
@@ -72,15 +72,8 @@ public class Main {
         User bob = new User();
         bob.setEmail(EMAIL);
         bob.setPassword(PASSWORD);
-        try {
-            authenticationService.register(bob.getEmail(), bob.getPassword());
-        } catch (RegistrationException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            System.out.println(authenticationService.login(bob.getEmail(), bob.getPassword()));
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+        authenticationService.register(bob.getEmail(), bob.getPassword());
+
+        System.out.println(authenticationService.login(bob.getEmail(), bob.getPassword()));
     }
 }
