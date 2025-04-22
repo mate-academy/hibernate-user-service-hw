@@ -19,9 +19,7 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
     @Override
     public MovieSession add(MovieSession movieSession) {
         Transaction transaction = null;
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.persist(movieSession);
             transaction.commit();
@@ -31,10 +29,6 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't insert movieSession " + movieSession, e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 
@@ -67,37 +61,28 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
 
     @Override
     public boolean update(MovieSession movieSession) {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = null;
-        Transaction transaction = null;
-
-        try {
-            session = sessionFactory.openSession();
-            transaction = session.beginTransaction();
-            session.update(movieSession);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new DataProcessingException("updating " + movieSession + " failed", e);
-        } finally {
-            if (session != null) {
-                session.close();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction transaction = null;
+            try {
+                transaction = session.beginTransaction();
+                session.update(movieSession);
+                transaction.commit();
+                return true;
+            } catch (Exception e) {
+                if (transaction != null) {
+                    transaction.rollback();
+                }
+                throw new DataProcessingException("Updating " + movieSession + " failed", e);
             }
         }
-
-        return get(movieSession.getId()).get().equals(movieSession);
     }
 
     @Override
     public boolean delete(Long id) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = null;
-        Transaction transaction = null;
 
-        try {
-            session = sessionFactory.openSession();
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.delete(get(id)
                     .orElseThrow(() -> new RuntimeException("no movie session with id " + id)));
@@ -108,10 +93,6 @@ public class MovieSessionDaoImpl implements MovieSessionDao {
             }
             throw new DataProcessingException("removing movie session with id: "
                     + id + " from database failed", e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
         return get(id).isEmpty();
     }

@@ -24,4 +24,19 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findByEmail(String email) {
         return userDao.get(email);
     }
+
+    @Override
+    public User update(User user) {
+        
+        if (user.getPassword() != null) {
+            user.setSalt(HashUtil.getSalt());
+            user.setPassword(HashUtil.hashPassword(user.getPassword(), user.getSalt()));
+        }
+        return userDao.update(user);
+    }
+
+    @Override
+    public boolean delete(String userId) {
+        return userDao.delete(userId);
+    }
 }

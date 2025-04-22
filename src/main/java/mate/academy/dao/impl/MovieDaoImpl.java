@@ -16,9 +16,7 @@ public class MovieDaoImpl implements MovieDao {
     @Override
     public Movie add(Movie movie) {
         Transaction transaction = null;
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.persist(movie);
             transaction.commit();
@@ -28,10 +26,6 @@ public class MovieDaoImpl implements MovieDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't insert movie " + movie, e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 
@@ -54,36 +48,27 @@ public class MovieDaoImpl implements MovieDao {
     @Override
     public boolean update(Movie movie) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = null;
         Transaction transaction = null;
 
-        try {
-            session = sessionFactory.openSession();
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.update(movie);
             transaction.commit();
+            return true;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("updating " + movie + " failed", e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+            throw new DataProcessingException("Updating " + movie + " failed", e);
         }
-
-        return get(movie.getId()).get().equals(movie);
     }
 
     @Override
     public boolean delete(Long id) {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-        Session session = null;
-        Transaction transaction = null;
 
-        try {
-            session = sessionFactory.openSession();
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
             session.delete(get(id)
                     .orElseThrow(() -> new RuntimeException("no object with id " + id)));
@@ -94,10 +79,6 @@ public class MovieDaoImpl implements MovieDao {
             }
             throw new DataProcessingException("removing movie with id: "
                     + id + " from database failed", e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
         return get(id).isEmpty();
     }

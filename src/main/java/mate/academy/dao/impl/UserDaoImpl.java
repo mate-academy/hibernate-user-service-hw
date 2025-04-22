@@ -14,9 +14,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
         Transaction transaction = null;
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
@@ -26,10 +24,6 @@ public class UserDaoImpl implements UserDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't insert user: " + user, e);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
         }
     }
 
@@ -39,6 +33,48 @@ public class UserDaoImpl implements UserDao {
             return session.createQuery("from User user where user.email = :email", User.class)
                     .setParameter("email", email)
                     .uniqueResultOptional();
+        }
+    }
+
+    @Override
+    public User update(User user) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.merge(user); 
+            transaction.commit();
+            return user;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new DataProcessingException("Can't update user: " + user, e);
+        }
+    }
+
+    @Override
+    public boolean delete(String email) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            
+            Optional<User> userOptional =
+                    session.createQuery("from User user where user.email = :email", User.class)
+                    .setParameter("email", email)
+                    .uniqueResultOptional();
+
+            if (userOptional.isEmpty()) {
+                return false; 
+            }
+            
+            session.remove(userOptional.get());
+            transaction.commit();
+            return true; 
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new DataProcessingException("Can't delete user with email: " + email, e);
         }
     }
 }
