@@ -60,7 +60,7 @@ public class MovieSession {
     }
 
     public MovieSession setShowTime(int year, int month, int day, int hour, int minute) {
-        this.showTime = showTime.of(year, month, day, hour, minute);
+        this.showTime = LocalDateTime.of(year, month, day, hour, minute);
         return this;
     }
 
