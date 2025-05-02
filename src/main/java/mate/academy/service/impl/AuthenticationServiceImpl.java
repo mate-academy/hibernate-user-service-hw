@@ -36,8 +36,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             User newUser = new User();
             newUser.setPassword(password);
             newUser.setEmail(email);
-            userService.add(newUser);
+            return userService.add(newUser);
+        } else {
+            throw new RegistrationException("User already exists");
         }
-        throw new RegistrationException("User with such email already exist");
     }
 }
