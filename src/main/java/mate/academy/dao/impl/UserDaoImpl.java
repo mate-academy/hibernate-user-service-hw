@@ -1,5 +1,6 @@
 package mate.academy.dao.impl;
 
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
@@ -40,7 +41,11 @@ public class UserDaoImpl implements UserDao {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query query = session.createQuery("from User where email = :email", User.class);
             query.setParameter("email", email);
-            return Optional.ofNullable((User) query.getSingleResult());
+            try {
+                return Optional.ofNullable((User) query.getSingleResult());
+            } catch (NoResultException e) {
+                return Optional.empty();
+            }
         } catch (Exception e) {
             throw new DataProcessingException("Error finding user by email: " + email, e);
         }
