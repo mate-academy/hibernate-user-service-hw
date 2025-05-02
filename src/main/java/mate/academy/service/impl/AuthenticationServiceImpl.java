@@ -36,7 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setPasswordHash(hash);
             return userService.add(user);
         } catch (NoSuchAlgorithmException e) {
-            throw new RegistrationException("Error generating password hash");
+            throw new RegistrationException("Error generating password hash", e);
         }
     }
 
@@ -48,13 +48,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = userOpt.get();
         try {
-            String expectedHash = hashPassword(password, hexToBytes(user.getSalt()));
+            // Use the overload that takes the hex string directly:
+            String expectedHash = hashPassword(password, user.getSalt());
             if (!expectedHash.equals(user.getPasswordHash())) {
                 throw new AuthenticationException("Invalid email or password");
             }
             return user;
         } catch (NoSuchAlgorithmException e) {
-            throw new AuthenticationException("Error verifying password");
+            throw new AuthenticationException("Error verifying password", e);
         }
     }
 
