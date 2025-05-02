@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Sterownik JDBC -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+
+        <property name="hibernate.connection.url">
+            jdbc:mysql://localhost:3306/cinema?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC
+        </property>
+
+        <!-- Dane dostępu do bazy -->
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
+
+        <!-- Dialekt SQL -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <!-- Automatyczne tworzenie/aktualizacja schematu -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- Pokazywanie zapytań w konsoli -->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+
+        <!-- Mapowanie encji -->
+        <mapping class="mate.academy.model.User"/>
+        <mapping class="mate.academy.model.CinemaHall"/>
+        <mapping class="mate.academy.model.Movie"/>
+        <mapping class="mate.academy.model.MovieSession"/>
+
+    </session-factory>
+</hibernate-configuration>
