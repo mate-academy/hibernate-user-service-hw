@@ -24,7 +24,7 @@ Your task is to implement the following steps:
     - AuthenticationService
         ````java
         public interface AuthenticationService {
-            User login(String email, String password) throws AuthenticationException;
+            User email(String email, String password) throws AuthenticationException;
 
             /**
             * We should register a new user. The new user entity will contain the email and password
