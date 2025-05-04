@@ -1,6 +1,8 @@
 package mate.academy.service.impl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import mate.academy.dao.CinemaHallDao;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
@@ -19,7 +21,12 @@ public class CinemaHallServiceImpl implements CinemaHallService {
 
     @Override
     public CinemaHall get(Long id) {
-        return cinemaHallDao.get(id).get();
+        Optional<CinemaHall> optionalCinemaHall = cinemaHallDao.get(id);
+        if (optionalCinemaHall.isPresent()) {
+            return optionalCinemaHall.get();
+        } else {
+            throw new NoSuchElementException("No CinemaHall found with ID " + id);
+        }
     }
 
     @Override
