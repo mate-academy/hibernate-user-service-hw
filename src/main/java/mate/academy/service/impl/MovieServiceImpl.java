@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import mate.academy.dao.MovieDao;
 import mate.academy.lib.Inject;
@@ -19,7 +20,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie get(Long id) {
-        return movieDao.get(id).get();
+        return movieDao.get(id).orElseThrow(() ->
+                new EntityNotFoundException("Can't get movie with id = "
+                        + id + " from DB", new Exception()));
     }
 
     @Override
