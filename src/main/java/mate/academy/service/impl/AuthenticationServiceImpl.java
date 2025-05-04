@@ -34,7 +34,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isEmpty()) {
             User user = new User();
             user.setEmail(email);
-            user.setPassword(password);
+            user.setSalt(HashUtil.getSalt());
+            user.setPassword(HashUtil.hashPassword(user.getPassword(),
+                    user.getSalt()));
             userService.add(user);
             return user;
         }
