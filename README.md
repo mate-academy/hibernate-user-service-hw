@@ -4,12 +4,12 @@ We will continue working on our Cinema project.
 
 Your task is to implement the following steps:
 - Create models:
-  - User
+    - User
 
 
 - Create DAO:
     - UserDAO
-    
+
 
 - Create service:
     - UserService:
@@ -20,7 +20,7 @@ Your task is to implement the following steps:
             Optional<User> findByEmail(String email); // we will use this `Optional` later
         }
         ````
-    
+
     - AuthenticationService
         ````java
         public interface AuthenticationService {
