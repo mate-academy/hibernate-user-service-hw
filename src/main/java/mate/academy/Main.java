@@ -2,16 +2,27 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+    private static final String FIRST_USER_LOGIN = "biba";
+    private static final String SECOND_USER_LOGIN = "boba";
+    private static final String FIRST_USER_PASSWORD = "qwerty";
+    private static final String SECOND_USER_PASSWORD = "1234";
+    private static final String NON_EXISTENT_LOGIN = "Bob";
+    private static final String WRONG_PASSWORD = "password";
+    private static final Injector injector = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
-        MovieService movieService = null;
+        MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -27,7 +38,8 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
+        CinemaHallService cinemaHallService
+                = (CinemaHallService) injector.getInstance(CinemaHallService.class);
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,12 +56,62 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
+        MovieSessionService movieSessionService
+                = (MovieSessionService) injector.getInstance(MovieSessionService.class);
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
+
+        AuthenticationService authenticationService
+                = (AuthenticationService) injector.getInstance(AuthenticationService.class);
+
+        System.out.println("////////////////ERRORS ARE NOT EXPECTED/////////////////");
+
+        try {
+            authenticationService.register(FIRST_USER_LOGIN, FIRST_USER_PASSWORD);
+        } catch (Exception e) {
+            System.out.println(e + "ERROR!!!");
+        }
+
+        try {
+            authenticationService.register(SECOND_USER_LOGIN, SECOND_USER_PASSWORD);
+        } catch (Exception e) {
+            System.out.println(e + "ERROR!!!");
+        }
+
+        try {
+            authenticationService.login(FIRST_USER_LOGIN, FIRST_USER_PASSWORD);
+        } catch (AuthenticationException e) {
+            System.out.println(e + "ERROR!!!");
+        }
+
+        try {
+            authenticationService.login(SECOND_USER_LOGIN, SECOND_USER_PASSWORD);
+        } catch (AuthenticationException e) {
+            System.out.println(e + "ERROR!!!");
+        }
+
+        System.out.println("////////////////ERRORS ARE EXPECTED/////////////////");
+
+        try {
+            authenticationService.login(NON_EXISTENT_LOGIN, FIRST_USER_PASSWORD);
+        } catch (AuthenticationException e) {
+            System.out.println(e + "ERROR!!!");
+        }
+
+        try {
+            authenticationService.login(FIRST_USER_LOGIN, WRONG_PASSWORD);
+        } catch (AuthenticationException e) {
+            System.out.println(e + "ERROR!!!");
+        }
+
+        try {
+            authenticationService.register(FIRST_USER_LOGIN, FIRST_USER_PASSWORD);
+        } catch (Exception e) {
+            System.out.println(e + "ERROR!!!");
+        }
     }
 }
