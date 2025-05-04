@@ -1,0 +1,1 @@
+CREATE SCHEMA `ticket_app` DEFAULT CHARACTER SET utf8;
