@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 
 public class Main {
     private static final Injector injector = Injector.getInstance("mate.academy");
+    private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     public static void main(String[] args) {
 

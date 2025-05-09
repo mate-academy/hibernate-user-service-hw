@@ -39,9 +39,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String login, String password) {
-
-        User user = new User(login, password);
-
-        return userService.save(user);
+        byte[] saltBytes = HashUtil.getSalt();
+        String hashedPassword = HashUtil.hashPassword(password, saltBytes);
+        User user = new User(login, hashedPassword);
+        return userService.save(user); // Або userService.save(user), якщо у вас такий метод
     }
 }
