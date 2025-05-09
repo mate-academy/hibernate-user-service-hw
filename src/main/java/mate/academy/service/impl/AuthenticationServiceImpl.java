@@ -2,7 +2,6 @@ package mate.academy.service.impl;
 
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
-import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -40,10 +39,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String login, String password) {
-        if (userService.findByLogin(login).isPresent()) {
-            throw new RegistrationException("User with input login exists");
-        }
-        User user = new User(login, password);
-        return userService.save(user);
+// 2. Згенерувати унікальну сіль для нового пароля
+        byte[] saltBytes = HashUtil.getSalt();
+//        String saltString = HashUtil.bytesToString(saltBytes); // Перетворити сіль на String для збереження в БД
+
+        // 3. Захешувати пароль, використовуючи згенеровану сіль
+        String hashedPassword = HashUtil.hashPassword(password, saltBytes);
+
+        // 4. Створити об'єкт User, передавши email, ЗАХЕШОВАНИЙ ПАРОЛЬ та СІЛЬ
+        // Переконайтеся, що ваш конструктор класу User може приймати ці 3 параметри
+        User user = new User(login, hashedPassword);
+
+        // 5. Зберегти об'єкт User у базі даних за допомогою userService
+        return userService.save(user); // Або userService.save(user), якщо у вас такий метод
     }
 }

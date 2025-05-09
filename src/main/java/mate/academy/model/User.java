@@ -17,6 +17,7 @@ public class User {
     private String login;
     @Column
     private String password;
+    @Column
     private byte[] salt;
 
     public User() {

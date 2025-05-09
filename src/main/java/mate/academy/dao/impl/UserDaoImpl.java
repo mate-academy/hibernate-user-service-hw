@@ -28,7 +28,7 @@ public class UserDaoImpl implements UserDao {
         Session session = null;
         Transaction transaction = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
+            session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
@@ -45,14 +45,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User get(Long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return session.get(User.class, id);
         }
     }
 
     @Override
     public Optional<User> findByLogin(String login) {
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from User u where u.login = :login", User.class)
                     .setParameter("login", login)
