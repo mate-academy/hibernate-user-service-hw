@@ -39,18 +39,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String login, String password) {
-// 2. Згенерувати унікальну сіль для нового пароля
-        byte[] saltBytes = HashUtil.getSalt();
-//        String saltString = HashUtil.bytesToString(saltBytes); // Перетворити сіль на String для збереження в БД
 
-        // 3. Захешувати пароль, використовуючи згенеровану сіль
-        String hashedPassword = HashUtil.hashPassword(password, saltBytes);
+        User user = new User(login, password);
 
-        // 4. Створити об'єкт User, передавши email, ЗАХЕШОВАНИЙ ПАРОЛЬ та СІЛЬ
-        // Переконайтеся, що ваш конструктор класу User може приймати ці 3 параметри
-        User user = new User(login, hashedPassword);
-
-        // 5. Зберегти об'єкт User у базі даних за допомогою userService
-        return userService.save(user); // Або userService.save(user), якщо у вас такий метод
+        return userService.save(user);
     }
 }

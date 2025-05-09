@@ -49,6 +49,5 @@ public class Main {
         } catch (RegistrationException e) {
             System.out.println("Registration failed (duplicate email): " + e.getMessage());
         }
-
     }
 }
