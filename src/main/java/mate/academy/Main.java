@@ -13,12 +13,12 @@ public class Main {
 
         AuthenticationService authenticationService = (AuthenticationService)
                 injector.getInstance(AuthenticationService.class);
-        String email = "testuser@test.com";
+        String email = "testuser1@test.com";
         String password = "test1234";
 
         try {
             User register = authenticationService.register(email, password);
-            System.out.println("The user: " + register.getEmail() + " was add");
+            System.out.println("The user: " + register.getEmail() + " was added");
 
             User login = authenticationService.login(email, password);
             System.out.println("User logged");
