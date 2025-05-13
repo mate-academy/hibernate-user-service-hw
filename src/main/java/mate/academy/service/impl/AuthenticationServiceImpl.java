@@ -3,12 +3,14 @@ package mate.academy.service.impl;
 import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Inject;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import mate.academy.util.HashUtil;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
+    @Inject
     private UserService userService;
 
     @Override
