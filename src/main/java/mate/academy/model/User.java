@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import java.util.Arrays;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
@@ -62,8 +61,8 @@ public class User {
     @Override
     public String toString() {
         return "User{"
-                + "salt=" + Arrays.toString(salt)
-                + ", password='" + password + '\''
+                + "id=" + id
+                + ", login='" + email + '\''
                 + '}';
     }
 }
