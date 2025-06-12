@@ -28,7 +28,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = new User();
         user.setEmail(email);
-        user.setPassword(password);
-        return userService.add(user);
+        return userService.add(user, password);
     }
 }

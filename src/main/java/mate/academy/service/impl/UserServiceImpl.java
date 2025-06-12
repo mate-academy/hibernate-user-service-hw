@@ -15,13 +15,13 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public User add(User user) throws RegistrationException {
+    public User add(User user, String password) throws RegistrationException {
         if (userDao.findByEmail(user.getEmail()).isPresent()) {
             throw new RegistrationException("User with this email already exists");
         }
         byte[] salt = HashUtil.getSalt();
         user.setSalt(salt);
-        user.setPassword(HashUtil.hashPassword(user.getPassword(), salt));
+        user.setPassword(HashUtil.hashPassword(password, salt));
         return userDao.add(user);
     }
 
