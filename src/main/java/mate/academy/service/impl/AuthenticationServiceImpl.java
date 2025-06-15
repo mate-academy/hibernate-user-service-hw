@@ -1,7 +1,7 @@
 package mate.academy.service.impl;
 
 import java.util.Optional;
-import javax.naming.AuthenticationException;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
@@ -26,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (user.getPassword().equals(userHashPassword)) {
             return user;
         }
-        throw new AuthenticationException("Wrond password");
+        throw new AuthenticationException("Wrong password");
     }
 
     @Override
