@@ -55,7 +55,7 @@ public class UserDaoImpl implements UserDao {
             session.createQuery(criteriaQuery).getResultList();
             return Optional.ofNullable(session.createQuery(criteriaQuery).getSingleResultOrNull());
         } catch (Exception e) {
-            throw new DataProcessingException("Can't find user by login : " + email, e);
+            throw new DataProcessingException("Can't find user by email : " + email, e);
         }
     }
 }
