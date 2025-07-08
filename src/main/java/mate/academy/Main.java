@@ -75,7 +75,7 @@ public class Main {
         try {
             authenticationService.register("alice@gmail.com", "123456");
         } catch (Exception e) {
-            System.out.println("Authentication failed this emali already exist");
+            System.out.println("Authentication failed this email already exist");
         }
     }
 
