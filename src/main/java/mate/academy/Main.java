@@ -71,6 +71,12 @@ public class Main {
         authenticationService.register("alice@gmail.com", "123456");
         System.out.println(authenticationService.login("bob@gmail.com", "qwerty"));
         System.out.println(authenticationService.login("alice@gmail.com", "123456"));
+
+        try {
+            authenticationService.register("alice@gmail.com", "123456");
+        } catch (Exception e) {
+            System.out.println("Authentication failed this emali already exist");
+        }
     }
 
 }
