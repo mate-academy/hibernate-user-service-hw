@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -61,9 +63,44 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        AuthenticationService authenticationService =
+        AuthenticationService authService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        User userMax = authenticationService.register("lisichenkowork@gmail.com", "qwerty");
 
+        try {
+            // успішна реєстрація
+            authService.register("user@example.com", "password123");
+            System.out.println("Registration successful");
+        } catch (RegistrationException e) {
+            System.out.println("Registration failed: " + e.getMessage());
+        }
+
+        try {
+            // успішний логін
+            User user = authService.login("user@example.com", "password123");
+            System.out.println("Login successful: " + user);
+        } catch (AuthenticationException e) {
+            System.out.println("Login failed: " + e.getMessage());
+        }
+
+        try {
+            // невдалий логін (неіснуючий email)
+            authService.login("wrong@example.com", "password123");
+        } catch (AuthenticationException e) {
+            System.out.println("Login failed (wrong email): " + e.getMessage());
+        }
+
+        try {
+            // невдалий логін (неправильний пароль)
+            authService.login("user@example.com", "wrongpassword");
+        } catch (AuthenticationException e) {
+            System.out.println("Login failed (wrong password): " + e.getMessage());
+        }
+
+        try {
+            // невдала реєстрація (duplicate email)
+            authService.register("user@example.com", "newpass");
+        } catch (RegistrationException e) {
+            System.out.println("Registration failed (duplicate email): " + e.getMessage());
+        }
     }
 }

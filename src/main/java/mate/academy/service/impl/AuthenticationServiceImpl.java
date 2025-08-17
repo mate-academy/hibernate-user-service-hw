@@ -1,5 +1,6 @@
 package mate.academy.service.impl;
 
+import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
@@ -7,6 +8,7 @@ import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
+import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -16,14 +18,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email)
-                .orElseThrow(() -> new AuthenticationException("Login or password is not correct"));
+        Optional<User> userOpt = userService.findByEmail(email);
 
-        if (!user.getPassword().equals(password)) { // або хеш-пароль
+        if (userOpt.isEmpty()
+                || !userOpt.get().getPassword()
+                .equals(HashUtil.hashPassword(password, userOpt.get().getSalt()))) {
             throw new AuthenticationException("Login or password is not correct");
         }
 
-        return user;
+        return userOpt.get();
     }
 
     @Override
@@ -33,11 +36,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     "Can`t add User with - this email already Exist");
         }
 
-        User newUser = new User();
-        newUser.setEmail(email);
-        newUser.setPassword(password);
-
-        User registeredUser = userService.add(newUser);
-        return registeredUser;
+        return userService.add(new User(email, password));
     }
 }
