@@ -2,23 +2,26 @@ package mate.academy.service.impl;
 
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
-import mate.academy.lib.Injector;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
+import mate.academy.util.HashUtil;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+
+import java.util.Optional;
 
 public class AuthenticationServiceImplTest {
+
     private AuthenticationService authenticationService;
     private UserService userService;
-    private static final Injector injector = Injector.getInstance("mate.academy");
 
     @Before
     public void setUp() {
-        authenticationService = (AuthenticationService) injector.getInstance(AuthenticationService.class);
-        userService = (UserService) injector.getInstance(UserService.class);
+        userService = Mockito.mock(UserService.class);
+        authenticationService = new AuthenticationServiceImpl(userService);
     }
 
     @Test
@@ -41,20 +44,33 @@ public class AuthenticationServiceImplTest {
 
     @Test
     public void login_success() throws Exception {
-        String password = "admin123";
         String email = "admin123";
-        authenticationService.register(email, password);
+        String password = "admin123";
+        byte[] salt = new byte[16];
+
+        User user = new User();
+        user.setEmail(email);
+        user.setSalt(salt);
+        user.setPassword(HashUtil.hashPassword(password, salt));
+
+        Mockito.when(userService.findByEmail(email)).thenReturn(Optional.of(user));
+
         User actual = authenticationService.login(email, password);
         Assert.assertNotNull(actual);
+
+
     }
 
     @Test
     public void register_existUser_NotOk() throws Exception {
-        String password = "admin";
-        String email = "admin";
+        User existingUser = new User();
+        existingUser.setEmail("admin");
+
+        Mockito.when(userService.findByEmail("admin")).thenReturn(Optional.of(existingUser));
 
         Assert.assertThrows(RegistrationException.class, () ->
-                authenticationService.register(email, password));
+                authenticationService.register("admin", "admin"));
+
     }
 
     @Test

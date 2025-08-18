@@ -15,6 +15,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
 
+    public AuthenticationServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
+
+    public AuthenticationServiceImpl() {
+    }
+
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> user = userService.findByEmail(email);
