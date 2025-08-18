@@ -20,10 +20,10 @@ public class Main {
         AuthenticationService authenticationService = (AuthenticationService) injector
                 .getInstance(AuthenticationService.class);
         String password = "admin";
-        String username = "admin";
+        String email = "admin";
 
-        authenticationService.register(username, password);
-        authenticationService.login(username, password);
+        authenticationService.register(email, password);
+        authenticationService.login(email, password);
 
         MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
 
