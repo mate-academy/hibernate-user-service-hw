@@ -8,6 +8,7 @@ import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
@@ -65,11 +66,15 @@ public class Main {
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         System.out.println("register method started");
-        authenticationService.register("bob@gmail.com", "123456789qwerty!");
+        User registeredUser = authenticationService.register("bob@gmail.com", "123456789qwerty!");
         System.out.println("register method finished");
+        System.out.println(registeredUser.toString());
+
         System.out.println("-----------------");
+
         System.out.println("login method started");
-        authenticationService.login("bob@gmail.com","123456789qwerty!");
+        User loginedUser = authenticationService.login("bob@gmail.com", "123456789qwerty!");
         System.out.println("login method finished");
+        System.out.println(loginedUser.toString());
     }
 }
