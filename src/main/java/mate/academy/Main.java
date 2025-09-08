@@ -3,6 +3,7 @@ package mate.academy;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
@@ -13,10 +14,9 @@ import mate.academy.security.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
-import mate.academy.service.UserService;
 
 public class Main {
-    public static void main(String[] args) throws RegistrationException, AuthenticationException {
+    public static void main(String[] args) throws RegistrationException {
         Injector injector = Injector.getInstance("mate.academy");
         MovieService movieService =
                 (MovieService) injector.getInstance(MovieService.class);
@@ -62,19 +62,27 @@ public class Main {
         System.out.println(movieSessionService.findAvailableSessions(
                         fastAndFurious.getId(), LocalDate.now()));
 
-        UserService userService = (UserService) injector.getInstance(UserService.class);
         AuthenticationService authenticationService =
                 (AuthenticationService) injector.getInstance(AuthenticationService.class);
         System.out.println("register method started");
-        User registeredUser = authenticationService.register("bob@gmail.com", "123456789qwerty!");
-        System.out.println("register method finished");
-        System.out.println(registeredUser.toString());
+        try {
+            User registeredUser = authenticationService
+                    .register("bob@gmail.com", "123456789qwerty!");
+            System.out.println("register method finished");
+            System.out.println(registeredUser.toString());
+        } catch (RegistrationException e) {
+            throw new DataProcessingException("Error registering user", e);
+        }
 
         System.out.println("-----------------");
 
         System.out.println("login method started");
-        User loginedUser = authenticationService.login("bob@gmail.com", "123456789qwerty!");
-        System.out.println("login method finished");
-        System.out.println(loginedUser.toString());
+        try {
+            User loginedUser = authenticationService.login("bob@gmail.com", "123456789qwerty!");
+            System.out.println("login method finished");
+            System.out.println(loginedUser.toString());
+        } catch (AuthenticationException e) {
+            throw new DataProcessingException("Error logining user", e);
+        }
     }
 }
