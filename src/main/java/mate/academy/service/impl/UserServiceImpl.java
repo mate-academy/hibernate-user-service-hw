@@ -19,6 +19,12 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new DataProcessingException("Can't save user: " + user);
         }
+        if (user.getPassword().isEmpty()) {
+            throw new DataProcessingException("User password cannot be empty");
+        }
+        if (user.getPassword() == null) {
+            throw new DataProcessingException("User password cannot be null");
+        }
         user.setSalt(HashUtil.getSalt());
         user.setPassword(HashUtil.hashPassword(user.getPassword(), user.getSalt()));
         return userDao.save(user);
