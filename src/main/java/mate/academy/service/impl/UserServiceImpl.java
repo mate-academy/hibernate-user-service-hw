@@ -7,6 +7,7 @@ import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.UserService;
+import mate.academy.util.HashUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,6 +19,8 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new DataProcessingException("Can't save user: " + user);
         }
+        user.setSalt(HashUtil.getSalt());
+        user.setPassword(HashUtil.hashPassword(user.getPassword(), user.getSalt()));
         return userDao.save(user);
     }
 

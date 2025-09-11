@@ -69,17 +69,22 @@ public class Main {
         alice.setEmail("alicelove@gmail.com");
         alice.setPassword("alica123");
         try {
-            authenticationService.register(alice.getEmail(), alice.getPassword());
+            User register = authenticationService.register(alice.getEmail(), alice.getPassword());
+            System.out.println("User was registered");
+            System.out.println("User email: " + register.getEmail());
+            System.out.println("User id: " + register.getId());
         } catch (RegistrationException e) {
             throw new RuntimeException("Can't register Alice! ",e);
         }
-        String email = "alicelove@gmail.com";
-        String password = "alica123";
+        System.out.println("\n\n");
         try {
-            authenticationService.login(email, password);
+            User login = authenticationService.login(alice.getEmail(), alice.getPassword());
+            System.out.println("User was logged");
+            System.out.println("User email: " + login.getEmail());
+            System.out.println("User id: " + login.getId());
         } catch (AuthenticationException e) {
             throw new RuntimeException(
-                    "Can't login to account with email: " + email + " , error: ",e);
+                    "Can't login to account with email: " + alice.getEmail() + " , error: ",e);
         }
 
     }

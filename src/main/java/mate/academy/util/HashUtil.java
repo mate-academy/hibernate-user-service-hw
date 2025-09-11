@@ -8,7 +8,8 @@ import mate.academy.exception.DataProcessingException;
 public class HashUtil {
     private static final String CRYPTO_ALGORITHM = "SHA-512";
 
-    public HashUtil() {
+    private HashUtil() {
+        throw new UnsupportedOperationException();
     }
 
     public static byte[] getSalt() {
