@@ -41,6 +41,8 @@ public class UserDaoImpl implements UserDao {
                     + "where u.email = :email", User.class);
             query.setParameter("email", email);
             return query.uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't find user by email: " + email, e);
         }
     }
 }
