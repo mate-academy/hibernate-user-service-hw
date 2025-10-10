@@ -14,16 +14,21 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie add(Movie movie) {
+
         return movieDao.add(movie);
     }
 
     @Override
     public Movie get(Long id) {
-        return movieDao.get(id).get();
+
+        return movieDao
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found"));
     }
 
     @Override
     public List<Movie> getAll() {
-        return movieDao.getAll();
+
+        return movieDao.findAll();
     }
 }

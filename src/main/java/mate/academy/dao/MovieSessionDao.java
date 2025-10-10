@@ -6,9 +6,10 @@ import java.util.Optional;
 import mate.academy.model.MovieSession;
 
 public interface MovieSessionDao {
+    MovieSession add(MovieSession session);
+
+    Optional<MovieSession> findById(Long id);
+    
     List<MovieSession> findAvailableSessions(Long movieId, LocalDate date);
 
-    Optional<MovieSession> get(Long id);
-
-    MovieSession add(MovieSession session);
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -16,10 +17,24 @@ public class MovieSession {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "movie_id")
     private Movie movie;
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hall_id")
     private CinemaHall cinemaHall;
+
     private LocalDateTime showTime;
+
+    public MovieSession() {
+    }
+
+    public MovieSession(Long id, Movie movie, CinemaHall cinemaHall, LocalDateTime showTime) {
+        this.id = id;
+        this.movie = movie;
+        this.cinemaHall = cinemaHall;
+        this.showTime = showTime;
+    }
 
     public Long getId() {
         return id;
@@ -55,11 +70,12 @@ public class MovieSession {
 
     @Override
     public String toString() {
-        return "MovieSession{"
-                + "id=" + id
-                + ", movie=" + movie
-                + ", cinemaHall=" + cinemaHall
-                + ", showTime=" + showTime
-                + '}';
+        final StringBuilder sb = new StringBuilder("MovieSession{");
+        sb.append("id=").append(id);
+        sb.append(", movie=").append(movie);
+        sb.append(", cinemaHall=").append(cinemaHall);
+        sb.append(", showTime=").append(showTime);
+        sb.append('}');
+        return sb.toString();
     }
 }
