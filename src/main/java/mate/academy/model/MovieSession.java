@@ -1,7 +1,6 @@
 package mate.academy.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,11 +15,11 @@ public class MovieSession {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "hall_id")
     private CinemaHall cinemaHall;
 
@@ -70,12 +69,10 @@ public class MovieSession {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("MovieSession{");
-        sb.append("id=").append(id);
-        sb.append(", movie=").append(movie);
-        sb.append(", cinemaHall=").append(cinemaHall);
-        sb.append(", showTime=").append(showTime);
-        sb.append('}');
-        return sb.toString();
+        return "MovieSession{"
+                + "id=" + id
+                + ", movie=" + movie
+                + ", cinemaHall=" + cinemaHall
+                + ", showTime=" + showTime + '}';
     }
 }
