@@ -71,8 +71,9 @@ public class MovieSession {
     public String toString() {
         return "MovieSession{"
                 + "id=" + id
-                + ", movie=" + movie
-                + ", cinemaHall=" + cinemaHall
+                + ", movieId=" + (movie != null ? movie.getId() : null)
+                + ", cinemaHallId=" + (cinemaHall != null
+                ? cinemaHall.getId() : null)
                 + ", showTime=" + showTime + '}';
     }
 }
