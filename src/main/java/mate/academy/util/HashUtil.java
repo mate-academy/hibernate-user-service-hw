@@ -7,6 +7,9 @@ import java.security.SecureRandom;
 public class HashUtil {
     private static final String HASH_ALGORITHM = "SHA-256";
 
+    public HashUtil() {
+    }
+
     public static String getSalt() {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
