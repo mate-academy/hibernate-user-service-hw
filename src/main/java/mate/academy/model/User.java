@@ -23,6 +23,7 @@ public class User {
 
     public User(String email, String password) {
         this.email = email;
+        this.password = password;
     }
 
     public Long getId() {
@@ -61,7 +62,8 @@ public class User {
     public String toString() {
         return "User{"
                 + "id=" + id
-                + ", password='" + password + '\''
+                + ", email='" + email + '\''
+                + ", salt='" + salt + '\''
                 + '}';
     }
 }
