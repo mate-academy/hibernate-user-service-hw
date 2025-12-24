@@ -1,5 +1,6 @@
 package mate.academy.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,6 +12,7 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true)
     private Long id;
     private String email;
     private String password;
@@ -68,8 +70,6 @@ public class User {
     @Override
     public String toString() {
         return "User{id=" + id
-                + ", email='" + email + '\''
-                + ", password='" + password + '\''
-                + ", salt=" + salt + '}';
+                + ", email='" + email + '\'';
     }
 }
