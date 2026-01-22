@@ -16,35 +16,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
 
     @Override
-    public User register(String email,String password) {
-        if (userService.findByEmail(email).isPresent()) {
-            try {
-                throw new RegistrationException("User with email " + email + " already exists");
-            } catch (RegistrationException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    public User register(String email, String password) throws RegistrationException {
         User user = new User();
         user.setEmail(email);
-        byte[] salt = HashUtil.getSalt();
-        user.setSalt(salt);
-        user.setPassword(HashUtil.hashPassword(password, salt));
-        return userService.add(user);
+        user.setPassword(password);
+
+        return userService.findByEmail(email).isEmpty()
+                ? userService.add(user)
+                : throwRegistrationException(email);
     }
 
     @Override
-    public User login(String email, String password) {
+    public User login(String email, String password) throws AuthenticationException {
         Optional<User> userFromDb = userService.findByEmail(email);
-        if (userFromDb.isPresent()) {
-            String hashedPassword = HashUtil.hashPassword(password, userFromDb.get().getSalt());
-            if (hashedPassword.equals(userFromDb.get().getPassword())) {
-                return userFromDb.get();
-            }
-        }
-        try {
+
+        if (userFromDb.isEmpty() || !isValid(password, userFromDb.get())) {
             throw new AuthenticationException("Invalid email or password");
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
         }
+        return userFromDb.get();
+    }
+
+    private boolean isValid(String password, User user) {
+        return HashUtil.hashPassword(password, user.getSalt()).equals(user.getPassword());
+    }
+
+    private User throwRegistrationException(String email) throws RegistrationException {
+        throw new RegistrationException("User with email " + email + " already exists");
     }
 }
