@@ -3,11 +3,13 @@ package mate.academy.dao.impl;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
+import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+@Dao
 public class UserDaoImpl implements UserDao {
     @Override
     public User add(User user) {
