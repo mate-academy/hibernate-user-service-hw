@@ -22,13 +22,12 @@ public class UserDaoImpl implements UserDao {
             transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
-            session.close();
             return user;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Van not create the user", e);
+            throw new DataProcessingException("Can't create user.", e);
         } finally {
             if (session != null) {
                 session.close();
@@ -43,7 +42,7 @@ public class UserDaoImpl implements UserDao {
             query.setParameter("email", email);
             return Optional.ofNullable(query.uniqueResult());
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get a user by id: " + email, e);
+            throw new DataProcessingException("Can't get a user by email: " + email, e);
         }
     }
 }

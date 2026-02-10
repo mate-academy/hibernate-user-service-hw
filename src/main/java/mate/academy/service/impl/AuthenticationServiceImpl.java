@@ -9,6 +9,8 @@ import mate.academy.service.AuthenticationService;
 import mate.academy.service.UserService;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.Optional;
+
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
@@ -16,17 +18,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        if (email == null || password == null || email.isEmpty() || password.isEmpty()) {
-            throw new AuthenticationException("Email and password can not be empty.");
-        }
-        User user = userService.findByEmail(email)
+        return Optional.ofNullable(email)
+                .filter(e -> !e.isBlank())
+                .flatMap(e -> userService.findByEmail(e))
+                .filter(u -> password != null && BCrypt.checkpw(password, u.getPassword()))
                 .orElseThrow(AuthenticationException.findByIdSupplier(email, User.class));
-
-        if (!BCrypt.checkpw(password, user.getPassword())) {
-            throw new AuthenticationException("Passwords do not match.");
-        }
-
-        return user;
     }
 
     @Override
