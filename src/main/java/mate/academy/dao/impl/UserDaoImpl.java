@@ -3,20 +3,18 @@ package mate.academy.dao.impl;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
+import mate.academy.lib.Dao;
 import mate.academy.model.User;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.mindrot.jbcrypt.BCrypt;
 
+@Dao
 public class UserDaoImpl implements UserDao {
 
     @Override
     public User add(User user) {
-        String hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-        user.setPassword(hash);
-
         Session session = null;
         Transaction transaction = null;
         try {

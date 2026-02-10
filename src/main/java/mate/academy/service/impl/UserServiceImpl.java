@@ -6,6 +6,7 @@ import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.UserService;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -14,6 +15,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User add(User user) {
+        String hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        user.setPassword(hash);
         return userDao.add(user);
     }
 
