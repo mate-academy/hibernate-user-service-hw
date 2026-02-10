@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new DataProcessingException("Van not create the user" , e);
+            throw new DataProcessingException("Van not create the user", e);
         } finally {
             if (session != null) {
                 session.close();
