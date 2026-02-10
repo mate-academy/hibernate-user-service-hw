@@ -2,7 +2,7 @@ package mate.academy.exception;
 
 import java.util.function.Supplier;
 
-public class AuthenticationException extends RuntimeException {
+public class AuthenticationException extends Exception {
     public AuthenticationException(String message) {
         super(message);
     }
