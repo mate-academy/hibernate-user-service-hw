@@ -17,16 +17,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User userFromDB = userService.findByEmail(email).orElseThrow(
-                () -> new AuthenticationException("User with email: " + email + " is not found."));
-
-        String hashedPassword = HashUtil.hashPassword(password, userFromDB.getSalt());
-
-        if (userFromDB.getPassword().equals(hashedPassword)) {
-            return userFromDB;
-        }
-
-        throw new AuthenticationException("Authentication failed, check your credentials.");
+        return userService.findByEmail(email).filter(user -> {
+            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+            return user.getPassword().equals(hashedPassword);
+        })
+        .orElseThrow(
+                () -> new AuthenticationException("Authentication failed, invalid credentials."));
     }
 
     @Override
