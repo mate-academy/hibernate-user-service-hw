@@ -1,5 +1,8 @@
 package mate.academy.dao.impl;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
@@ -44,6 +47,20 @@ public class UserDaoImpl implements UserDao {
             return Optional.ofNullable(session.get(User.class, id));
         } catch (Exception e) {
             throw new DataProcessingException("Cannot get a user by id: " + id, e);
+        }
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            CriteriaBuilder cb = sessionFactory.getCriteriaBuilder();
+            CriteriaQuery<User> query = cb.createQuery(User.class);
+            Root<User> root = query.from(User.class);
+
+            query.where(cb.equal(root.get("email"), email));
+            return session.createQuery(query).uniqueResultOptional();
+        } catch (Exception e) {
+            throw new DataProcessingException("Cannot get a user by email: " + email, e);
         }
     }
 }
