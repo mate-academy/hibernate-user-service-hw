@@ -11,7 +11,7 @@ import mate.academy.service.UserService;
 public class UserServiceImpl implements UserService {
     @Inject
     private UserDao userDao;
-п
+
     @Override
     public User add(User user) {
         return userDao.add(user);
