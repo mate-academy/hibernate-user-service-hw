@@ -4,10 +4,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import mate.academy.lib.Component;
+import mate.academy.lib.Service;
 import mate.academy.service.SecurityService;
 
-@Component
+@Service
 public class SecurityServiceImpl implements SecurityService {
     private static final String HASH_ALGORITHM = "SHA-512";
     private static final int SALT_LENGTH = 16;
@@ -15,8 +15,9 @@ public class SecurityServiceImpl implements SecurityService {
     @Override
     public String hashPassword(String password, String salt) {
         try {
-            MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
-            byte[] hash = digest.digest((password + salt).getBytes(StandardCharsets.UTF_8));
+            MessageDigest messageDigest = MessageDigest.getInstance(HASH_ALGORITHM);
+            byte[] hash = messageDigest.digest((password + salt)
+                    .getBytes(StandardCharsets.UTF_8));
             StringBuilder stringBuilder = new StringBuilder();
             for (byte b : hash) {
                 stringBuilder.append(String.format("%02x", b));

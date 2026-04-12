@@ -4,11 +4,13 @@ import java.util.Optional;
 import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
+import mate.academy.lib.Service;
 import mate.academy.model.User;
 import mate.academy.service.AuthenticationService;
 import mate.academy.service.SecurityService;
 import mate.academy.service.UserService;
 
+@Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Inject
     private UserService userService;
@@ -19,32 +21,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isEmpty()) {
+        String hashedPassword = userOptional.isPresent()
+                ? securityService.hashPassword(password, userOptional.get().getSalt())
+                : null;
+
+        if (userOptional.isEmpty()
+                || !userOptional.get().getPassword().equals(hashedPassword)) {
             throw new AuthenticationException("Incorrect email or password");
         }
 
-        User user = userOptional.get();
-        String hashedPassword = securityService.hashPassword(password, user.getSalt());
-        if (!user.getPassword().equals(hashedPassword)) {
-            throw new AuthenticationException("Incorrect email or password");
-        }
-        return user;
+        return userOptional.get();
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        Optional<User> userOptional = userService.findByEmail(email);
-        if (userOptional.isPresent()) {
+        if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("User with this email already exists");
         }
 
-        String salt = securityService.generateSalt();
-        String hashedPassword = securityService.hashPassword(password, salt);
-
         User user = new User();
         user.setEmail(email);
-        user.setSalt(salt);
-        user.setPassword(hashedPassword);
+        user.setPassword(password);
 
         return userService.add(user);
     }
