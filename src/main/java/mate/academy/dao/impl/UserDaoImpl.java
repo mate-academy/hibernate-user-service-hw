@@ -35,15 +35,15 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        if (email == null) {
+        if (email == null || email.trim().isEmpty()) {
             throw new IllegalArgumentException("Email is null or empty");
         }
-        email = email.trim();
+        email = email.trim().toLowerCase();
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery("FROM User u WHERE u.email = :email", User.class)
                     .setParameter("email", email).uniqueResultOptional();
         } catch (Exception e) {
-            throw new DataProcessingException("Can't find user by email " + email,e);
+            throw new DataProcessingException("Can't find user by email " + email, e);
         }
     }
 }

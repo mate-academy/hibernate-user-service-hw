@@ -22,15 +22,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         String clearEmail = email.trim().toLowerCase();
         Optional<User> userFromDbOptional = userService.findByEmail(clearEmail);
-        if (userFromDbOptional.isEmpty()) {
+        if (userFromDbOptional.isEmpty() || !userFromDbOptional.get().getPassword()
+                .equals(HashUtil.hashPassword(password, userFromDbOptional.get().getSalt()))) {
             throw new AuthenticationException("Email or Password are incorrect");
         }
-        User userFromDb = userFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, userFromDb.getSalt());
-        if (!userFromDb.getPassword().equals(hashedPassword)) {
-            throw new AuthenticationException("Email or Password are incorrect");
-        }
-        return userFromDb;
+        return userFromDbOptional.get();
     }
 
     @Override

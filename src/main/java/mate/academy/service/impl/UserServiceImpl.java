@@ -3,7 +3,6 @@ package mate.academy.service.impl;
 import jakarta.persistence.PersistenceException;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
-import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -16,20 +15,20 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public User add(User user) throws RegistrationException {
+    public User add(User user) {
         if (user == null) {
-            throw new RegistrationException("User can't be null");
+            throw new RuntimeException("User can't be null");
         }
         if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
-            throw new RegistrationException("Email can't be null or empty");
+            throw new RuntimeException("Email can't be null or empty");
         }
         String clearEmail = user.getEmail().trim().toLowerCase();
         user.setEmail(clearEmail);
         if (userDao.findByEmail(clearEmail).isPresent()) {
-            throw new RegistrationException("Email " + user.getEmail() + " already exist");
+            throw new RuntimeException("Email " + user.getEmail() + " already exist");
         }
         if (user.getPassword() == null || user.getPassword().isEmpty()) {
-            throw new RegistrationException("Password can't be null or empty");
+            throw new RuntimeException("Password can't be null or empty");
         }
         byte[] salt = HashUtil.getSalt();
         String hashPassword = HashUtil.hashPassword(user.getPassword(), salt);
@@ -38,13 +37,13 @@ public class UserServiceImpl implements UserService {
         try {
             return userDao.add(user);
         } catch (PersistenceException e) {
-            throw new RegistrationException("Email " + user.getEmail() + " already exist", e);
+            throw new RuntimeException("Email " + user.getEmail() + " already exist", e);
         }
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        if (email == null || email.isEmpty()) {
+        if (email == null || email.trim().isEmpty()) {
             throw new IllegalArgumentException("Email can't be null or empty");
         }
         String clearEmail = email.trim().toLowerCase();
