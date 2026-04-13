@@ -18,7 +18,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User login(String email, String password) throws AuthenticationException {
         if (email == null || email.trim().isEmpty() || password == null || password.isEmpty()) {
-            throw new AuthenticationException("Email and password must be provided");
+            throw new AuthenticationException("Email is null or empty");
         }
         String clearEmail = email.trim().toLowerCase();
         Optional<User> userFromDbOptional = userService.findByEmail(clearEmail);
@@ -32,7 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public User register(String email, String password) throws RegistrationException {
         if (email == null || email.trim().isEmpty() || password == null || password.isEmpty()) {
-            throw new RegistrationException("Email and password must be provided");
+            throw new RegistrationException("Email is null or empty");
         }
         String clearEmail = email.trim().toLowerCase();
         if (userService.findByEmail(clearEmail).isPresent()) {
