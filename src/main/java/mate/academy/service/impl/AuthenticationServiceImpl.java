@@ -39,8 +39,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userService.findByEmail(email).isPresent()) {
             throw new RegistrationException("Email Already Exists");
         }
-        String hashedPassword = PasswordUtil.hash(password);
 
-        return userService.add(new User(email, hashedPassword));
+        return new User(email, password);
     }
 }
