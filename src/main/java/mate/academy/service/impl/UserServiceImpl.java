@@ -2,6 +2,7 @@ package mate.academy.service.impl;
 
 import java.util.Optional;
 import mate.academy.dao.UserDao;
+import mate.academy.exception.DataProcessingException;
 import mate.academy.lib.Inject;
 import mate.academy.lib.Service;
 import mate.academy.model.User;
@@ -21,7 +22,8 @@ public class UserServiceImpl implements UserService {
         String clearEmail = user.getEmail().trim().toLowerCase();
         user.setEmail(clearEmail);
         if (userDao.findByEmail(user.getEmail()).isPresent()) {
-            throw new RuntimeException("User with email " + user.getEmail() + " already exists");
+            throw new DataProcessingException("User with email "
+                    + user.getEmail() + " already exists");
         }
         if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
             throw new IllegalArgumentException("Password is null or empty");

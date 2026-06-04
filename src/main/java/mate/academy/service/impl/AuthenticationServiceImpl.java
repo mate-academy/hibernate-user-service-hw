@@ -17,12 +17,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        if (email == null || email.trim().isEmpty()) {
-            throw new AuthenticationException("Email is null or empty");
-        }
-        if (password == null || password.trim().isEmpty()) {
-            throw new AuthenticationException("Password is null or empty");
-        }
         String clearEmail = email.trim().toLowerCase();
         Optional<User> optionalUser = userService.findByEmail(clearEmail);
         if (optionalUser.isEmpty() || !optionalUser.get().getPassword()
@@ -34,12 +28,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        if (email == null || email.trim().isEmpty()) {
-            throw new RegistrationException("Email is null or empty");
-        }
-        if (password == null || password.trim().isEmpty()) {
-            throw new RegistrationException("Password is null or empty");
-        }
         String clearEmail = email.trim().toLowerCase();
         if (userService.findByEmail(clearEmail).isPresent()) {
             throw new RegistrationException("User with email " + email + " already exists");
