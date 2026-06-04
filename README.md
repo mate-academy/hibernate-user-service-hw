@@ -1,5 +1,7 @@
 # Hibernate - Create user service
 
+`mvn -DskipTests=false clean package`
+
 We will continue working on our Cinema project.
 
 Your task is to implement the following steps:
