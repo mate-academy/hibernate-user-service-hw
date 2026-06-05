@@ -1,5 +1,7 @@
 # Hibernate - Create user service
 
+`mvn -DskipTests=false clean package`
+
 We will continue working on our Cinema project.
 
 Your task is to implement the following steps:
@@ -41,3 +43,15 @@ Your task is to implement the following steps:
 - In the `mate/academy/Main.main()` method create an instance of AuthenticationService using injector and test all methods from it.
 
 [Try to avoid these common mistakes, while solving task](./checklist.md)
+
+AuthenticationServiceImpl.register(): the logic is inverted (throws when user is NOT found instead of when they ALREADY exist) and the user is never actually persisted to the database. 
+
+Additionally: both AuthenticationException and RegistrationException incorrectly extend RuntimeException instead of checked Exception [CHECKLIST #2];
+
+UserDaoImpl.findByEmail() uses session.get() treating email as an ID instead of using uniqueResultOptional() with a proper HQL query [CHECKLIST #6];
+
+login() has two separate if blocks throwing exceptions instead of one combined condition [CHECKLIST #7];
+
+the User entity lacks @Column(unique = true) on the email field [CHECKLIST #1];
+
+and User.toString() exposes password and salt fields [CHECKLIST #12]
