@@ -2,16 +2,30 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
 
 public class Main {
+    private static final Injector injector = Injector.getInstance("mate.academy");
+
     public static void main(String[] args) {
-        MovieService movieService = null;
+
+        final MovieService movieService = (MovieService) injector.getInstance(MovieService.class);
+        final CinemaHallService cinemaHallService =
+                (CinemaHallService) injector.getInstance(CinemaHallService.class);
+        final MovieSessionService movieSessionService =
+                (MovieSessionService) injector.getInstance(MovieSessionService.class);
+        final AuthenticationService authService =
+                (AuthenticationService) injector.getInstance(AuthenticationService.class);
 
         Movie fastAndFurious = new Movie("Fast and Furious");
         fastAndFurious.setDescription("An action film about street racing, heists, and spies.");
@@ -27,7 +41,6 @@ public class Main {
         secondCinemaHall.setCapacity(200);
         secondCinemaHall.setDescription("second hall with capacity 200");
 
-        CinemaHallService cinemaHallService = null;
         cinemaHallService.add(firstCinemaHall);
         cinemaHallService.add(secondCinemaHall);
 
@@ -44,12 +57,42 @@ public class Main {
         yesterdayMovieSession.setMovie(fastAndFurious);
         yesterdayMovieSession.setShowTime(LocalDateTime.now().minusDays(1L));
 
-        MovieSessionService movieSessionService = null;
         movieSessionService.add(tomorrowMovieSession);
         movieSessionService.add(yesterdayMovieSession);
 
         System.out.println(movieSessionService.get(yesterdayMovieSession.getId()));
         System.out.println(movieSessionService.findAvailableSessions(
-                        fastAndFurious.getId(), LocalDate.now()));
+                fastAndFurious.getId(), LocalDate.now()));
+
+        System.out.println("--- test 1: poprawna rejestracja ---");
+        try {
+            User registeredUser = authService.register("test@academy.mate", "SuperSecret123");
+            System.out.println("Sukces! Zarejestrowano użytkownika: " + registeredUser.getEmail());
+            System.out.println("Zahashowane hasło w bazie: " + registeredUser.getPassword());
+        } catch (RegistrationException e) {
+            System.out.println("Błąd rejestracji: " + e.getMessage());
+        }
+
+        System.out.println("\n--- test 2: próba rejestracji tego samego maila ---");
+        try {
+            authService.register("test@academy.mate", "InneHaslo111");
+        } catch (RegistrationException e) {
+            System.out.println("Sukces (oczekiwany błąd): " + e.getMessage());
+        }
+
+        System.out.println("\n--- test 3: poprawne logowanie ---");
+        try {
+            User loggedUser = authService.login("test@academy.mate", "SuperSecret123");
+            System.out.println("Sukces! Zalogowano użytkownika: " + loggedUser.getEmail());
+        } catch (AuthenticationException e) {
+            System.out.println("Błąd logowania: " + e.getMessage());
+        }
+
+        System.out.println("\n--- test 4: logowanie ze złym hasłem ---");
+        try {
+            authService.login("test@academy.mate", "ZleHasloOdwrocone");
+        } catch (AuthenticationException e) {
+            System.out.println("Sukces (oczekiwany błąd): " + e.getMessage());
+        }
     }
 }
