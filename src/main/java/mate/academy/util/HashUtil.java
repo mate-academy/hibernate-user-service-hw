@@ -6,6 +6,9 @@ import de.mkammerer.argon2.Argon2Factory;
 public class HashUtil {
     private static final Argon2 argon2 = Argon2Factory.create();
 
+    public HashUtil() {
+    }
+
     public static String hashPassword(String password) {
         return argon2.hash(10, 65536, 1, password.toCharArray());
     }

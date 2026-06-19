@@ -6,7 +6,7 @@ import mate.academy.model.User;
 
 @Service
 public interface UserService {
-    User addUser(User user);
+    User add(User user);
 
     Optional<User> findByEmail(String email);
 }
