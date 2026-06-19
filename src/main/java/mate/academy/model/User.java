@@ -13,6 +13,7 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
+    private String salt;
 
     public User() {
     }
@@ -36,5 +37,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

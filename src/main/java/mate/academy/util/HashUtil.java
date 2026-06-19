@@ -6,7 +6,11 @@ import de.mkammerer.argon2.Argon2Factory;
 public class HashUtil {
     private static final Argon2 argon2 = Argon2Factory.create();
 
-    public HashUtil() {
+    private HashUtil() {
+    }
+
+    public static String generateSalt() {
+        return java.util.UUID.randomUUID().toString();
     }
 
     public static String hashPassword(String password) {
