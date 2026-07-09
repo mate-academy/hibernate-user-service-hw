@@ -4,30 +4,30 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.dao.UserDao;
 import mate.academy.dao.impl.UserDaoImpl;
+import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
 import mate.academy.model.User;
+import mate.academy.service.AuthenticationService;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.service.UserService;
+import mate.academy.service.impl.UserServiceImpl;
 import mate.academy.util.HashUtil;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 
 public class Main {
     public static void main(String[] args) {
+        Injector injector = Injector.getInstance("mate.academy");
 
         Session session = HibernateUtil.getSessionFactory().openSession();
-        User user = new User();
-        user.setEmail("artemnurmetow@gmail.com");
-        user.setSalt(HashUtil.getSalt());
-        user.setPassword(HashUtil.hashPassword("qwerty", user.getSalt()));
-
-        UserDao userDao = new UserDaoImpl();
-        userDao.add(user);
-        userDao.findByEmail("artemnurmetow@gmail.com");
-
+        AuthenticationService authenticationService = (AuthenticationService)
+                injector.getInstance(AuthenticationService.class);
+        authenticationService.register("artemnurmetow@gmail.com", "qwerty");
+        authenticationService.login("artemnurmetow@gmail.com", "qwerty");
 
 //        MovieService movieService = null;
 //

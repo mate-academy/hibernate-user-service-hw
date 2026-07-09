@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.Arrays;
+import mate.academy.util.HashUtil;
 
 @Entity
 @Table(name = "users")
@@ -19,6 +20,15 @@ public class User {
     private String password;
 
     private byte[] salt;
+
+    public User() {
+    }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+        this.salt = HashUtil.getSalt();
+    }
 
     public Long getId() {
         return id;
