@@ -4,8 +4,6 @@ import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.service.AuthenticationService;
-import mate.academy.util.HibernateUtil;
-import org.hibernate.Session;
 
 public class Main {
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
