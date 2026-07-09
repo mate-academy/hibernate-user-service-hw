@@ -2,6 +2,8 @@ package mate.academy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import mate.academy.dao.UserDao;
+import mate.academy.dao.impl.UserDaoImpl;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
@@ -21,6 +23,10 @@ public class Main {
         user.setEmail("artemnurmetow@gmail.com");
         user.setSalt(HashUtil.getSalt());
         user.setPassword(HashUtil.hashPassword("qwerty", user.getSalt()));
+
+        UserDao userDao = new UserDaoImpl();
+        userDao.add(user);
+        userDao.findByEmail("artemnurmetow@gmail.com");
 
 
 //        MovieService movieService = null;

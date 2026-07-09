@@ -1,0 +1,50 @@
+package mate.academy.dao.impl;
+
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import java.util.Optional;
+import mate.academy.dao.UserDao;
+import mate.academy.exception.DataProcessingException;
+import mate.academy.model.User;
+import mate.academy.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
+public class UserDaoImpl implements UserDao {
+    @Override
+    public User add(User user) {
+        Transaction transaction = null;
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.getTransaction();
+            transaction.begin();
+            session.persist(user);
+            transaction.commit();
+            return user;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new DataProcessingException("Can not insert User to a DB.", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<User> query = session.
+                    createQuery("from User where email = :email", User.class);
+            query.setParameter("email", email);
+            return Optional.ofNullable(query.getSingleResult());
+        } catch (Exception e) {
+            throw new DataProcessingException("Can not find user by email:" + email, e);
+        }
+    }
+}
