@@ -10,12 +10,9 @@ import org.hibernate.Session;
 public class Main {
     public static void main(String[] args) throws RegistrationException, AuthenticationException {
         Injector injector = Injector.getInstance("mate.academy");
-        Session session = HibernateUtil.getSessionFactory().openSession();
         AuthenticationService authenticationService = (AuthenticationService)
                 injector.getInstance(AuthenticationService.class);
         authenticationService.register("artemnurmetow@gmail.com", "qwerty");
         authenticationService.login("artemnurmetow@gmail.com", "qwerty");
-        session.close();
-
     }
 }
