@@ -22,39 +22,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        credentialsCheck(email, password);
         Optional<User> findedUserFromDbOptional = userService.findByEmail(email);
-        if (findedUserFromDbOptional.isEmpty()) {
-            throw new AuthenticationException("User does not exist");
+        if (findedUserFromDbOptional.isPresent()) {
+            User user = findedUserFromDbOptional.get();
+            String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
+            if (user.getPassword().equals(hashedPassword)) {
+                return user;
+            }
         }
-        User user = findedUserFromDbOptional.get();
-        String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
-        if (user.getPassword().equals(hashedPassword)) {
-            return user;
-        }
-        throw new AuthenticationException("Password is not correct.");
+        throw new AuthenticationException("User does not exist or password does not match");
+
     }
 
     @Override
     public User register(String email, String password) throws RegistrationException {
-        credentialsCheck(email, password);
+        if (userService.findByEmail(email).isPresent()) {
+            throw new RegistrationException("User with this email does exist.");
+        }
         return userService.add(new User(email, password));
     }
 
-    private void credentialsCheck(String email, String password) {
-        if (email == null) {
-            throw new RuntimeException("Email is null");
-        }
-
-        if (!emailPattern.matcher(email).matches()) {
-            throw new RuntimeException("Email is invalid");
-        }
-
-        if (password == null) {
-            throw new RuntimeException("Password is null");
-        }
-        if (password.isEmpty()) {
-            throw new RuntimeException("Password is empty");
-        }
-    }
 }

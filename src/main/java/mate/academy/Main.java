@@ -15,6 +15,7 @@ public class Main {
                 injector.getInstance(AuthenticationService.class);
         authenticationService.register("artemnurmetow@gmail.com", "qwerty");
         authenticationService.login("artemnurmetow@gmail.com", "qwerty");
+        session.close();
 
     }
 }
