@@ -8,6 +8,11 @@ import mate.academy.exception.DataProcessingException;
 public class HashUtil {
     private static final String SECURE_ALGORITHM = "SHA-512";
 
+
+    private HashUtil() {
+
+    }
+
     public static byte[] getSalt() {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = new byte[16];
@@ -25,7 +30,7 @@ public class HashUtil {
                 hashedPassword.append(String.format("%02x",b));
             }
         } catch (NoSuchAlgorithmException e) {
-            throw new DataProcessingException("dsadsd", e);
+            throw new DataProcessingException("Cant encrypt the password", e);
         }
         return hashedPassword.toString();
     }

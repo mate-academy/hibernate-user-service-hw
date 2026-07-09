@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import mate.academy.dao.UserDao;
 import mate.academy.dao.impl.UserDaoImpl;
+import mate.academy.exception.AuthenticationException;
+import mate.academy.exception.RegistrationException;
 import mate.academy.lib.Injector;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
@@ -20,9 +22,8 @@ import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RegistrationException, AuthenticationException {
         Injector injector = Injector.getInstance("mate.academy");
-
         Session session = HibernateUtil.getSessionFactory().openSession();
         AuthenticationService authenticationService = (AuthenticationService)
                 injector.getInstance(AuthenticationService.class);

@@ -44,12 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        if (email == null) {
-            throw new RuntimeException("Email is null");
-        }
-        if (!emailPattern.matcher(email).matches()) {
-            throw new RuntimeException("Email is invalid");
-        }
+
         return userDao.findByEmail(email);
     }
 }

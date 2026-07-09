@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.util.Arrays;
 import mate.academy.util.HashUtil;
 
 @Entity
@@ -67,7 +66,6 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
-                ", salt=" + Arrays.toString(salt) +
                 '}';
     }
 }
