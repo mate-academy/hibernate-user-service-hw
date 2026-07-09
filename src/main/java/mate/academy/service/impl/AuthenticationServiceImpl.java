@@ -13,21 +13,21 @@ import mate.academy.util.HashUtil;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
+    private static final String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@"
+            + "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    private static final Pattern emailPattern = Pattern.compile(emailRegex);
+
     @Inject
     private UserService userService;
-
-    private static final String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +
-            "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-    private static final Pattern emailPattern = Pattern.compile(emailRegex);
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
         credentialsCheck(email, password);
-        Optional<User> findedUserFromDBOptional = userService.findByEmail(email);
-        if (findedUserFromDBOptional.isEmpty()) {
+        Optional<User> findedUserFromDbOptional = userService.findByEmail(email);
+        if (findedUserFromDbOptional.isEmpty()) {
             throw new AuthenticationException("User does not exist");
         }
-        User user = findedUserFromDBOptional.get();
+        User user = findedUserFromDbOptional.get();
         String hashedPassword = HashUtil.hashPassword(password, user.getSalt());
         if (user.getPassword().equals(hashedPassword)) {
             return user;

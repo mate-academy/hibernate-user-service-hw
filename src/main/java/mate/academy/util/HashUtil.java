@@ -8,7 +8,6 @@ import mate.academy.exception.DataProcessingException;
 public class HashUtil {
     private static final String SECURE_ALGORITHM = "SHA-512";
 
-
     private HashUtil() {
 
     }
@@ -26,7 +25,7 @@ public class HashUtil {
             MessageDigest messageDigest = MessageDigest.getInstance(SECURE_ALGORITHM);
             messageDigest.update(salt);
             byte[] digest = messageDigest.digest(password.getBytes());
-            for (byte b: digest){
+            for (byte b: digest) {
                 hashedPassword.append(String.format("%02x",b));
             }
         } catch (NoSuchAlgorithmException e) {

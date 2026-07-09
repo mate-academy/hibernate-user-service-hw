@@ -32,6 +32,7 @@ public class User {
     public Long getId() {
         return id;
     }
+
     public String getPassword() {
         return password;
     }
@@ -60,12 +61,12 @@ public class User {
         this.salt = salt;
     }
 
-
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                '}';
+        return "User{"
+                + "id=" + id
+                + ", email='"
+                + email + '\''
+                + '}';
     }
 }
