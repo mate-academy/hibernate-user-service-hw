@@ -5,9 +5,11 @@ import java.time.LocalDateTime;
 import mate.academy.model.CinemaHall;
 import mate.academy.model.Movie;
 import mate.academy.model.MovieSession;
+import mate.academy.model.User;
 import mate.academy.service.CinemaHallService;
 import mate.academy.service.MovieService;
 import mate.academy.service.MovieSessionService;
+import mate.academy.util.HashUtil;
 import mate.academy.util.HibernateUtil;
 import org.hibernate.Session;
 
@@ -15,6 +17,10 @@ public class Main {
     public static void main(String[] args) {
 
         Session session = HibernateUtil.getSessionFactory().openSession();
+        User user = new User();
+        user.setEmail("artemnurmetow@gmail.com");
+        user.setSalt(HashUtil.getSalt());
+        user.setPassword(HashUtil.hashPassword("qwerty", user.getSalt()));
 
 
 //        MovieService movieService = null;
