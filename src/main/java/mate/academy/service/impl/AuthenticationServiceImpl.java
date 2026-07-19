@@ -17,12 +17,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email)
+        return userService.findByEmail(email)
+                .filter(user -> BCrypt.checkpw(password, user.getPassword()))
                 .orElseThrow(() -> new AuthenticationException("Invalid email or password"));
-        if (!BCrypt.checkpw(password, user.getPassword())) {
-            throw new AuthenticationException("Invalid email or password");
-        }
-        return user;
     }
 
     @Override
