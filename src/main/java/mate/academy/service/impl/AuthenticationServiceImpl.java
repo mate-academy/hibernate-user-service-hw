@@ -17,14 +17,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public User login(String email, String password) throws AuthenticationException {
-        User user = userService.findByEmail(email)
-                .orElseThrow(() -> new AuthenticationException("User not found"));
+        User user = userService.findByEmail(email).orElse(null);
 
-        String hashed = HashUtil.hashPassword(password, user.getSalt());
-        if (!user.getPassword().equals(hashed)) {
-            throw new AuthenticationException("Incorrect password");
+        if (user == null
+                || !user.getPassword().equals(
+                HashUtil.hashPassword(password, user.getSalt()))) {
+            throw new AuthenticationException("Invalid email or password");
         }
-
         return user;
     }
 
@@ -32,20 +31,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public User register(String email, String password) throws RegistrationException {
         Optional<User> user = userService.findByEmail(email);
         if (user.isPresent()) {
-            throw new RegistrationException(user + " already exists");
+            throw new RegistrationException("User with email " + email + " already exists");
         }
-
-        User userObj = new User();
-        byte[] salt = HashUtil.getSalt();
-        userObj.setSalt(salt);
-        userObj.setEmail(email);
-        userObj.setPassword(HashUtil.hashPassword(password, userObj.getSalt()));
-
-        try {
-            userService.save(userObj);
-        } catch (Exception e) {
-            throw new RegistrationException("Cannot save user: " + userObj);
-        }
-        return userObj;
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setPassword(password);
+        return userService.save(newUser);
     }
 }

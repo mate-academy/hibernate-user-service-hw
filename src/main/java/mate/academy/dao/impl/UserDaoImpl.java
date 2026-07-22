@@ -1,6 +1,5 @@
 package mate.academy.dao.impl;
 
-import java.util.List;
 import java.util.Optional;
 import mate.academy.dao.UserDao;
 import mate.academy.exception.DataProcessingException;
@@ -37,13 +36,13 @@ public class UserDaoImpl implements UserDao {
                     .createQuery("FROM User where email = :email", User.class);
 
             query.setParameter("email", email);
-            List<User> list = query.getResultList();
+            Optional<User> list = query.uniqueResultOptional();
 
             if (list.isEmpty()) {
                 return Optional.empty();
             }
 
-            return Optional.of(list.get(0));
+            return Optional.of(list.get());
 
         } catch (Exception e) {
             throw new DataProcessingException("Can't find user by email " + email, e);
