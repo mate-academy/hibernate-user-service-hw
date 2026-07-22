@@ -23,7 +23,7 @@ public class User {
     private byte[] salt;
 
     public byte[] getSalt() {
-        return this.salt = salt;
+        return this.salt;
     }
 
     public void setSalt(byte[] salt) {
