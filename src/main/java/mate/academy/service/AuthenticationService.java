@@ -1,11 +1,12 @@
 package mate.academy.service;
 
-import javax.naming.AuthenticationException;
+import mate.academy.exception.AuthenticationException;
 import mate.academy.exception.RegistrationException;
 import mate.academy.model.User;
 
 public interface AuthenticationService {
-    User login(String email, String password) throws AuthenticationException;
+    User login(String email, String password) throws AuthenticationException,
+            mate.academy.exception.AuthenticationException;
 
     /**
      * We should register a new user. The new user entity will contain the email and password
